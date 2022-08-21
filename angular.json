@@ -100,6 +100,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "carto-paille-porteuse:build:production",
+            "firebaseProject": "carto-paille-porteuse",
+            "firebaseHostingSite": "carto-paille-porteuse"
+          }
         }
       }
     }

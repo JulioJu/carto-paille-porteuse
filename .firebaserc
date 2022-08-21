@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "carto-paille-porteuse": {
+      "hosting": {
+        "carto-paille-porteuse": [
+          "carto-paille-porteuse"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "carto-paille-porteuse"
+  }
+}

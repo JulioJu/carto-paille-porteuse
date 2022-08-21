@@ -2,6 +2,20 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.1.
 
+## Firebase
+
+We use https://github.com/angular/angularfire/blob/master/docs/install-and-setup.md
+
+Before start, you should create a file that contains your credentials [./src/environments/firebase-credentials.ts]([./src/environments/firebase-credentials.ts])
+
+## Deploy on Firebase
+
+This repo is deployed on https://carto-paille-porteuse.web.app/ using
+
+```bash
+firebase deploy`
+```
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
