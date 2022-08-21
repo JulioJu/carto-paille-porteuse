@@ -46,4 +46,4 @@ Thumbs.db
 *-debug.log
 .runtimeconfig.json
 # Contains credentials
-/src/environments/firebase-credentials.ts
+/src/environments/firebase.ts

@@ -2,12 +2,14 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { firebaseCredentials as firebase } from "./firebase-credentials";
+import { firebaseCredentials } from "./firebase";
 
 export const environment = {
-  firebase,
-  production: false
+  firebase: firebaseCredentials,
+  production: false,
+  firebaseAuthorizedDomain: 'http://localhost:4200',
 };
+
 
 
 /*

@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, Optional } from '@angular/core';
-import { Auth, authState, signOut, User, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
+import { Auth, authState, signOut, User, GoogleAuthProvider, signInWithPopup, sendSignInLinkToEmail, sendEmailVerification } from '@angular/fire/auth';
 import { EMPTY, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { traceUntilFirst } from '@angular/fire/performance';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-auth',
@@ -11,7 +12,9 @@ import { traceUntilFirst } from '@angular/fire/performance';
       Auth!
       <code>{{ (user | async)?.uid }}</code>
       <button (click)="login()" *ngIf="showLoginButton">Log in with Google</button>
+      <button (click)="loginWithLinkToEmail()" *ngIf="showLoginButton">Se connecter grâce à un lien envoyé sur votre adresse mail</button>
       <button (click)="logout()" *ngIf="showLogoutButton">Log out</button>
+      <button (click)="sendEmail()" *ngIf="showLogoutButton">Send verification email</button>
     </p>
   `,
   styles: []
@@ -47,6 +50,28 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   async login() {
     return await signInWithPopup(this.auth, new GoogleAuthProvider());
+  }
+
+  /**
+   * See also https://firebase.google.com/docs/auth/web/email-link-auth?authuser=0&hl=en
+   * TODO not finished
+   */
+  async loginWithLinkToEmail() {
+    const actionCodeSettings = {
+      url: environment.firebaseAuthorizedDomain,
+      // This must be true.
+      handleCodeInApp: true
+    }
+    try {
+      return await sendSignInLinkToEmail(this.auth, 'julio@sogilis.com', actionCodeSettings);
+    } catch(error) {
+      console.error(error);
+      throw new Error('Auth fail');
+    }
+  }
+
+  async sendEmail() {
+    return sendEmailVerification(this.auth.currentUser as User)
   }
 
   async logout() {

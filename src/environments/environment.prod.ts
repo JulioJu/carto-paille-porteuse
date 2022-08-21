@@ -1,6 +1,7 @@
-import { firebaseCredentials as firebase } from "./firebase-credentials";
+import { firebaseAuthorizedDomain, firebaseCredentials } from "./firebase";
 
 export const environment = {
-  firebase,
-  production: true
+  firebase: firebaseCredentials,
+  production: true,
+  firebaseAuthorizedDomain,
 };
