@@ -11,7 +11,9 @@ import { providePerformance,getPerformance } from '@angular/fire/performance';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 
 import { HomeModule } from './home/home.module';
+
 import { MainComponent } from './layouts/main/main.component';
+import { AuthComponent } from './auth/auth.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { ErrorComponent } from './layouts/error/error.component';
@@ -19,6 +21,7 @@ import { ErrorComponent } from './layouts/error/error.component';
 @NgModule({
   declarations: [
     MainComponent,
+    AuthComponent,
     NavbarComponent,
     ErrorComponent,
     FooterComponent
