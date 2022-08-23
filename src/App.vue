@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
+import setupAxiosInterceptor from "./services/axios-interceptor"
+
+setupAxiosInterceptor();
 </script>
 
 <template>
