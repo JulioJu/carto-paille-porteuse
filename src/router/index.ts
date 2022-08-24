@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import LoginUser from "../views/LoginUser.vue";
 import NotFound from "../views/NotFound.vue";
 
 const router = createRouter({
@@ -11,12 +12,19 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      path: "/login-user",
+      name: "Se connecter",
+      component: LoginUser,
+    },
+    {
       path: "/register-user",
       name: "S'enregistrer",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import("../views/RegisterUser.vue"),
+    },
+    {
+      path: "/create-entity",
+      name: "Create entity",
+      component: () => import("../views/CreateEntity.vue"),
     },
     {
       path: "/about",

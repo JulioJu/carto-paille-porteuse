@@ -24,7 +24,9 @@ parsePlatform.initializeParse();
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/login-user">Se connecter</RouterLink>
         <RouterLink to="/register-user">S'enregister</RouterLink>
+        <RouterLink to="/create-entity">Create entity</RouterLink>
       </nav>
     </div>
   </header>
