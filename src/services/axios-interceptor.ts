@@ -5,7 +5,9 @@ import axios from "axios";
 
 const onRequestSuccess = (config: AxiosRequestConfig) => {
   // Security considerations https://auth0.com/blog/secure-browser-storage-the-facts/
-  const token = localStorage.getItem('app-authenticationToken') || sessionStorage.getItem('app-authenticationToken');
+  const token =
+    localStorage.getItem("app-authenticationToken") ||
+    sessionStorage.getItem("app-authenticationToken");
   if (token) {
     if (!config.headers) {
       config.headers = {};
@@ -21,21 +23,21 @@ const onUnauthenticated = (error: any) => {
   const url = error.response?.config?.url;
   const status = error.status || error.response.status;
   if (status === 401) {
-    console.error("TODO Logout")
-    if (!url.endsWith('api/account') && !url.endsWith('api/authenticate')) {
+    console.error("TODO Logout");
+    if (!url.endsWith("api/account") && !url.endsWith("api/authenticate")) {
       // Ask for a new authentication
       console.error("loginService.openLogin(vue)");
       return;
     }
   }
-  console.log('Unauthorized!');
+  console.log("Unauthorized!");
   return Promise.reject(error);
-}
+};
 
 const onServerError = (error: any) => {
-  console.log('Server error!');
+  console.log("Server error!");
   return Promise.reject(error);
-}
+};
 
 export default () => {
   const onResponseError = (err: any) => {
@@ -51,6 +53,6 @@ export default () => {
 
   if (axios.interceptors) {
     axios.interceptors.request.use(onRequestSuccess);
-    axios.interceptors.response.use(res => res, onResponseError);
+    axios.interceptors.response.use((res) => res, onResponseError);
   }
 };

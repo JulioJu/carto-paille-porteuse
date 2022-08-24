@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
-import setupAxiosInterceptor from "./services/axios-interceptor"
+import setupAxiosInterceptor from "./services/axios-interceptor";
+import parsePlatform from "./services/parse-platform";
 
 setupAxiosInterceptor();
+parsePlatform.initializeParse();
 </script>
 
 <template>
@@ -22,6 +24,7 @@ setupAxiosInterceptor();
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/register-user">S'enregister</RouterLink>
       </nav>
     </div>
   </header>

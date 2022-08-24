@@ -27,6 +27,21 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 npm install
 ```
 
+## Parse platform setup
+
+```sh
+cp ./src/environment.example.ts ./src/environment.ts
+```
+
+Then into ./src/environment.ts follow https://www.back4app.com/docs/get-started/parse-sdk
+
+To have Autocomplete for JavaScript for Parse library you should have
+
+```sh
+mkdir -p node_modules/@types/parse/dist/parse.min.js
+mv node_modules/@types/parse/* node_modules/@types/parse/dist/parse.min.js
+```
+
 ### Compile and Hot-Reload for Development
 
 ```sh
@@ -44,3 +59,9 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## TODO
+
+* We could have error "error 209 invalid session token" randomly
+  See also https://stackoverflow.com/questions/32103777/parse-for-javascript-error-209-invalid-session-token-when-signing-up-a-new-u
+  Try catch each Parse (not already done because I would like understand better the error)

@@ -2,7 +2,8 @@
 import TheWelcome from "@/components/TheWelcome.vue";
 import axios from "axios";
 
-axios.get('https://dummyjson.com/products/')
+axios
+  .get("https://dummyjson.com/products/")
   .then(function (response) {
     // handle success
     console.log(response);
@@ -10,7 +11,7 @@ axios.get('https://dummyjson.com/products/')
   .catch(function (error) {
     // handle error
     console.log(error);
-  })
+  });
 </script>
 
 <template>
