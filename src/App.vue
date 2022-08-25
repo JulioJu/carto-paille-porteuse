@@ -3,9 +3,24 @@ import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
 import setupAxiosInterceptor from "./services/axios-interceptor";
 import parsePlatform from "./services/parse-platform";
+import Parse from "parse/dist/parse.min.js";
+import Store from "./store";
+import { computed } from "vue";
 
 setupAxiosInterceptor();
 parsePlatform.initializeParse();
+
+Store.user.isAuthenticated.value =
+  Parse.User.current()?.authenticated() === true;
+
+const logout = () => {
+  Parse.User.logOut();
+  Store.user.isAuthenticated.value = false;
+};
+
+const isAuthenticated = computed(() => {
+  return Store.user.isAuthenticated.value;
+});
 </script>
 
 <template>
@@ -24,8 +39,13 @@ parsePlatform.initializeParse();
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/login-user">Se connecter</RouterLink>
-        <RouterLink to="/register-user">S'enregister</RouterLink>
+        <template v-if="isAuthenticated">
+          <a @click.prevent="logout()">Se déconnecter</a>
+        </template>
+        <template v-else>
+          <RouterLink to="/login-user">Se connecter</RouterLink>
+          <RouterLink to="/register-user">S'enregister</RouterLink>
+        </template>
         <RouterLink to="/create-entity">Create entity</RouterLink>
       </nav>
     </div>

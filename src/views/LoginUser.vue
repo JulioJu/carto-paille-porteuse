@@ -9,6 +9,7 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import Parse from "parse/dist/parse.min.js";
+import Store from "@/store";
 
 const form = reactive({
   email: "",
@@ -18,7 +19,8 @@ const onSubmit = async () => {
   try {
     const user = await Parse.User.logIn(form.email, form.password);
     alert("Connexion réussie");
-    console.log(user);
+    console.info(user);
+    Store.user.isAuthenticated.value = true;
   } catch (error: any) {
     alert("Error: " + error.code + " " + error.message);
   }
