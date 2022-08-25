@@ -10,6 +10,9 @@
 import { reactive } from "vue";
 import Parse from "parse/dist/parse.min.js";
 import Store from "@/store";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const form = reactive({
   email: "",
@@ -21,6 +24,7 @@ const onSubmit = async () => {
     alert("Connexion réussie");
     console.info(user);
     Store.user.isAuthenticated.value = true;
+    router.push("/");
   } catch (error: any) {
     alert("Error: " + error.code + " " + error.message);
   }
