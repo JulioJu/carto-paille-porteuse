@@ -20,6 +20,8 @@ soccerPlayer
     alert("New object created with objectId: " + result.id);
   })
   .catch((error) => {
+    // TODO
+    // If unauthorized or forbidden, you should logout
     alert("Failed to create new object: " + error.message);
   });
 </script>

@@ -1,41 +1,29 @@
-import type { AxiosRequestConfig } from "axios";
+import Parse from "parse/dist/parse.min.js";
 import axios from "axios";
 
 // Inspired from https://github.com/jhipster/jhipster-sample-app-vuejs/blob/93f3895adb76b87b7f7f8bc89e95ecd083c7f985/src/main/webapp/app/shared/config/axios-interceptor.ts
+// With Parse Platform, session id is sent into HTTP body, with the JSON
 
-const onRequestSuccess = (config: AxiosRequestConfig) => {
-  // Security considerations https://auth0.com/blog/secure-browser-storage-the-facts/
-  const token =
-    localStorage.getItem("app-authenticationToken") ||
-    sessionStorage.getItem("app-authenticationToken");
-  if (token) {
-    if (!config.headers) {
-      config.headers = {};
-    }
-    config.headers.Authorization = `Bearer ${token}`;
-  } else {
-    console.info("Not already logged");
-  }
-  return config;
-};
-
+/**
+ * If we are not connected.
+ * When we try to create a protected "Parse Platform Database class" without
+ * be connected, we have a HTTP code 200.
+ *
+ * If we are connected with a "user" that has no "role" admin.
+ * When we try to to create "Parse Platform Database class" with a
+ * "Class Level Permission" set only for `role:admin`, we have an error 400.
+ */
 const onUnauthenticated = (error: any) => {
-  const url = error.response?.config?.url;
   const status = error.status || error.response.status;
   if (status === 401) {
-    console.error("TODO Logout");
-    if (!url.endsWith("api/account") && !url.endsWith("api/authenticate")) {
-      // Ask for a new authentication
-      console.error("loginService.openLogin(vue)");
-      return;
-    }
+    Parse.User.logOut();
   }
-  console.log("Unauthorized!");
+  alert("Unauthorized!");
   return Promise.reject(error);
 };
 
 const onServerError = (error: any) => {
-  console.log("Server error!");
+  alert("Server error!");
   return Promise.reject(error);
 };
 
@@ -52,7 +40,6 @@ export default () => {
   };
 
   if (axios.interceptors) {
-    axios.interceptors.request.use(onRequestSuccess);
     axios.interceptors.response.use((res) => res, onResponseError);
   }
 };
