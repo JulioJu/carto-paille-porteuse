@@ -12,6 +12,9 @@ import axios from "axios";
  * If we are connected with a "user" that has no "role" admin.
  * When we try to to create "Parse Platform Database class" with a
  * "Class Level Permission" set only for `role:admin`, we have an error 400.
+ *
+ * When we use Parse Platform JavaScript SDK, as we don't use axios, we don't
+ * trigger interceptor.
  */
 const onUnauthenticated = (error: any) => {
   const status = error.status || error.response.status;
