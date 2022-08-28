@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
-import setupAxiosInterceptor from "./services/axios-interceptor";
 import parsePlatform from "./services/parse-platform";
 import Parse from "parse/dist/parse.min.js";
 import Store from "./store";
 import { computed } from "vue";
 
-setupAxiosInterceptor();
 parsePlatform.initializeParse();
 
 Store.user.isAuthenticated.value =
