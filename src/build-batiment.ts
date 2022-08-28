@@ -133,11 +133,12 @@ const createBatimentTable = async () => {
 };
 
 const main = async () => {
-  // If Master key is not set, promise is correctly rejected. It's normal.
+  // // If Master key is not set, promise is correctly rejected. It's normal.
   Parse.masterKey = masterKey;
   await droptablesCreated();
 
   // Note:
+  // With Pares Platform 4.5.0
   // If we un check ""Allow Client Class Creation"
   // into Parse Platform configuration website
   // Following fail, but promise is not rejected. Probably an error with Parse library?
@@ -153,7 +154,9 @@ export default async () => {
     await main();
     alert("Tables deleted then created again with success");
   } catch (error) {
-    alert("Error, see JavaScript Console");
+    alert(
+      "Error, it's normal, master key is not corretly defined. See also JavaScript console."
+    );
     console.error(error);
   }
 };

@@ -6,15 +6,12 @@ import parsePlatform from "./services/parse-platform";
 import Parse from "parse/dist/parse.min.js";
 import Store from "./store";
 import { computed } from "vue";
-import buildBatiment from "@/build-batiment";
 
 setupAxiosInterceptor();
 parsePlatform.initializeParse();
 
 Store.user.isAuthenticated.value =
   Parse.User.current()?.authenticated() === true;
-
-buildBatiment();
 
 const logout = () => {
   Parse.User.logOut();
