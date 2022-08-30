@@ -116,9 +116,6 @@ export default ({
   const overlay = new Overlay({
     element: popup,
     autoPan: true,
-    autoPanAnimation: {
-      duration: 250,
-    },
   });
   map.addOverlay(overlay);
 
