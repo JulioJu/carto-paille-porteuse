@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import LoginUser from "../views/LoginUser.vue";
 import NotFound from "../views/NotFound.vue";
+import batimentRouter from "./batiment-router";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: NotFound,
     },
+    batimentRouter,
   ],
 });
 
