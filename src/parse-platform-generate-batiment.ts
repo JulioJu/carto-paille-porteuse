@@ -1,13 +1,15 @@
 import Parse from "parse/dist/parse.min.js";
 import {
   batimentTable,
-  TableEnum,
   TableType,
   userTable,
   type Section,
+} from "@/batiment/model/batiment-sections";
+import {
+  TableEnum,
   type TypeTableEnum,
-} from "./batiment-type";
-import batiment from "./batiment";
+} from "@/batiment/model/batiment-dropdown";
+import batimentSections from "@/batiment/model/batiment-sections";
 
 // BIG WARNING Security.
 // ====
@@ -31,7 +33,7 @@ import batiment from "./batiment";
 /**
  * DO NOT COMMIT FOLLOWING AND DO NOT DEPLOY ON PUBLIC APP
  */
-const masterKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+const masterKey = "XXXXXXXXXXXXXXXXXXXXXX";
 
 const droptablesCreated = async () => {
   const tableToDelete = Object.keys(TableEnum);
@@ -125,7 +127,7 @@ const createASection = (
  */
 const createBatimentTable = async () => {
   const batimentSchema = new Parse.Schema(batimentTable);
-  Object.values(batiment).forEach((aBatiment) => {
+  Object.values(batimentSections).forEach((aBatiment) => {
     createASection(batimentSchema, aBatiment.columns);
   });
   batimentSchema.addPointer("owner", userTable, { required: true });

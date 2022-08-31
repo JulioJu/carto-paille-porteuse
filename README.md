@@ -2,11 +2,36 @@
 
 This template should help get you started developing with Vue 3 in Vite.
 
+<!-- vim-markdown-toc GFM -->
+
+* [Recommended IDE Setup](#recommended-ide-setup)
+  * [Type Support for `.vue` Imports in TS](#type-support-for-vue-imports-in-ts)
+* [Vite Customize configuration](#vite-customize-configuration)
+* [Project Setup](#project-setup)
+  * [Download dependencies](#download-dependencies)
+  * [Set environment variables](#set-environment-variables)
+  * [TypeScript and Parse Platform JS SDK](#typescript-and-parse-platform-js-sdk)
+  * [Destroy and Generate Schema database](#destroy-and-generate-schema-database)
+    * [Into src/App.vue add](#into-srcappvue-add)
+    * [Set master key](#set-master-key)
+    * [Run](#run)
+    * [Revert changes](#revert-changes)
+    * [Security](#security)
+  * [Compile and Hot-Reload for Development](#compile-and-hot-reload-for-development)
+  * [Type-Check, Compile and Minify for Production](#type-check-compile-and-minify-for-production)
+  * [Lint with ESLint](#lint-with-eslint)
+  * [Deploy on back4app](#deploy-on-back4app)
+* [Security configuration](#security-configuration)
+* [TODO](#todo)
+* [Note](#note)
+
+<!-- vim-markdown-toc -->
+
 ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-## Type Support for `.vue` Imports in TS
+### Type Support for `.vue` Imports in TS
 
 TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
 
@@ -17,23 +42,76 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
     2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
 
-## Customize configuration
+## Vite Customize configuration
 
 See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Project Setup
 
+### Download dependencies
+
 ```sh
 npm install
 ```
 
-## Parse platform setup
+### Set environment variables
 
 ```sh
 cp ./src/environment.example.ts ./src/environment.ts
 ```
 
 Then into ./src/environment.ts follow https://www.back4app.com/docs/get-started/parse-sdk
+
+### TypeScript and Parse Platform JS SDK
+
+To have Parse and TypeScript you should execute
+
+```sh
+make parse-post-install
+```
+
+Normally `npm install` trigger following automatically this command. But no `npm install aPackage --save` .
+
+Therefore ***you should trigger*** `make parse-post-install` after installing a new package.
+
+### Destroy and Generate Schema database
+
+Execute ***locally*** ./src/batiment/parse-platform-generate-batiment.ts
+
+To do that
+
+#### Into src/App.vue add
+
+```typescript
+import parsePlatformGenerateBatiment from "@/parse-platform-generate-batiment";
+
+// Already into App.vue
+parsePlatform.initializeParse();
+
+parsePlatformGenerateBatiment();
+```
+
+#### Set master key
+
+Into ./src/batiment/parse-platform-generate-batiment.ts set master key
+
+You could find it at https://www.back4app.com/docs/get-started/parse-sdk
+
+#### Run
+
+```sh
+npm run dev
+```
+
+Then open app into a browser. It ***destroys*** and generate a new schema.
+
+#### Revert changes
+
+Do not forget to revert changes to avoid generation if you load again the page.
+
+#### Security
+
+See section below
 
 ### Compile and Hot-Reload for Development
 

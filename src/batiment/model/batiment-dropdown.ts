@@ -1,3 +1,9 @@
+export type TypeTableEnum = {
+  name: string;
+  commentaire: string;
+  enum: { [key: string]: string };
+};
+
 const Cereale: TypeTableEnum = {
   name: "Cereale",
   commentaire: "Céréales",
@@ -115,40 +121,6 @@ const YesNoPartial: TypeTableEnum = {
     PARTIEL: "Partiel",
   },
 };
-
-export type TypeTableEnum = {
-  name: string;
-  commentaire: string;
-  enum: { [key: string]: string };
-};
-
-export type Section = {
-  commentaire: string;
-  columns: {
-    [key: string]: {
-      commentaire: string;
-      type: TableType | TypeTableEnum;
-      validation?: {
-        required?: boolean;
-        maxlength?: number;
-      };
-    };
-  };
-};
-
-export enum TableType {
-  IMAGE,
-  STRING,
-  TEXTAREA,
-  NUMBER,
-  NATURAL_NUMBER,
-  BOOLEAN,
-  DATE,
-  GEOPOINT,
-}
-
-export const batimentTable = "batiment";
-export const userTable = "user";
 
 export const TableEnum = {
   Cereale,

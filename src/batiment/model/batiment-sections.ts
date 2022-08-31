@@ -1,7 +1,34 @@
-import type { Section } from "@/batiment-type";
-import { TableType, TableEnum } from "@/batiment-type";
+import { TableEnum, type TypeTableEnum } from "./batiment-dropdown";
 
-const Definition = {
+export type Section = {
+  commentaire: string;
+  columns: {
+    [key: string]: {
+      commentaire: string;
+      type: TableType | TypeTableEnum;
+      validation?: {
+        required?: boolean;
+        maxlength?: number;
+      };
+    };
+  };
+};
+
+export enum TableType {
+  IMAGE,
+  STRING,
+  TEXTAREA,
+  NUMBER,
+  NATURAL_NUMBER,
+  BOOLEAN,
+  DATE,
+  GEOPOINT,
+}
+
+export const batimentTable = "batiment";
+export const userTable = "user";
+
+const Definition: Section = {
   commentaire: "Définition",
   columns: {
     coordonnees: {
