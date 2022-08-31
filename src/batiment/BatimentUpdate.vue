@@ -26,7 +26,7 @@ export default defineComponent({
         Number(to.query.long) >= -90 &&
         Number(to.query.long) <= 90
       ) {
-        console.log(to.query.lat, to.query.long, "yoyo");
+        console.debug(to.query.lat, to.query.long, "yoyo");
         instance.setBatiment({ latitude: to.query.lat.toString() });
       }
     });
@@ -44,11 +44,11 @@ const setBatiment = ({
 }) => {
   batiment.latitutde = latitude;
   batiment.longitude = longitude;
-  console.log("vue-route::from::", batiment.latitutde);
+  console.debug("vue-route::from::", batiment.latitutde);
 };
 
 const retrieveBatiment = (id: string) => {
-  console.log(id);
+  console.debug(id);
 };
 
 defineExpose({ setBatiment, retrieveBatiment });

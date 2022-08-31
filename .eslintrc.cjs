@@ -11,6 +11,12 @@ module.exports = {
   ],
   rules: {
     "@typescript-eslint/no-explicit-any": "off",
+    "no-console": [
+      "error",
+      {
+        allow: ["debug", "info", "warn", "error", "trace"],
+      },
+    ],
   },
   parserOptions: {
     ecmaVersion: "latest",

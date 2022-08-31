@@ -23,7 +23,7 @@ const onSubmit = async () => {
   try {
     const userCreated = await user.signUp();
     alert("Utilisateur créé avec succès");
-    console.log(userCreated);
+    console.info(userCreated);
   } catch (error: any) {
     alert("Error: " + error.code + " " + error.message);
   }
