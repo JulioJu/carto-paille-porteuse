@@ -31,6 +31,7 @@ const unRoutedPaths = [
   "export_progress",
   "export_data",
   "graphql",
+  "purge",
 ];
 // eslint-disable-next-line no-undef
 app.use((req, res, next) => {
