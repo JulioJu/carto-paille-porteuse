@@ -4,12 +4,12 @@ import {
   TableType,
   userTable,
   type Section,
-} from "@/batiment/model/batiment-sections";
+} from "@/batiment/model/Section";
 import {
   TableEnum,
   type TypeTableEnum,
 } from "@/batiment/model/batiment-dropdown";
-import batimentSections from "@/batiment/model/batiment-sections";
+import batimentSections from "@/batiment/model/BatimentSections";
 
 // BIG WARNING Security.
 // ====
@@ -127,7 +127,7 @@ const createASection = (
  */
 const createBatimentTable = async () => {
   const batimentSchema = new Parse.Schema(batimentTable);
-  Object.values(batimentSections).forEach((aBatiment) => {
+  Object.values(new batimentSections().allSections).forEach((aBatiment) => {
     createASection(batimentSchema, aBatiment.columns);
   });
   batimentSchema.addPointer("owner", userTable, { required: true });
