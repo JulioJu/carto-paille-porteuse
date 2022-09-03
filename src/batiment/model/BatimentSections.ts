@@ -390,46 +390,6 @@ export default class BatimentSection {
     },
   });
 
-  get definition() {
-    return this._definition;
-  }
-  get informationsGenerales() {
-    return this._informationsGenerales;
-  }
-  get photo() {
-    return this._photo;
-  }
-  get natureDesTravaux() {
-    return this._natureDesTravaux;
-  }
-  get chronologie() {
-    return this._chronologie;
-  }
-  get botteDePaille() {
-    return this._botteDePaille;
-  }
-  get chantier() {
-    return this._chantier;
-  }
-  get construction() {
-    return this._construction;
-  }
-  get revetement() {
-    return this._revetement;
-  }
-  get actricesActeurs() {
-    return this._actricesActeurs;
-  }
-  get commentaire() {
-    return this._commentaire;
-  }
-  get contact() {
-    return this._contact;
-  }
-  get autorisation() {
-    return this._autorisation;
-  }
-
   get allSections() {
     return {
       definition: this._definition,

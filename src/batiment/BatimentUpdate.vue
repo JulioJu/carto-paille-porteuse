@@ -1,10 +1,26 @@
-<template>Create or update form {{ batiment.latitutde }}</template>
+<template>
+  Create or update form {{ latLong.latitutde }}
+  <form class="login-user" @submit.prevent="onSubmit">
+    <input
+      type="string"
+      v-model="batiment.allSections.definition.columns.latitude.value.value"
+    />
+    <button>Form</button>
+  </form>
+</template>
 <script lang="ts">
 import { defineComponent, reactive, type ComponentPublicInstance } from "vue";
+import BatimentSection from "./model/BatimentSections";
 
 interface IInstance extends ComponentPublicInstance {
   retrieveBatiment(id: string): void;
-  setBatiment({ latitude }: { latitude: string }): void;
+  setLatLong({
+    latitude,
+    longitude,
+  }: {
+    latitude: string;
+    longitude: string;
+  }): void;
 }
 
 export default defineComponent({
@@ -27,29 +43,39 @@ export default defineComponent({
         Number(to.query.long) <= 90
       ) {
         console.debug(to.query.lat, to.query.long, "yoyo");
-        instance.setBatiment({ latitude: to.query.lat.toString() });
+        instance.setLatLong({
+          latitude: to.query.lat.toString(),
+          longitude: to.query.long.toString(),
+        });
       }
     });
   },
 });
 </script>
 <script setup lang="ts">
-const batiment = reactive({ latitutde: "loading", longitude: "loading" });
-const setBatiment = ({
+const latLong = reactive({ latitutde: "loading", longitude: "loading" });
+
+const batiment = new BatimentSection();
+
+const setLatLong = ({
   latitude,
   longitude,
 }: {
   latitude: string;
   longitude: string;
 }) => {
-  batiment.latitutde = latitude;
-  batiment.longitude = longitude;
-  console.debug("vue-route::from::", batiment.latitutde);
+  latLong.latitutde = latitude;
+  latLong.longitude = longitude;
+  console.debug("vue-route::from::", latLong.latitutde);
 };
 
 const retrieveBatiment = (id: string) => {
   console.debug(id);
 };
 
-defineExpose({ setBatiment, retrieveBatiment });
+const onSubmit = () => {
+  console.debug(batiment.allSections.definition.columns.latitude.value.value);
+};
+
+defineExpose({ setLatLong, retrieveBatiment });
 </script>
