@@ -83,6 +83,12 @@ const createAColumn = (
   if (typeof columnType === "number") {
     columnType = columnType as TableType;
     switch (columnType) {
+      case TableType.STRING | TableType.TEXTAREA:
+        batimentSchema.addString(columnName, required);
+        break;
+      case TableType.NUMBER | TableType.NATURAL_NUMBER:
+        batimentSchema.addNumber(columnName, required);
+        break;
       case TableType.BOOLEAN:
         batimentSchema.addBoolean(columnName, required);
         break;
@@ -91,12 +97,6 @@ const createAColumn = (
         break;
       case TableType.IMAGE:
         batimentSchema.addFile(columnName, required);
-        break;
-      case TableType.NUMBER | TableType.NATURAL_NUMBER:
-        batimentSchema.addNumber(columnName, required);
-        break;
-      case TableType.STRING | TableType.TEXTAREA:
-        batimentSchema.addString(columnName, required);
         break;
       case TableType.GEOPOINT:
         batimentSchema.addGeoPoint(columnName, required);

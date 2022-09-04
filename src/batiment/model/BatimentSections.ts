@@ -226,7 +226,7 @@ export default class BatimentSection {
     },
   });
 
-  private _construction = {
+  private _construction = new Section({
     commentaire: "Construction",
     columns: {
       structCompl: new Column({
@@ -271,7 +271,7 @@ export default class BatimentSection {
         type: TableType.TEXTAREA,
       }),
     },
-  };
+  });
 
   private _revetement = new Section({
     commentaire: "Revêtement",
@@ -385,12 +385,12 @@ export default class BatimentSection {
       conditionsLuesEtAcceptes: new Column({
         commentaire:
           "Le propriétaire du bâtit a coché sur la case. Ce devrait être systématique, sauf pour les ajouts provenant de recensements divers (Nebreska Construction, RFCP)",
-        type: TableType.STRING,
+        type: TableType.BOOLEAN,
       }),
     },
   });
 
-  get allSections() {
+  get allSections(): { [key: string]: Section } {
     return {
       definition: this._definition,
       informationsGenerales: this._informationsGenerales,

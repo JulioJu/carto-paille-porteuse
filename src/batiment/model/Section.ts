@@ -2,13 +2,13 @@ import { ref, type Ref } from "vue";
 import type { TypeTableEnum } from "./batiment-dropdown";
 
 export enum TableType {
-  IMAGE,
   STRING,
   TEXTAREA,
+  BOOLEAN,
   NUMBER,
   NATURAL_NUMBER,
-  BOOLEAN,
   DATE,
+  IMAGE,
   GEOPOINT,
 }
 
@@ -126,7 +126,7 @@ export class Section {
     this._columns = columns;
   }
 
-  get commentaire() {
+  get commentaire(): string {
     return this._commentaire;
   }
 
