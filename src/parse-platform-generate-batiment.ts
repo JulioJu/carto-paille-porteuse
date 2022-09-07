@@ -83,10 +83,12 @@ const createAColumn = (
   if (typeof columnType === "number") {
     columnType = columnType as TableType;
     switch (columnType) {
-      case TableType.STRING | TableType.TEXTAREA:
+      case TableType.STRING:
+      case TableType.TEXTAREA:
         batimentSchema.addString(columnName, required);
         break;
-      case TableType.NUMBER | TableType.NATURAL_NUMBER:
+      case TableType.NUMBER:
+      case TableType.NATURAL_NUMBER:
         batimentSchema.addNumber(columnName, required);
         break;
       case TableType.BOOLEAN:
