@@ -59,20 +59,29 @@ export class Column {
   private _commentaire: string;
   private _type: TableType | TypeTableEnum;
   private _validation?: Validation;
-  public value: Ref<string | Date | BinaryType | number | boolean | null>;
+  private _cssClass?: string;
+  private _inForm?: boolean;
+  public value: Ref<any>;
 
   constructor({
     commentaire,
     type,
     validation,
+    cssClass,
+    inForm = true,
   }: {
     commentaire: string;
     type: TableType | TypeTableEnum;
     validation?: Validation;
+    cssClass?: string;
+    inForm?: boolean;
   }) {
     this._commentaire = commentaire;
     this._type = type;
     this._validation = validation;
+    this._validation = validation;
+    this._cssClass = cssClass;
+    this._inForm = inForm;
     switch (type) {
       case TableType.BOOLEAN:
         this.value = ref<boolean | null>(null);
@@ -108,6 +117,14 @@ export class Column {
 
   get validation() {
     return this._validation;
+  }
+
+  get cssClass() {
+    return this._cssClass;
+  }
+
+  get inForm() {
+    return this._inForm;
   }
 }
 

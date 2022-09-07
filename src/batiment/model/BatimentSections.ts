@@ -68,6 +68,11 @@ export default class BatimentSection {
         commentaire: "Photo principale description",
         type: TableType.TEXTAREA,
       }),
+      photoPrincipaleContentType: new Column({
+        commentaire: "Photo principale content-type",
+        type: TableType.STRING,
+        inForm: false,
+      }),
       photo1: new Column({
         commentaire: "Photo",
         type: TableType.IMAGE,
@@ -82,6 +87,11 @@ export default class BatimentSection {
       photo1Description: new Column({
         commentaire: "Photo 1 description",
         type: TableType.TEXTAREA,
+      }),
+      photo1ContentType: new Column({
+        commentaire: "Photo 1 content-type",
+        type: TableType.STRING,
+        inForm: false,
       }),
       photo2: new Column({
         commentaire: "Photo",
@@ -98,6 +108,11 @@ export default class BatimentSection {
         commentaire: "Photo 2 description",
         type: TableType.TEXTAREA,
       }),
+      photo2ContentType: new Column({
+        commentaire: "Photo 2 content-type",
+        type: TableType.STRING,
+        inForm: false,
+      }),
       photo3: new Column({
         commentaire: "Photo",
         type: TableType.IMAGE,
@@ -112,6 +127,11 @@ export default class BatimentSection {
       photo3Description: new Column({
         commentaire: "Photo 3 description",
         type: TableType.TEXTAREA,
+      }),
+      photo3ContentType: new Column({
+        commentaire: "Photo 3 content-type",
+        type: TableType.STRING,
+        inForm: false,
       }),
       photo4: new Column({
         commentaire: "Photo",
@@ -128,6 +148,11 @@ export default class BatimentSection {
         commentaire: "Photo 4 description",
         type: TableType.TEXTAREA,
       }),
+      photo4ContentType: new Column({
+        commentaire: "Photo 4 content-type",
+        type: TableType.STRING,
+        inForm: false,
+      }),
       photo5: new Column({
         commentaire: "Photo",
         type: TableType.IMAGE,
@@ -142,6 +167,11 @@ export default class BatimentSection {
       photo5Description: new Column({
         commentaire: "Photo 5 description",
         type: TableType.TEXTAREA,
+      }),
+      photo5ContentType: new Column({
+        commentaire: "Photo 5 content-type",
+        type: TableType.STRING,
+        inForm: false,
       }),
     },
   });
