@@ -13,7 +13,7 @@ export enum TableType {
 }
 
 export const batimentTable = "batiment";
-export const userTable = "user";
+export const userTable = "_User";
 
 export class Validation {
   private _required?: boolean;

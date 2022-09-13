@@ -146,6 +146,7 @@ export default defineComponent({
 });
 </script>
 <script setup lang="ts">
+import Parse from "parse/dist/parse.min.js";
 const batiment = new BatimentSection();
 
 const setLatLong = ({
@@ -175,8 +176,40 @@ const destructuringTableEnum = (
   aTableEnum: TypeTableEnum["enum"]
 ): [key: string, value: string][] => Object.entries(aTableEnum);
 
-const onSubmit = () => {
-  console.debug(batiment.allSections.definition.columns.latitude.value.value);
+const onSubmit = async () => {
+  const batimentToSave = new Parse.Object("batiment");
+  Object.values(batiment.allSections).forEach((aSection: Section) => {
+    Object.entries(aSection.columns).forEach(([keyColumn, valueColumn]) => {
+      let value = valueColumn.value.value;
+      let columnType = valueColumn.type;
+      if (value === "" || value === null || value === undefined) {
+        return;
+      }
+      if (typeof columnType === "number") {
+        if (
+          columnType === TableType.NUMBER ||
+          columnType === TableType.NATURAL_NUMBER
+        ) {
+          value = Number(value);
+        }
+        batimentToSave.set(keyColumn, value);
+      } else {
+        columnType = columnType as TypeTableEnum;
+        const pointer = new Parse.Object(columnType.name);
+        pointer.id = value;
+        batimentToSave.set(keyColumn, pointer);
+      }
+    });
+  });
+  batimentToSave.set("owner", Parse.User.current());
+  try {
+    const batimentSaved = await batimentToSave.save();
+    alert("New object created with objectId: " + batimentSaved.id);
+  } catch (error: any) {
+    // TODO
+    // If unauthorized or forbidden, you should logout
+    alert("Failed to create new object: " + error.message);
+  }
 };
 
 const setFileData = (event: any) => {
