@@ -44,6 +44,8 @@ import drawPopup from "./draw-popup";
 import eventRetrieveCoordAndNavigate from "./event-retrieve-coord-and-navigate";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import Parse from "parse/dist/parse.min.js";
+import { Batiment } from "@/batiment/model/batiment.model";
 
 const router = useRouter();
 
@@ -54,20 +56,25 @@ const franceLonLat = [2.2137, 46.2276];
 let isEditMode = false;
 
 const retrieveAllBatiments = async (): Promise<any> => {
-  return await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        {
-          id: 3,
-          nomBatiment: "toto",
-          latitude: 45,
-          longitude: 5.3,
-          usageBatiment: "rototo",
-          surfacePlancher: "5",
-        },
-      ]);
-    }, 300);
-  });
+  const query = new Parse.Query(Parse.Object.extend("batiment"));
+  query.select("latitude", "longitude", "usageBatiment", "surfacePlancher");
+  try {
+    const results = await query.find();
+    const batiments = results.map((aResult) => {
+      const aBatiment = new Batiment();
+      aBatiment.id = aResult.get("objectId");
+      aBatiment.nomBatiment = aResult.get("nomBatiment");
+      aBatiment.latitude = aResult.get("latitude");
+      aBatiment.longitude = aResult.get("longitude");
+      aBatiment.surfacePlancher = aResult.get("surfacePlancher");
+      return aBatiment;
+    });
+    return batiments;
+  } catch (error) {
+    alert("Error while fetching batiment (see console)");
+    console.error(error);
+    return [];
+  }
 };
 
 const mapRoot = ref<HTMLDivElement>();
