@@ -45,7 +45,6 @@ import eventRetrieveCoordAndNavigate from "./event-retrieve-coord-and-navigate";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Parse from "parse/dist/parse.min.js";
-import { Batiment } from "@/batiment/model/batiment.model";
 
 const router = useRouter();
 
@@ -61,12 +60,13 @@ const retrieveAllBatiments = async (): Promise<any> => {
   try {
     const results = await query.find();
     const batiments = results.map((aResult) => {
-      const aBatiment = new Batiment();
-      aBatiment.id = aResult.id;
-      aBatiment.nomBatiment = aResult.get("nomBatiment");
-      aBatiment.latitude = aResult.get("latitude");
-      aBatiment.longitude = aResult.get("longitude");
-      aBatiment.surfacePlancher = aResult.get("surfacePlancher");
+      const aBatiment = {
+        id: aResult.id,
+        nomBatiment: aResult.get("nomBatiment"),
+        latitude: aResult.get("latitude"),
+        longitude: aResult.get("longitude"),
+        surfacePlancher: aResult.get("surfacePlancher"),
+      };
       return aBatiment;
     });
     return batiments;
