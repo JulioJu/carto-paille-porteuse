@@ -8,93 +8,89 @@
       <h3>
         {{ valueSection.commentaire }}
       </h3>
-      <template
+      <label
         v-for="[keyColumn, valueColumn] in destructuringColumns(
           valueSection.columns
         )"
         :key="keyColumn"
+        :class="
+          keySection.substring(1) +
+          '__' +
+          keyColumn +
+          ' ' +
+          (valueColumn.cssClass ? valueColumn.cssClass : '')
+        "
       >
-        <label
-          v-if="valueColumn.inForm"
-          :class="
-            keySection.substring(1) +
-            '__' +
-            keyColumn +
-            ' ' +
-            (valueColumn.cssClass ? valueColumn.cssClass : '')
-          "
-        >
-          {{ valueColumn.commentaire }}
-          <template v-if="typeof valueColumn.type === 'number'">
-            <input
-              v-if="valueColumn.type === TableType.STRING"
-              v-model="valueColumn.value.value"
-              type="text"
-              :required="valueColumn.validation?.required"
-              :maxlength="valueColumn.validation?.maxlength"
-            />
-            <textarea
-              v-else-if="valueColumn.type === TableType.TEXTAREA"
-              v-model="valueColumn.value.value"
-              :required="valueColumn.validation?.required"
-            />
-            <input
-              v-else-if="valueColumn.type === TableType.BOOLEAN"
-              v-model="valueColumn.value.value"
-              type="checkbox"
-              :required="valueColumn.validation?.required"
-            />
-            <input
-              v-else-if="valueColumn.type === TableType.NUMBER"
-              v-model="valueColumn.value.value"
-              type="number"
-              step="any"
-              :required="valueColumn.validation?.required"
-              :min="valueColumn.validation?.min"
-              :max="valueColumn.validation?.max"
-            />
-            <input
-              v-else-if="valueColumn.type === TableType.NATURAL_NUMBER"
-              v-model="valueColumn.value.value"
-              type="number"
-              :required="valueColumn.validation?.required"
-              :min="valueColumn.validation?.min"
-              :max="valueColumn.validation?.max"
-            />
-            <input
-              v-else-if="valueColumn.type === TableType.DATE"
-              v-model="valueColumn.value.value"
-              type="date"
-              :required="valueColumn.validation?.required"
-              :min="valueColumn.validation?.min"
-              :max="valueColumn.validation?.max"
-            />
-            <input
-              v-else-if="valueColumn.type === TableType.IMAGE"
-              type="file"
-              v-on:change="setFileData($event)"
-              accept="image/*"
-              :required="valueColumn.validation?.required"
-            />
-          </template>
-          <template v-else>
-            <select
-              v-model="valueColumn.value.value"
-              :required="valueColumn.validation?.required"
-            >
-              <option
-                v-for="[keyEnum, labelEnum] in destructuringTableEnum(
-                  valueColumn.type.enum
-                )"
-                :key="keyEnum"
-                :value="keyEnum"
-                :label="labelEnum"
-              ></option>
-            </select>
-          </template>
-          <br />
-        </label>
-      </template>
+        {{ valueColumn.commentaire }}
+        <template v-if="typeof valueColumn.type === 'number'">
+          <input
+            v-if="valueColumn.type === TableType.STRING"
+            v-model="valueColumn.value.value"
+            type="text"
+            :required="valueColumn.validation?.required"
+            :maxlength="valueColumn.validation?.maxlength"
+          />
+          <textarea
+            v-else-if="valueColumn.type === TableType.TEXTAREA"
+            v-model="valueColumn.value.value"
+            :required="valueColumn.validation?.required"
+          />
+          <input
+            v-else-if="valueColumn.type === TableType.BOOLEAN"
+            v-model="valueColumn.value.value"
+            type="checkbox"
+            :required="valueColumn.validation?.required"
+          />
+          <input
+            v-else-if="valueColumn.type === TableType.NUMBER"
+            v-model="valueColumn.value.value"
+            type="number"
+            step="any"
+            :required="valueColumn.validation?.required"
+            :min="valueColumn.validation?.min"
+            :max="valueColumn.validation?.max"
+          />
+          <input
+            v-else-if="valueColumn.type === TableType.NATURAL_NUMBER"
+            v-model="valueColumn.value.value"
+            type="number"
+            :required="valueColumn.validation?.required"
+            :min="valueColumn.validation?.min"
+            :max="valueColumn.validation?.max"
+          />
+          <input
+            v-else-if="valueColumn.type === TableType.DATE"
+            v-model="valueColumn.value.value"
+            type="date"
+            :required="valueColumn.validation?.required"
+            :min="valueColumn.validation?.min"
+            :max="valueColumn.validation?.max"
+          />
+          <input
+            v-else-if="valueColumn.type === TableType.IMAGE"
+            type="file"
+            v-on:change="setFileData($event)"
+            accept="image/*"
+            :required="valueColumn.validation?.required"
+          />
+        </template>
+        <template v-else>
+          <select
+            v-model="valueColumn.value.value"
+            :required="valueColumn.validation?.required"
+          >
+            <option
+              v-for="[keyEnum, labelEnum] in destructuringTableEnum(
+                valueColumn.type.enum
+              )"
+              :key="keyEnum"
+              :value="keyEnum"
+              :label="labelEnum"
+            ></option>
+          </select>
+        </template>
+        <br />
+      </label>
     </div>
     <button>Soumettre</button>
   </form>
