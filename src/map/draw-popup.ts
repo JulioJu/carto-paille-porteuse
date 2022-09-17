@@ -1,6 +1,6 @@
 import "ol/ol.css";
 import { Map, Overlay } from "ol";
-import { useRouter } from "vue-router";
+import type { Router } from "vue-router";
 
 const appendList = (
   list: HTMLUListElement,
@@ -32,11 +32,13 @@ const registerMapEvents = ({
   popupContent,
   overlay,
   popupCloser,
+  router,
 }: {
   map: Map;
   popupContent: HTMLDivElement;
   overlay: Overlay;
   popupCloser: HTMLDivElement;
+  router: Router;
 }) => {
   // display popup on click
   map.on("click", async (evt) => {
@@ -59,8 +61,8 @@ const registerMapEvents = ({
       anchor.classList.add("link-primary");
       anchor.addEventListener("click", (ev: MouseEvent) => {
         ev.preventDefault();
-        useRouter().push({
-          name: "BatimentView",
+        router.push({
+          name: "BatimentDetail",
           params: { batimentId: feature.get("id") },
         });
       });
@@ -107,11 +109,13 @@ export default ({
   popup,
   popupCloser,
   popupContent,
+  router,
 }: {
   map: Map;
   popup: HTMLDivElement;
   popupCloser: HTMLDivElement;
   popupContent: HTMLDivElement;
+  router: Router;
 }) => {
   const overlay = new Overlay({
     element: popup,
@@ -129,5 +133,6 @@ export default ({
     popupContent,
     overlay,
     popupCloser,
+    router,
   });
 };

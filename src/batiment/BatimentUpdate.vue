@@ -1,7 +1,10 @@
 <template>
   <form class="login-user" @submit.prevent="onSubmit">
     <div
-      v-for="[keySection, valueSection] in destructuringBatiment(batiment)"
+      v-for="[
+        keySection,
+        valueSection,
+      ] in batimentService.destructuringBatiment(batiment)"
       :key="keySection"
       :class="keySection.substring(1)"
     >
@@ -9,7 +12,7 @@
         {{ valueSection.commentaire }}
       </h3>
       <label
-        v-for="[keyColumn, valueColumn] in destructuringColumns(
+        v-for="[keyColumn, valueColumn] in batimentService.destructuringColumns(
           valueSection.columns
         )"
         :key="keyColumn"
@@ -97,7 +100,10 @@
             :required="valueColumn.validation?.required"
           >
             <option
-              v-for="[keyEnum, labelEnum] in destructuringTableEnum(
+              v-for="[
+                keyEnum,
+                labelEnum,
+              ] in batimentService.destructuringTableEnum(
                 valueColumn.type.enum
               )"
               :key="keyEnum"
@@ -116,7 +122,7 @@
 import { defineComponent, type ComponentPublicInstance, type Ref } from "vue";
 import type { TypeTableEnum } from "./model/batiment-dropdown";
 import BatimentSection from "./model/BatimentSections";
-import { Column, Section, TableType } from "./model/Section";
+import { Section, TableType } from "./model/Section";
 
 interface IInstance extends ComponentPublicInstance {
   retrieveBatiment(id: string): void;
@@ -170,6 +176,11 @@ export default defineComponent({
 <script setup lang="ts">
 import Parse from "parse/dist/parse.min.js";
 import imageService from "../services/image-service";
+import batimentService from "./batiment.service";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
 const batiment = new BatimentSection();
 
 const setLatLong = ({
@@ -187,18 +198,6 @@ const retrieveBatiment = (id: string) => {
   console.debug(id);
 };
 
-const destructuringBatiment = (
-  aBatiment: BatimentSection
-): [key: string, value: Section][] => Object.entries(aBatiment);
-
-const destructuringColumns = (
-  columns: Section["columns"]
-): [key: string, value: Column][] => Object.entries(columns);
-
-const destructuringTableEnum = (
-  aTableEnum: TypeTableEnum["enum"]
-): [key: string, value: string][] => Object.entries(aTableEnum);
-
 const onSubmit = async () => {
   const batimentToSave = new Parse.Object("batiment");
   Object.values(batiment.allSections).forEach((aSection: Section) => {
@@ -215,7 +214,7 @@ const onSubmit = async () => {
         ) {
           value = Number(value);
         } else if (columnType === TableType.IMAGE) {
-          value = new Parse.File(new Date().toISOString(), { base64: value });
+          value = new Parse.File(Date.now().toString(), { base64: value });
         }
         batimentToSave.set(keyColumn, value);
       } else {
@@ -229,7 +228,10 @@ const onSubmit = async () => {
   batimentToSave.set("owner", Parse.User.current());
   try {
     const batimentSaved = await batimentToSave.save();
-    alert("New object created with objectId: " + batimentSaved.id);
+    router.push({
+      name: "BatimentDetail",
+      params: { batimentId: batimentSaved.id },
+    });
   } catch (error: any) {
     // TODO
     // If unauthorized or forbidden, you should logout

@@ -62,7 +62,7 @@ const retrieveAllBatiments = async (): Promise<any> => {
     const results = await query.find();
     const batiments = results.map((aResult) => {
       const aBatiment = new Batiment();
-      aBatiment.id = aResult.get("objectId");
+      aBatiment.id = aResult.id;
       aBatiment.nomBatiment = aResult.get("nomBatiment");
       aBatiment.latitude = aResult.get("latitude");
       aBatiment.longitude = aResult.get("longitude");
@@ -120,6 +120,7 @@ onMounted(async () => {
     popup: popup.value as HTMLDivElement,
     popupCloser: popupCloser.value as HTMLDivElement,
     popupContent: popupContent.value as HTMLDivElement,
+    router,
   });
 });
 

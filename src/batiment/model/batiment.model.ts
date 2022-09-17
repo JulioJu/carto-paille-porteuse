@@ -11,7 +11,7 @@ import type { RevetExt } from "./enumerations/revet-ext.model";
 export class Batiment {
   constructor(
     // Definition
-    public id?: number,
+    public id?: string,
     public latitude?: number,
     public longitude?: number,
     public nomBatiment?: string | null,

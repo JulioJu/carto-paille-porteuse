@@ -5,22 +5,22 @@ This template should help get you started developing with Vue 3 in Vite.
 <!-- vim-markdown-toc GFM -->
 
 * [Recommended IDE Setup](#recommended-ide-setup)
-  * [Type Support for `.vue` Imports in TS](#type-support-for-vue-imports-in-ts)
+    * [Type Support for `.vue` Imports in TS](#type-support-for-vue-imports-in-ts)
 * [Vite Customize configuration](#vite-customize-configuration)
 * [Project Setup](#project-setup)
-  * [Download dependencies](#download-dependencies)
-  * [Set environment variables](#set-environment-variables)
-  * [TypeScript and Parse Platform JS SDK](#typescript-and-parse-platform-js-sdk)
-  * [Destroy and Generate Schema database](#destroy-and-generate-schema-database)
-    * [Into src/App.vue add](#into-srcappvue-add)
-    * [Set master key](#set-master-key)
-    * [Run](#run)
-    * [Revert changes](#revert-changes)
-    * [Security](#security)
-  * [Compile and Hot-Reload for Development](#compile-and-hot-reload-for-development)
-  * [Type-Check, Compile and Minify for Production](#type-check-compile-and-minify-for-production)
-  * [Lint with ESLint](#lint-with-eslint)
-  * [Deploy on back4app](#deploy-on-back4app)
+    * [Download dependencies](#download-dependencies)
+    * [Set environment variables](#set-environment-variables)
+    * [TypeScript and Parse Platform JS SDK](#typescript-and-parse-platform-js-sdk)
+    * [Destroy and Generate Schema database](#destroy-and-generate-schema-database)
+        * [Into src/App.vue add](#into-srcappvue-add)
+        * [Set master key](#set-master-key)
+        * [Run](#run)
+        * [Revert changes](#revert-changes)
+        * [Security](#security)
+    * [Compile and Hot-Reload for Development](#compile-and-hot-reload-for-development)
+    * [Type-Check, Compile and Minify for Production](#type-check-compile-and-minify-for-production)
+    * [Lint with ESLint](#lint-with-eslint)
+    * [Deploy on back4app](#deploy-on-back4app)
 * [Security configuration](#security-configuration)
 * [TODO](#todo)
 * [Note](#note)
@@ -161,6 +161,8 @@ See
 * We could have error "error 209 invalid session token" randomly
   See also https://stackoverflow.com/questions/32103777/parse-for-javascript-error-209-invalid-session-token-when-signing-up-a-new-u
   Try catch each Parse (not already done because I would like understand better the error)
+
+* Unicity of latitude and longitude. Maybe use TableType.GEOPOINT.
 
 ## Note
 
