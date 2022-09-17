@@ -66,13 +66,30 @@
             :min="valueColumn.validation?.min"
             :max="valueColumn.validation?.max"
           />
-          <input
-            v-else-if="valueColumn.type === TableType.IMAGE"
-            type="file"
-            v-on:change="setFileData($event)"
-            accept="image/*"
-            :required="valueColumn.validation?.required"
-          />
+          <template v-else-if="valueColumn.type === TableType.IMAGE">
+            <div v-if="valueColumn.value.value">
+              <img
+                style="max-height: 100%"
+                :src="valueColumn.value.value"
+                :alt="'Previsualization ' + keyColumn"
+              />
+              <button
+                type="button"
+                v-on:click="
+                  clearInputImage(valueColumn.value, 'fileInput' + keyColumn)
+                "
+              >
+                X
+              </button>
+            </div>
+            <input
+              type="file"
+              v-on:change="imageService.setFileData($event, valueColumn.value)"
+              accept="image/*"
+              :required="valueColumn.validation?.required"
+              :ref="'fileInput' + keyColumn"
+            />
+          </template>
         </template>
         <template v-else>
           <select
@@ -96,7 +113,7 @@
   </form>
 </template>
 <script lang="ts">
-import { defineComponent, type ComponentPublicInstance } from "vue";
+import { defineComponent, type ComponentPublicInstance, type Ref } from "vue";
 import type { TypeTableEnum } from "./model/batiment-dropdown";
 import BatimentSection from "./model/BatimentSections";
 import { Column, Section, TableType } from "./model/Section";
@@ -139,10 +156,20 @@ export default defineComponent({
       }
     });
   },
+  methods: {
+    clearInputImage(valueColumn: Ref<any>, inputRefString: string): void {
+      valueColumn.value = null;
+      const inputRef: any = this.$refs[inputRefString];
+      if (inputRef && inputRef[0]) {
+        inputRef[0].value = null;
+      }
+    },
+  },
 });
 </script>
 <script setup lang="ts">
 import Parse from "parse/dist/parse.min.js";
+import imageService from "../services/image-service";
 const batiment = new BatimentSection();
 
 const setLatLong = ({
@@ -187,6 +214,8 @@ const onSubmit = async () => {
           columnType === TableType.NATURAL_NUMBER
         ) {
           value = Number(value);
+        } else if (columnType === TableType.IMAGE) {
+          value = new Parse.File(new Date().toISOString(), { base64: value });
         }
         batimentToSave.set(keyColumn, value);
       } else {
@@ -208,14 +237,5 @@ const onSubmit = async () => {
   }
 };
 
-const setFileData = (event: any) => {
-  console.debug("setFileData");
-  if (event && event.target.files && event.target.files[0]) {
-    const file = event.target.files[0];
-    if (!/^image\//.test(file.type)) {
-      return;
-    }
-  }
-};
 defineExpose({ setLatLong, retrieveBatiment });
 </script>
