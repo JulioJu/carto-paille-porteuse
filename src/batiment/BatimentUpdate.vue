@@ -125,7 +125,7 @@ import BatimentSection from "./model/BatimentSections";
 import { Section, TableType } from "./model/Section";
 
 interface IInstance extends ComponentPublicInstance {
-  retrieveBatiment(id: string): void;
+  batiment: BatimentSection;
   setLatLong({
     latitude,
     longitude,
@@ -141,7 +141,10 @@ export default defineComponent({
       const instance = vm as IInstance;
       if (to.params.batimentId) {
         // For instance http://127.0.0.1:5173/batiment/2961/edit
-        instance.retrieveBatiment(to.params.batimentId as string);
+        batimentService.retrieveBatiment(
+          to.params.batimentId as string,
+          instance.batiment
+        );
       }
 
       if (
@@ -194,10 +197,6 @@ const setLatLong = ({
   batiment.allSections.definition.columns.longitude.value.value = longitude;
 };
 
-const retrieveBatiment = (id: string) => {
-  console.debug(id);
-};
-
 const onSubmit = async () => {
   const batimentToSave = new Parse.Object("batiment");
   Object.values(batiment.allSections).forEach((aSection: Section) => {
@@ -235,9 +234,10 @@ const onSubmit = async () => {
   } catch (error: any) {
     // TODO
     // If unauthorized or forbidden, you should logout
+    console.error(error);
     alert("Failed to create new object: " + error.message);
   }
 };
 
-defineExpose({ setLatLong, retrieveBatiment });
+defineExpose({ batiment, setLatLong });
 </script>

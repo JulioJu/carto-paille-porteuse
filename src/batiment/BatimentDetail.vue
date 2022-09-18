@@ -1,4 +1,6 @@
 <template>
+  <br />
+  <RouterLink :to="'/batiment/' + batimentId + '/edit'">Éditer</RouterLink>
   <div
     v-for="[keySection, valueSection] in batimentService.destructuringBatiment(
       batiment
@@ -57,12 +59,14 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, type ComponentPublicInstance } from "vue";
+import { defineComponent, ref, type ComponentPublicInstance } from "vue";
 import BatimentSection from "./model/BatimentSections";
-import { Section, TableType } from "./model/Section";
+import { TableType } from "./model/Section";
+import batimentService from "./batiment.service";
 
 interface IInstance extends ComponentPublicInstance {
-  retrieveBatiment(id: string): Promise<void>;
+  batimentId: string;
+  batiment: BatimentSection;
 }
 
 export default defineComponent({
@@ -70,37 +74,20 @@ export default defineComponent({
     next((vm) => {
       const instance = vm as IInstance;
       if (to.params.batimentId) {
+        instance.batimentId = to.params.batimentId as string;
         // For instance http://127.0.0.1:5173/batiment/2961/edit
-        instance.retrieveBatiment(to.params.batimentId as string);
+        batimentService.retrieveBatiment(
+          to.params.batimentId as string,
+          instance.batiment
+        );
       }
     });
   },
 });
 </script>
 <script setup lang="ts">
-import Parse from "parse/dist/parse.min.js";
-import batimentService from "./batiment.service";
-
 const batiment = new BatimentSection();
+const batimentId = ref<string>("");
 
-const retrieveBatiment = async (id: string) => {
-  const query = new Parse.Query(Parse.Object.extend("batiment"));
-  query.equalTo("objectId", id);
-  try {
-    const aBatiment = await query.first();
-    if (aBatiment) {
-      Object.values(batiment).forEach((section: Section) => {
-        Object.entries(section.columns).forEach(([keyColumn, valueColumn]) => {
-          valueColumn.value.value = aBatiment.get(keyColumn);
-        });
-      });
-    } else {
-      alert("Nothing found, please try again");
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-defineExpose({ retrieveBatiment });
+defineExpose({ batiment, batimentId });
 </script>

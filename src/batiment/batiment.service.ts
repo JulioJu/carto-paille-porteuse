@@ -1,6 +1,7 @@
 import type { TypeTableEnum } from "./model/batiment-dropdown";
 import type BatimentSection from "./model/BatimentSections";
 import type { Column, Section } from "./model/Section";
+import Parse from "parse/dist/parse.min.js";
 
 const destructuringBatiment = (
   aBatiment: BatimentSection
@@ -14,8 +15,31 @@ const destructuringTableEnum = (
   aTableEnum: TypeTableEnum["enum"]
 ): [key: string, value: string][] => Object.entries(aTableEnum);
 
+const retrieveBatiment = async (
+  id: string,
+  batiment: BatimentSection
+): Promise<void> => {
+  const query = new Parse.Query(Parse.Object.extend("batiment"));
+  query.equalTo("objectId", id);
+  try {
+    const aBatiment = await query.first();
+    if (aBatiment) {
+      Object.values(batiment).forEach((section: Section) => {
+        Object.entries(section.columns).forEach(([keyColumn, valueColumn]) => {
+          valueColumn.value.value = aBatiment.get(keyColumn);
+        });
+      });
+    } else {
+      alert("Nothing found, please try again");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export default {
   destructuringBatiment,
   destructuringColumns,
   destructuringTableEnum,
+  retrieveBatiment,
 };
