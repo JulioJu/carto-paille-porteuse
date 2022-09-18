@@ -199,6 +199,7 @@ const setLatLong = ({
 
 const onSubmit = async () => {
   const batimentToSave = new Parse.Object("batiment");
+  let shouldBeSaved = true;
   Object.values(batiment.allSections).forEach((aSection: Section) => {
     Object.entries(aSection.columns).forEach(([keyColumn, valueColumn]) => {
       let value = valueColumn.value.value;
@@ -213,7 +214,14 @@ const onSubmit = async () => {
         ) {
           value = Number(value);
         } else if (columnType === TableType.IMAGE) {
-          value = new Parse.File(Date.now().toString(), { base64: value });
+          try {
+            value = new Parse.File(Date.now().toString(), { base64: value });
+          } catch (error) {
+            shouldBeSaved = false;
+            alert("Fail to upload your file. Maybe it is not compatible.");
+            console.error("Fail to upload your file, details:\n", error);
+            return;
+          }
         }
         batimentToSave.set(keyColumn, value);
       } else {
@@ -224,6 +232,9 @@ const onSubmit = async () => {
       }
     });
   });
+  if (!shouldBeSaved) {
+    return;
+  }
   batimentToSave.set("owner", Parse.User.current());
   try {
     const batimentSaved = await batimentToSave.save();

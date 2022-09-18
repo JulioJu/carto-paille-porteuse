@@ -29,7 +29,7 @@
             <template v-if="valueColumn.type === TableType.IMAGE">
               <img
                 v-if="valueColumn.value.value"
-                :src="valueColumn.value.value._url"
+                :src="valueColumn.value.value"
               />
               <template v-else> Aucune </template>
             </template>
@@ -49,7 +49,7 @@
           <dt>{{ valueColumn.commentaire }}</dt>
           <dd>
             <template v-if="valueColumn.value.value">
-              {{ valueColumn.type.enum[valueColumn.value.value.id] }}
+              {{ valueColumn.type.enum[valueColumn.value.value] }}
             </template>
             <template v-else> Néant </template>
           </dd>

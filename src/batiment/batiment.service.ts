@@ -1,6 +1,6 @@
 import type { TypeTableEnum } from "./model/batiment-dropdown";
 import type BatimentSection from "./model/BatimentSections";
-import type { Column, Section } from "./model/Section";
+import { TableType, type Column, type Section } from "./model/Section";
 import Parse from "parse/dist/parse.min.js";
 
 const destructuringBatiment = (
@@ -26,7 +26,16 @@ const retrieveBatiment = async (
     if (aBatiment) {
       Object.values(batiment).forEach((section: Section) => {
         Object.entries(section.columns).forEach(([keyColumn, valueColumn]) => {
-          valueColumn.value.value = aBatiment.get(keyColumn);
+          const value = aBatiment.get(keyColumn);
+          if (typeof valueColumn.type === "number") {
+            if (valueColumn.type === TableType.IMAGE) {
+              valueColumn.value.value = value?._url;
+            } else {
+              valueColumn.value.value = value;
+            }
+          } else {
+            valueColumn.value.value = value?.id;
+          }
         });
       });
     } else {
