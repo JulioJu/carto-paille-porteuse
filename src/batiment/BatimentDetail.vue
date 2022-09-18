@@ -37,6 +37,12 @@
               <template v-if="valueColumn.value.value"> Vrai </template>
               <template v-else> Faux </template>
             </template>
+            <template v-else-if="valueColumn.type === TableType.DATE">
+              <template v-if="valueColumn.value.value">
+                {{ valueColumn.value.value.toDateString() }}
+              </template>
+              <template v-else> Inconnu </template>
+            </template>
             <template v-else>
               <template v-if="valueColumn.value.value">
                 {{ valueColumn.value.value }}

@@ -213,6 +213,8 @@ const onSubmit = async () => {
           columnType === TableType.NATURAL_NUMBER
         ) {
           value = Number(value);
+        } else if (columnType === TableType.DATE) {
+          value = new Date(value);
         } else if (columnType === TableType.IMAGE) {
           try {
             value = new Parse.File(Date.now().toString(), { base64: value });
