@@ -3,7 +3,15 @@
 --
 -- psql -U postgres -c 'create database without_postgis_with_corrections'
 -- psql -U postgres -d 'without_postgis_with_corrections' -f ./database_created_by_roman_without_postgis_with_six_rows_corrected.sql
--- psql -U postgres -d 'without_postgis_with_corrections' -f ./migration-old-db-to-jhipster.sql
+-- psql -U postgres -d 'without_postgis_with_corrections' -f ./migration-old-db.sql
+-- psql -U postgres -d without_postgis_with_corrections
+-- \COPY batiment TO '/tmp/batiment.csv' DELIMITER ',' CSV HEADER;
+-- exit
+-- while grep -q ',t,' /tmp/batiment.csv ; do sed -i 's/,t,/,true,/g' /tmp/batiment.csv ; done
+-- while grep -q ',f,' /tmp/batiment.csv ; do sed -i 's/,f,/,false,/g' /tmp/batiment.csv ; done
+-- remove 'id'column with LibreOffice
+-- Execute https://www.back4app.com/docs/parse-dashboard/core/import-csv
+
 -- -----------------------------------------------------------------------------
 
 -- drop potential potential personal informations (we have no right to publish it)
@@ -195,9 +203,49 @@ alter table batiments drop column fid;
 
 alter table batiments rename to batiment;
 
--- created_by_id -----------------------------------------------
+-- Rename PostGres columns to uppercase form -----------------------------------
+--------------------------------------------------------------------------------
 
-alter table batiment add column created_by_id bigint;
+-- _definition
 
-update batiment set created_by_id = 2;
+-- _informationsGenerales
+ALTER TABLE batiment RENAME usage_batiment TO "usageBatiment";
+ALTER TABLE batiment RENAME surface_plancher TO "surfacePlancher";
 
+-- _natureDesTravaux
+ALTER TABLE batiment RENAME travaux_neuf TO "travauxNeuf";
+ALTER TABLE batiment RENAME travaux_extension TO "travauxExtension";
+ALTER TABLE batiment RENAME travaux_renov TO "travauxRenov";
+ALTER TABLE batiment RENAME travaux_ite TO "travauxIte";
+ALTER TABLE batiment RENAME travaux_iti TO "travauxIti";
+
+-- _chantier
+ALTER TABLE batiment RENAME construction_debut TO "constructionDebut";
+ALTER TABLE batiment RENAME construction_fin TO "constructionFin";
+
+-- _botteDePaille
+ALTER TABLE batiment RENAME bottes_taille TO "bottesTaille";
+ALTER TABLE batiment RENAME bottes_taille_infos TO "bottesTailleInfos";
+ALTER TABLE batiment RENAME bottes_densite TO "bottesDensite";
+ALTER TABLE batiment RENAME bottes_cereale TO "bottesCereale";
+ALTER TABLE batiment RENAME distance_appro TO "bottesDistanceApprovisionnement";
+
+-- _chantier
+
+-- _construction
+ALTER TABLE batiment RENAME struct_compl TO "structCompl";
+ALTER TABLE batiment RENAME note_calcul TO "noteCalcul";
+ALTER TABLE batiment RENAME integ_baie TO "integBaie";
+ALTER TABLE batiment RENAME support_ancrage TO "supportAncrage";
+ALTER TABLE batiment RENAME support_ancrage_infos TO "supportAncrageInfos";
+
+-- _revetement
+ALTER TABLE batiment RENAME revet_int TO "revetInt";
+ALTER TABLE batiment RENAME revet_ext TO "revetExt";
+
+-- _actricesActeurs
+ALTER TABLE batiment RENAME entreprise_bottes TO "entrepriseBottes";
+ALTER TABLE batiment RENAME entreprise_enduits TO "entrepriseEnduits";
+
+-- _contact
+ALTER TABLE batiment RENAME code_postal TO "codePostal";

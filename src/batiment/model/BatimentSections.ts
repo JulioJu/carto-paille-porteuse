@@ -198,15 +198,15 @@ export default class BatimentSection {
         type: TableType.TEXTAREA,
       }),
       bottesDensite: new Column({
-        commentaire: "Densité sur base sèche (kg/m³)",
+        commentaire: "Bottes, densité sur base sèche (kg/m³)",
         type: TableType.NUMBER,
       }),
       bottesCereale: new Column({
-        commentaire: "Céréale",
+        commentaire: "Bottes, céréale",
         type: TableEnum.Cereale,
       }),
-      distanceApprovisionnement: new Column({
-        commentaire: "Distance d'approvisionnement (km)",
+      bottesDistanceApprovisionnement: new Column({
+        commentaire: "Bottes, distance d'approvisionnement (km)",
         type: TableType.NUMBER,
       }),
     },
