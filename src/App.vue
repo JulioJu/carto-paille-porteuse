@@ -4,6 +4,7 @@ import parsePlatform from "./services/parse-platform";
 import Parse from "parse/dist/parse.min.js";
 import Store from "./store";
 import { computed } from "vue";
+import FooterContainer from "./components/footer/FooterContainer.vue";
 
 parsePlatform.initializeParse();
 
@@ -21,20 +22,24 @@ const isAuthenticated = computed(() => {
 </script>
 
 <template>
-  <header>
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <template v-if="isAuthenticated">
-        <a @click.prevent="logout()">Se déconnecter</a>
-      </template>
-      <template v-else>
-        <RouterLink to="/login-user">Se connecter</RouterLink>
-        <RouterLink to="/register-user">S'enregister</RouterLink>
-      </template>
-    </nav>
-  </header>
+  <div class="wrapper">
+    <header>
+      <nav>
+        <RouterLink to="/">Home</RouterLink>
+        <template v-if="isAuthenticated">
+          <a @click.prevent="logout()">Se déconnecter</a>
+        </template>
+        <template v-else>
+          <RouterLink to="/login-user">Se connecter</RouterLink>
+          <RouterLink to="/register-user">S'enregister</RouterLink>
+        </template>
+      </nav>
+    </header>
 
-  <RouterView />
+    <RouterView />
+
+    <FooterContainer></FooterContainer>
+  </div>
 </template>
 
 <style scoped>

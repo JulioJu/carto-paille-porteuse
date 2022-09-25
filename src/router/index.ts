@@ -21,6 +21,11 @@ const router = createRouter({
       component: () => import("../views/RegisterUser.vue"),
     },
     {
+      path: "/legal-info",
+      name: "Informations légales",
+      component: () => import("../views/LegalInfo.vue"),
+    },
+    {
       path: "/:pathMatch(.*)*",
       name: "404",
       // route level code-splitting
