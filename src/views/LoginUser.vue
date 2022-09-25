@@ -1,7 +1,7 @@
 <template>
   <form class="login-user" @submit.prevent="onSubmit">
-    <input type="email" v-model="form.email" />
-    <input type="password" v-model="form.password" />
+    <input type="email" v-model="form.email" placeholder="email" />
+    <input type="password" v-model="form.password" placeholder="password" />
     <button>Se connecter</button>
   </form>
 </template>
@@ -33,6 +33,7 @@ const onSubmit = async () => {
 
 <style scoped lang="css">
 .login-user {
+  max-width: 30rem;
   display: grid;
   grid-template-rows: repeat(3, auto);
   grid-gap: 2rem;

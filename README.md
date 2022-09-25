@@ -156,6 +156,17 @@ See
 * Into Parse Platform settings configuration, do not forget to add a strong REGEX for password
 
 
+* I use following regex to validate token
+    ```
++"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*\-_+=[\]{}|\\:',.?/`~"();!])[A-Za-z\d@#$%^&*\-_+=[\]{}|\\:',.?/`~"();!]{8,}$"
+
+. You should have minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character. Les caractéres spéciaux autorisés sont : @ # $ % ^ & * - _ + = [ ] { } | \\ : \' , . ? / ` ~ " ( ) ; !
+    ```
+    * See also https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+
+    * Session expire after 1 day. I use `"sessionLength":86400`" into server-settings
+        (see also https://parseplatform.org/parse-server/api/master/ParseServerOptions.html).
+
 ## TODO
 
 * We could have error "error 209 invalid session token" randomly

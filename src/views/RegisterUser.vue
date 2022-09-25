@@ -1,7 +1,11 @@
 <template>
+  <p>
+    Une fois enregistré, veuillez consulter votre boîte mail pour valider votre
+    compte.
+  </p>
   <form class="register-user" @submit.prevent="onSubmit">
-    <input type="email" v-model="form.email" />
-    <input type="password" v-model="form.password" />
+    <input type="email" v-model="form.email" placeholder="email" />
+    <input type="password" v-model="form.password" placeholder="password" />
     <button>S'enregister</button>
   </form>
 </template>
@@ -22,7 +26,9 @@ const onSubmit = async () => {
 
   try {
     const userCreated = await user.signUp();
-    alert("Utilisateur créé avec succès");
+    alert(
+      "Utilisateur créé avec succès. Veuillez consulter votre boîte mail pour valider votre compte."
+    );
     console.info(userCreated);
   } catch (error: any) {
     alert("Error: " + error.code + " " + error.message);
@@ -32,6 +38,7 @@ const onSubmit = async () => {
 
 <style scoped lang="css">
 .register-user {
+  max-width: 30rem;
   display: grid;
   grid-template-rows: repeat(3, auto);
   grid-gap: 2rem;
