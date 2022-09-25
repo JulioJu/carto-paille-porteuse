@@ -27,6 +27,7 @@
         {{ valueColumn.commentaire }}
         <template v-if="typeof valueColumn.type === 'number'">
           <input
+            :id="'input__' + keyColumn"
             v-if="valueColumn.type === TableType.STRING"
             v-model="valueColumn.value.value"
             type="text"
@@ -34,17 +35,20 @@
             :maxlength="valueColumn.validation?.maxlength"
           />
           <textarea
+            :id="'input__' + keyColumn"
             v-else-if="valueColumn.type === TableType.TEXTAREA"
             v-model="valueColumn.value.value"
             :required="valueColumn.validation?.required"
           />
           <input
+            :id="'input__' + keyColumn"
             v-else-if="valueColumn.type === TableType.BOOLEAN"
             v-model="valueColumn.value.value"
             type="checkbox"
             :required="valueColumn.validation?.required"
           />
           <input
+            :id="'input__' + keyColumn"
             v-else-if="valueColumn.type === TableType.NUMBER"
             v-model="valueColumn.value.value"
             type="number"
@@ -54,6 +58,7 @@
             :max="valueColumn.validation?.max"
           />
           <input
+            :id="'input__' + keyColumn"
             v-else-if="valueColumn.type === TableType.NATURAL_NUMBER"
             v-model="valueColumn.value.value"
             type="number"
@@ -62,6 +67,7 @@
             :max="valueColumn.validation?.max"
           />
           <input
+            :id="'input__' + keyColumn"
             v-else-if="valueColumn.type === TableType.DATE"
             v-model="valueColumn.value.value"
             type="date"
@@ -86,6 +92,7 @@
               </button>
             </div>
             <input
+              :id="'input__' + keyColumn"
               type="file"
               v-on:change="imageService.setFileData($event, valueColumn.value)"
               accept="image/*"
@@ -96,6 +103,7 @@
         </template>
         <template v-else>
           <select
+            :id="'input__' + keyColumn"
             v-model="valueColumn.value.value"
             :required="valueColumn.validation?.required"
           >
