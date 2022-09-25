@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
 import parsePlatform from "./services/parse-platform";
 import Parse from "parse/dist/parse.min.js";
 import Store from "./store";
@@ -23,30 +22,16 @@ const isAuthenticated = computed(() => {
 
 <template>
   <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <template v-if="isAuthenticated">
-          <a @click.prevent="logout()">Se déconnecter</a>
-        </template>
-        <template v-else>
-          <RouterLink to="/login-user">Se connecter</RouterLink>
-          <RouterLink to="/register-user">S'enregister</RouterLink>
-        </template>
-        <RouterLink to="/create-entity">Create entity</RouterLink>
-      </nav>
-    </div>
+    <nav>
+      <RouterLink to="/">Home</RouterLink>
+      <template v-if="isAuthenticated">
+        <a @click.prevent="logout()">Se déconnecter</a>
+      </template>
+      <template v-else>
+        <RouterLink to="/login-user">Se connecter</RouterLink>
+        <RouterLink to="/register-user">S'enregister</RouterLink>
+      </template>
+    </nav>
   </header>
 
   <RouterView />
