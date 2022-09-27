@@ -34,8 +34,8 @@ export default class BatimentSection {
         commentaire: "Infos sur l'usage du bâtiment",
         type: TableType.TEXTAREA,
       }),
-      cout: new Column({
-        commentaire: "Coût (€)",
+      coutTravauxTTC: new Column({
+        commentaire: "Coût travaux TTC (hors études) (€)",
         type: TableType.NUMBER,
       }),
       surfacePlancher: new Column({
@@ -239,7 +239,7 @@ export default class BatimentSection {
         type: TableEnum.StructureComplementaire,
       }),
       structComplInfos: new Column({
-        commentaire: "Longueur maximum sans mur de refend (mètre)",
+        commentaire: "Info nature de la structure complémentaire",
         type: TableType.TEXTAREA,
       }),
       longMaxSansMurRefend: new Column({
@@ -319,7 +319,8 @@ export default class BatimentSection {
         type: TableType.STRING,
       }),
       entrepriseBottes: new Column({
-        commentaire: "Bureau contrôle",
+        commentaire:
+          "Entreprise de mise en œuvre des bottes, si autoconstruction le préciser",
         type: TableType.STRING,
       }),
       entrepriseCharpente: new Column({

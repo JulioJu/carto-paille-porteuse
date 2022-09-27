@@ -210,6 +210,7 @@ alter table batiments rename to batiment;
 
 -- _informationsGenerales
 ALTER TABLE batiment RENAME usage_batiment TO "usageBatiment";
+ALTER TABLE batiment RENAME cout TO "coutTravauxTTC";
 ALTER TABLE batiment RENAME surface_plancher TO "surfacePlancher";
 
 -- _natureDesTravaux

@@ -32,6 +32,8 @@ const unRoutedPaths = [
   "export_data",
   "graphql",
   "purge",
+  // To import data thanks https://blog.back4app.com/parse-json-files/ (thank you to Parse Platform team)
+  "import_data",
 ];
 // eslint-disable-next-line no-undef
 app.use((req, res, next) => {
