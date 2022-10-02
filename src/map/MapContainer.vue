@@ -44,6 +44,7 @@ import drawPopup from "./draw-popup";
 import eventRetrieveCoordAndNavigate from "./event-retrieve-coord-and-navigate";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import Store from "@/store";
 import Parse from "parse/dist/parse.min.js";
 
 const router = useRouter();
@@ -70,10 +71,17 @@ const retrieveAllBatiments = async (): Promise<any> => {
       return aBatiment;
     });
     return batiments;
-  } catch (error) {
-    alert("Error while fetching batiment (see console)");
-    console.error(error);
-    return [];
+  } catch (error: any) {
+    // https://github.com/parse-community/parse-server/blob/63d51fa6c87d3d8b9599e892cf04612dbe3ee7a8/spec/ParseUser.spec.js#L2587 -->
+    if (error.code === 209) {
+      Parse.User.logOut();
+      Store.user.isAuthenticated.value = false;
+      router.push("/login-user");
+    } else {
+      alert("Error while fetching batiment (see console)");
+      console.error(error);
+      return [];
+    }
   }
 };
 

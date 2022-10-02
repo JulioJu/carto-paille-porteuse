@@ -23,6 +23,8 @@ const onSubmit = async () => {
     const user = await Parse.User.logIn(form.email, form.password);
     alert("Connexion réussie");
     console.info(user);
+    user.add("connections", new Date().toString());
+    user.save();
     Store.user.isAuthenticated.value = true;
     router.push("/");
   } catch (error: any) {
