@@ -7,10 +7,6 @@
 -- psql -U postgres -d without_postgis_with_corrections
 -- \COPY batiment TO '/tmp/batiment.csv' DELIMITER ',' CSV HEADER;
 -- exit
--- while grep -q ',t,' /tmp/batiment.csv ; do sed -i 's/,t,/,true,/g' /tmp/batiment.csv ; done
--- while grep -q ',f,' /tmp/batiment.csv ; do sed -i 's/,f,/,false,/g' /tmp/batiment.csv ; done
--- remove 'id'column with LibreOffice
--- Execute https://www.back4app.com/docs/parse-dashboard/core/import-csv
 
 -- -----------------------------------------------------------------------------
 
