@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Upload File Back4App</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- Parse Server SDK -->
+    <script type="text/javascript" src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <!-- JS Code-->
+    <script src="./index.js"></script>
+    <style>
+        #home {
+            margin-top: 50px;
+            text-align: center;
+        }
+        #show-result{
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <section id="home">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <h3>Upload files</h3>
+                </div>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                        </div>
+                        <div class="custom-file">
+                            <div>
+                                <div class="form-group">
+                                    <label for="profilePhotoFileUpload">Choose file</label>
+                                    <input type="file" class="form-control-file" id="profilePhotoFileUpload">
+                                </div>
+                                <div class="button">
+                                    <button onclick="saveFile()">Upload</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="show-result">
+                <ul id="result">
+
+                </ul>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

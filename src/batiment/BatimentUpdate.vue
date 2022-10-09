@@ -1,5 +1,5 @@
 <template>
-  <form class="login-user" @submit.prevent="onSubmit">
+  <form class="batiment-update" @submit.prevent="onSubmit">
     <div
       v-for="[
         keySection,
@@ -76,25 +76,33 @@
             :max="valueColumn.validation?.max"
           />
           <template v-else-if="valueColumn.type === TableType.IMAGE">
-            <div v-if="valueColumn.value.value">
+            <div
+              class="batiment-update__img-group"
+              v-if="valueColumn.value.value"
+            >
               <img
-                style="max-height: 100%"
-                :src="valueColumn.value.value"
+                class="batiment-update__previsualization"
                 :alt="'Previsualization ' + keyColumn"
+                :ref="'previsualization' + keyColumn"
               />
               <button
-                type="button"
                 v-on:click="
                   clearInputImage(valueColumn.value, 'fileInput' + keyColumn)
                 "
               >
-                X
+                Remove image downloaded
               </button>
             </div>
             <input
               :id="'input__' + keyColumn"
               type="file"
-              v-on:change="imageService.setFileData($event, valueColumn.value)"
+              v-on:change="
+                setFileData(
+                  $event,
+                  valueColumn.value,
+                  'previsualization' + keyColumn
+                )
+              "
               accept="image/*"
               :required="valueColumn.validation?.required"
               :ref="'fileInput' + keyColumn"
@@ -181,12 +189,43 @@ export default defineComponent({
         inputRef[0].value = null;
       }
     },
+    setFileData(
+      event: any,
+      valueColumn: Ref<any>,
+      previsualizationRefString: string
+    ): void {
+      if (event?.target?.files && event.target.files[0]) {
+        const file: File = event.target.files[0];
+        if (!/^image\//.test(file.type)) {
+          alert(`You could upload only an image. Your file is "${file.type}".`);
+          return;
+        }
+        try {
+          valueColumn.value = new Parse.File(Date.now().toString(), file);
+          const reader = new FileReader();
+          reader.addEventListener("load", () => {
+            const previsualationRef: any =
+              this.$refs[previsualizationRefString];
+            previsualationRef[0].src = reader.result;
+          });
+          reader.onerror = (error) => {
+            console.error("Error: ", error);
+          };
+          reader.readAsDataURL(file);
+        } catch (error) {
+          alert(
+            "Fail to upload your file. Please contact us to submit the error."
+          );
+          console.error(error);
+          return;
+        }
+      }
+    },
   },
 });
 </script>
 <script setup lang="ts">
 import Parse from "parse/dist/parse.min.js";
-import imageService from "../services/image-service";
 import batimentService from "./batiment.service";
 import { useRouter } from "vue-router";
 
@@ -207,7 +246,6 @@ const setLatLong = ({
 
 const onSubmit = async () => {
   const batimentToSave = new Parse.Object("batiment");
-  let shouldBeSaved = true;
   Object.values(batiment.allSections).forEach((aSection: Section) => {
     Object.entries(aSection.columns).forEach(([keyColumn, valueColumn]) => {
       let value = valueColumn.value.value;
@@ -223,15 +261,6 @@ const onSubmit = async () => {
           value = Number(value);
         } else if (columnType === TableType.DATE) {
           value = new Date(value);
-        } else if (columnType === TableType.IMAGE) {
-          try {
-            value = new Parse.File(Date.now().toString(), { base64: value });
-          } catch (error) {
-            shouldBeSaved = false;
-            alert("Fail to upload your file. Maybe it is not compatible.");
-            console.error("Fail to upload your file, details:\n", error);
-            return;
-          }
         }
         batimentToSave.set(keyColumn, value);
       } else {
@@ -242,9 +271,6 @@ const onSubmit = async () => {
       }
     });
   });
-  if (!shouldBeSaved) {
-    return;
-  }
   batimentToSave.set("owner", Parse.User.current());
   try {
     const batimentSaved = await batimentToSave.save();
@@ -262,3 +288,14 @@ const onSubmit = async () => {
 
 defineExpose({ batiment, setLatLong });
 </script>
+<style lang="scss" scoped>
+.batiment-update {
+  &__img-group {
+    display: grid;
+    justify-items: start;
+  }
+  &__previsualization {
+    height: 6.25rem;
+  }
+}
+</style>
