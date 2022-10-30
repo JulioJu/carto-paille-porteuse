@@ -1,6 +1,7 @@
 import Parse from "parse/dist/parse.min.js";
 import {
   batimentTable,
+  Column,
   TableType,
   userTable,
   type Section,
@@ -74,7 +75,7 @@ const createEnumTables = async () => {
 const createAColumn = (
   batimentSchema: Parse.Schema,
   columnName: string,
-  column: Section["columns"]["key"]
+  column: Column
 ) => {
   let columnType = column.type;
   const required = column.validation?.required
@@ -112,10 +113,12 @@ const createAColumn = (
 
 const createASection = (
   batimentSchema: Parse.Schema,
-  columns: Section["columns"]
+  columnsGroup: Section["columnsGroup"]
 ) => {
-  Object.entries(columns).forEach(([columnName, column]) => {
-    createAColumn(batimentSchema, columnName, column);
+  Object.values(columnsGroup).forEach((columns) => {
+    Object.entries(columns).forEach(([columnName, column]) => {
+      createAColumn(batimentSchema, columnName, column);
+    });
   });
 };
 
@@ -130,7 +133,7 @@ const createASection = (
 const createBatimentTable = async () => {
   const batimentSchema = new Parse.Schema(batimentTable);
   Object.values(new batimentSections().allSections).forEach((aBatiment) => {
-    createASection(batimentSchema, aBatiment.columns);
+    createASection(batimentSchema, aBatiment.columnsGroup);
   });
   batimentSchema.addPointer("owner", userTable, { required: true });
   await batimentSchema.save();

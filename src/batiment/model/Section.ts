@@ -122,24 +122,21 @@ export class Column {
 
 export class Section {
   private _commentaire: string;
-  private _columns: { [key: string]: Column };
+  private _columnsGroup: { [key: string]: { [key: string]: Column } };
 
-  constructor({
-    commentaire,
-    columns,
-  }: {
+  constructor(param: {
     commentaire: string;
-    columns: { [key: string]: Column };
+    columnsGroup: { [key: string]: { [key: string]: Column } };
   }) {
-    this._commentaire = commentaire;
-    this._columns = columns;
+    this._commentaire = param.commentaire;
+    this._columnsGroup = param.columnsGroup;
   }
 
   get commentaire(): string {
     return this._commentaire;
   }
 
-  get columns() {
-    return this._columns;
+  get columnsGroup() {
+    return this._columnsGroup;
   }
 }

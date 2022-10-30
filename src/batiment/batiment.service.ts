@@ -10,9 +10,14 @@ const destructuringBatiment = (
   aBatiment: BatimentSection
 ): [key: string, value: Section][] => Object.entries(aBatiment);
 
-const destructuringColumns = (
-  columns: Section["columns"]
-): [key: string, value: Column][] => Object.entries(columns);
+const destructuringColumnsGroup = (
+  columns: Section["columnsGroup"]
+): [keyColumnsGroup: string, columnsGroup: { [key: string]: Column }][] =>
+  Object.entries(columns);
+
+const destructuringColumns = (columns: {
+  [key: string]: Column;
+}): [key: string, value: Column][] => Object.entries(columns);
 
 const destructuringTableEnum = (
   aTableEnum: TypeTableEnum["enum"]
@@ -27,18 +32,20 @@ const retrieveBatiment = async (
   try {
     const aBatiment = await query.first();
     if (aBatiment) {
-      Object.values(batiment).forEach((section: Section) => {
-        Object.entries(section.columns).forEach(([keyColumn, valueColumn]) => {
-          const value = aBatiment.get(keyColumn);
-          if (typeof valueColumn.type === "number") {
-            if (valueColumn.type === TableType.IMAGE) {
-              valueColumn.value.value = value?._url;
+      Object.values(batiment).forEach((aSection: Section) => {
+        Object.values(aSection.columnsGroup).forEach((columnsGroup) => {
+          Object.entries(columnsGroup).forEach(([keyColumn, valueColumn]) => {
+            const value = aBatiment.get(keyColumn);
+            if (typeof valueColumn.type === "number") {
+              if (valueColumn.type === TableType.IMAGE) {
+                valueColumn.value.value = value?._url;
+              } else {
+                valueColumn.value.value = value;
+              }
             } else {
-              valueColumn.value.value = value;
+              valueColumn.value.value = value?.id;
             }
-          } else {
-            valueColumn.value.value = value?.id;
-          }
+          });
         });
       });
     } else {
@@ -84,6 +91,7 @@ const retrieveAllBatiments = async (
 
 export default {
   destructuringBatiment,
+  destructuringColumnsGroup,
   destructuringColumns,
   destructuringTableEnum,
   retrieveBatiment,
