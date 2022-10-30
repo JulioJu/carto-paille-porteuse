@@ -29,6 +29,8 @@ sed -i 's/"integBaie": "\([A-z0-9_]\+\)"/"integBaie": { "__type": "Pointer", "cl
 sed -i 's/"supportAncrage": "\([A-z0-9_]\+\)"/"supportAncrage": { "__type": "Pointer", "className": "SupportAncrage", "objectId": "\1" }/' "${file}"
 sed -i 's/"revetInt": "\([A-z0-9_]\+\)"/"revetInt": { "__type": "Pointer", "className": "RevetementInterieur", "objectId": "\1" }/' "${file}"
 sed -i 's/"revetExt": "\([A-z0-9_]\+\)"/"revetExt": { "__type": "Pointer", "className": "RevetementExterieur", "objectId": "\1" }/' "${file}"
+sed -i 's/"latitude": \([0-9\.]\+\),/"latitudeLongitude": { "__type": "GeoPoint", "latitude": \1,/' "${file}"
+sed -i 's/"longitude": \([0-9\.-]\+\)\(,\?\)/"longitude": \1}\2/' "${file}"
 
 sed -i 's/‎//' "${file}"
 sed -i 's/"codePostal": \([0-9]\+\)/"codePostal": "\1"/' "${file}"
@@ -37,3 +39,5 @@ sed -i 's/^  {$/  {\n    "owner": { "__type": "Pointer", "className": "_User", "
 
 # could be replaced by "vim" if nvim is not installed
 nvim -u NONE -c '%s/,\n  }/\r  }/ | x' "${file}"
+
+prettier -w ./migration/batiment.json

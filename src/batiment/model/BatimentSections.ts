@@ -4,17 +4,11 @@ import { Column, Section, TableType, Validation } from "./Section";
 export default class BatimentSection {
   private _definition = new Section({
     commentaire: "Définition",
-    // TODO could be replaced by TableType.GEOPOINT
     columns: {
-      latitude: new Column({
-        commentaire: "Latitude",
-        type: TableType.NUMBER,
-        validation: new Validation({ required: true, min: -90, max: 90 }),
-      }),
-      longitude: new Column({
-        commentaire: "Longitude",
-        type: TableType.NUMBER,
-        validation: new Validation({ required: true, min: -90, max: 90 }),
+      latitudeLongitude: new Column({
+        commentaire: "Latitude et longitude",
+        type: TableType.GEOPOINT,
+        validation: new Validation({ required: true }),
       }),
       nomBatiment: new Column({
         commentaire: "Nom du bâtiment",

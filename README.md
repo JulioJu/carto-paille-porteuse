@@ -173,7 +173,12 @@ See
   See also https://stackoverflow.com/questions/32103777/parse-for-javascript-error-209-invalid-session-token-when-signing-up-a-new-u
   Try catch each Parse (not already done because I would like understand better the error)
 
-* Unicity of latitude and longitude (see Index Manager into parse-dashboard). Maybe use TableType.GEOPOINT.
+* Unicity of latitude and longitude (see Index Manager into parse-dashboard).
+    Note: we could check
+    * https://community.parseplatform.org/t/can-parseschema-add-unique-index/1203
+    * https://github.com/parse-community/parse-server/issues/7289
+    * https://sapandiwakar.in/uniqueness-constraints-in-parse-database/
+    * Currently we could check unicty simply in front-end, before trigger save
 
 ## Note
 

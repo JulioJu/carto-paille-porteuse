@@ -108,6 +108,27 @@
               :ref="'fileInput' + keyColumn"
             />
           </template>
+          <template v-else-if="valueColumn.type === TableType.GEOPOINT">
+            <!-- See also https://fr.wikipedia.org/wiki/Liste_de_points_extr%C3%AAmes_de_la_France#France_m%C3%A9tropolitaine_et_d%C3%A9partements_d'outre-mer -->
+            <input
+              :id="'input__' + keyColumn + 'latitude'"
+              v-model="latitude"
+              type="number"
+              step="any"
+              :required="valueColumn.validation?.required"
+              min="41"
+              max="52"
+            />
+            <input
+              :id="'input__' + keyColumn + 'longitude'"
+              v-model="longitude"
+              type="number"
+              step="any"
+              :required="valueColumn.validation?.required"
+              min="-5.1"
+              max="10"
+            />
+          </template>
         </template>
         <template v-else>
           <select
@@ -135,7 +156,12 @@
   </form>
 </template>
 <script lang="ts">
-import { defineComponent, type ComponentPublicInstance, type Ref } from "vue";
+import {
+  defineComponent,
+  ref,
+  type ComponentPublicInstance,
+  type Ref,
+} from "vue";
 import type { TypeTableEnum } from "./model/batiment-dropdown";
 import BatimentSection from "./model/BatimentSections";
 import { Section, TableType } from "./model/Section";
@@ -173,7 +199,6 @@ export default defineComponent({
         Number(to.query.long) >= -90 &&
         Number(to.query.long) <= 90
       ) {
-        console.debug(to.query.lat, to.query.long, "yoyo");
         instance.setLatLong({
           latitude: to.query.lat.toString(),
           longitude: to.query.long.toString(),
@@ -233,15 +258,12 @@ const router = useRouter();
 
 const batiment = new BatimentSection();
 
-const setLatLong = ({
-  latitude,
-  longitude,
-}: {
-  latitude: string;
-  longitude: string;
-}) => {
-  batiment.allSections.definition.columns.latitude.value.value = latitude;
-  batiment.allSections.definition.columns.longitude.value.value = longitude;
+const latitude = ref<number>();
+const longitude = ref<number>();
+
+const setLatLong = (queryParam: { latitude: number; longitude: number }) => {
+  latitude.value = queryParam.latitude;
+  longitude.value = queryParam.longitude;
 };
 
 const onSubmit = async () => {
@@ -271,6 +293,10 @@ const onSubmit = async () => {
       }
     });
   });
+  batimentToSave.set(
+    "latitudeLongitude",
+    new Parse.GeoPoint(Number(latitude.value), Number(longitude.value))
+  );
   batimentToSave.set("owner", Parse.User.current());
   try {
     const batimentSaved = await batimentToSave.save();

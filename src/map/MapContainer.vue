@@ -46,6 +46,7 @@ import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Store from "@/store";
 import Parse from "parse/dist/parse.min.js";
+import type { IBatimentAPI } from "./IBatimentAPI";
 
 const router = useRouter();
 
@@ -55,22 +56,22 @@ const franceLonLat = [2.2137, 46.2276];
 
 let isEditMode = false;
 
-const retrieveAllBatiments = async (): Promise<any> => {
+const retrieveAllBatiments = async (): Promise<IBatimentAPI[]> => {
   const query = new Parse.Query(Parse.Object.extend("batiment"));
-  query.select("latitude", "longitude", "usageBatiment", "surfacePlancher");
+  query.select("latitudeLongitude", "usageBatiment", "surfacePlancher");
+  let batiments: IBatimentAPI[] = [];
   try {
     const results = await query.find();
-    const batiments = results.map((aResult) => {
-      const aBatiment = {
+    batiments = results.map((aResult): IBatimentAPI => {
+      const aBatiment: IBatimentAPI = {
         id: aResult.id,
+        latitudeLongitude: aResult.get("latitudeLongitude"),
+        usageBatiment: aResult.get("usageBatiment"),
         nomBatiment: aResult.get("nomBatiment"),
-        latitude: aResult.get("latitude"),
-        longitude: aResult.get("longitude"),
         surfacePlancher: aResult.get("surfacePlancher"),
       };
       return aBatiment;
     });
-    return batiments;
   } catch (error: any) {
     // https://github.com/parse-community/parse-server/blob/63d51fa6c87d3d8b9599e892cf04612dbe3ee7a8/spec/ParseUser.spec.js#L2587 -->
     if (error.code === 209) {
@@ -83,6 +84,7 @@ const retrieveAllBatiments = async (): Promise<any> => {
       return [];
     }
   }
+  return batiments;
 };
 
 const mapRoot = ref<HTMLDivElement>();
@@ -110,17 +112,8 @@ onMounted(async () => {
   });
 
   const batiments = await retrieveAllBatiments();
-  batiments.forEach((aBatiment: any) => {
-    const icon = drawIcon({
-      id: aBatiment.id,
-      name: aBatiment.nomBatiment,
-      lat: aBatiment.latitude,
-      long: aBatiment.longitude,
-      usageBatiment: aBatiment.usageBatiment ? "TODO" : undefined,
-      surface: aBatiment.surfacePlancher
-        ? `${aBatiment.surfacePlancher} m²`
-        : undefined,
-    });
+  batiments.forEach((aBatiment) => {
+    const icon = drawIcon(aBatiment);
     map.addLayer(icon);
   });
   drawPopup({
