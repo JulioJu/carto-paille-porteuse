@@ -43,10 +43,8 @@ import drawIcon from "./draw-icon";
 import drawPopup from "./draw-popup";
 import eventRetrieveCoordAndNavigate from "./event-retrieve-coord-and-navigate";
 import { onMounted, ref } from "vue";
+import batimentService from "@/batiment/batiment.service";
 import { useRouter } from "vue-router";
-import Store from "@/store";
-import Parse from "parse/dist/parse.min.js";
-import type { IBatimentAPI } from "./IBatimentAPI";
 
 const router = useRouter();
 
@@ -55,37 +53,6 @@ const router = useRouter();
 const franceLonLat = [2.2137, 46.2276];
 
 let isEditMode = false;
-
-const retrieveAllBatiments = async (): Promise<IBatimentAPI[]> => {
-  const query = new Parse.Query(Parse.Object.extend("batiment"));
-  query.select("latitudeLongitude", "usageBatiment", "surfacePlancher");
-  let batiments: IBatimentAPI[] = [];
-  try {
-    const results = await query.find();
-    batiments = results.map((aResult): IBatimentAPI => {
-      const aBatiment: IBatimentAPI = {
-        id: aResult.id,
-        latitudeLongitude: aResult.get("latitudeLongitude"),
-        usageBatiment: aResult.get("usageBatiment"),
-        nomBatiment: aResult.get("nomBatiment"),
-        surfacePlancher: aResult.get("surfacePlancher"),
-      };
-      return aBatiment;
-    });
-  } catch (error: any) {
-    // https://github.com/parse-community/parse-server/blob/63d51fa6c87d3d8b9599e892cf04612dbe3ee7a8/spec/ParseUser.spec.js#L2587 -->
-    if (error.code === 209) {
-      Parse.User.logOut();
-      Store.user.isAuthenticated.value = false;
-      router.push("/login-user");
-    } else {
-      alert("Error while fetching batiment (see console)");
-      console.error(error);
-      return [];
-    }
-  }
-  return batiments;
-};
 
 const mapRoot = ref<HTMLDivElement>();
 const popup = ref<HTMLDivElement>();
@@ -111,7 +78,7 @@ onMounted(async () => {
     }),
   });
 
-  const batiments = await retrieveAllBatiments();
+  const batiments = await batimentService.retrieveAllBatiments(router);
   batiments.forEach((aBatiment) => {
     const icon = drawIcon(aBatiment);
     map.addLayer(icon);

@@ -1,4 +1,10 @@
 <template>
+  <h2>
+    <template v-if="isCreation?.valueOf"> Création d'un bâtiment </template>
+    <template v-else-if="!isCreation?.valueOf">
+      Mise à jour du bâtiment
+    </template>
+  </h2>
   <form class="batiment-update" @submit.prevent="onSubmit">
     <div
       v-for="[
@@ -168,13 +174,9 @@ import { Section, TableType } from "./model/Section";
 
 interface IInstance extends ComponentPublicInstance {
   batiment: BatimentSection;
-  setLatLong({
-    latitude,
-    longitude,
-  }: {
-    latitude: string;
-    longitude: string;
-  }): void;
+  setLatLong(queryParam: { latitude: string; longitude: string }): void;
+  isCreationFunc(isCreation: boolean): void;
+  redirectToHomePage(): void;
 }
 
 export default defineComponent({
@@ -187,9 +189,8 @@ export default defineComponent({
           to.params.batimentId as string,
           instance.batiment
         );
-      }
-
-      if (
+        instance.isCreationFunc(false);
+      } else if (
         to.query.lat &&
         to.query.long &&
         !isNaN(Number(to.query.lat)) &&
@@ -203,6 +204,10 @@ export default defineComponent({
           latitude: to.query.lat.toString(),
           longitude: to.query.long.toString(),
         });
+        instance.isCreationFunc(true);
+      } else {
+        alert("Error in URL, redirect to homepage");
+        instance.redirectToHomePage();
       }
     });
   },
@@ -260,13 +265,22 @@ const batiment = new BatimentSection();
 
 const latitude = ref<number>();
 const longitude = ref<number>();
+const isCreation = ref<boolean>();
+
+const redirectToHomePage = () => {
+  router.push("/");
+};
 
 const setLatLong = (queryParam: { latitude: number; longitude: number }) => {
   latitude.value = queryParam.latitude;
   longitude.value = queryParam.longitude;
 };
 
-const onSubmit = async () => {
+const isCreationFunc = (isCreationParam: boolean) => {
+  isCreation.value = isCreationParam;
+};
+
+const batimentToSave = () => {
   const batimentToSave = new Parse.Object("batiment");
   Object.values(batiment.allSections).forEach((aSection: Section) => {
     Object.entries(aSection.columns).forEach(([keyColumn, valueColumn]) => {
@@ -298,8 +312,30 @@ const onSubmit = async () => {
     new Parse.GeoPoint(Number(latitude.value), Number(longitude.value))
   );
   batimentToSave.set("owner", Parse.User.current());
+  return batimentToSave;
+};
+
+const onSubmit = async () => {
+  const allBatiments = await batimentService.retrieveAllBatiments(useRouter());
+  if (isCreation.value) {
+    let shouldSave = true;
+    allBatiments.forEach((aBatiment) => {
+      if (
+        aBatiment.latitudeLongitude.latitude === Number(latitude.value) ||
+        aBatiment.latitudeLongitude.longitude === Number(longitude.value)
+      ) {
+        alert(
+          `A batiment with latitude '${latitude.value}' or '${longitude.value}' already exists. Batiment is not saved.`
+        );
+        shouldSave = false;
+      }
+    });
+    if (!shouldSave) {
+      return;
+    }
+  }
   try {
-    const batimentSaved = await batimentToSave.save();
+    const batimentSaved = await batimentToSave().save();
     router.push({
       name: "BatimentDetail",
       params: { batimentId: batimentSaved.id },
@@ -312,7 +348,7 @@ const onSubmit = async () => {
   }
 };
 
-defineExpose({ batiment, setLatLong });
+defineExpose({ batiment, redirectToHomePage, setLatLong, isCreationFunc });
 </script>
 <style lang="scss" scoped>
 .batiment-update {

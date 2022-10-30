@@ -6,7 +6,7 @@ import VectorLayer from "ol/layer/Vector";
 import { transform } from "ol/proj";
 import VectorSource from "ol/source/Vector";
 import { Icon, Style } from "ol/style";
-import type { IBatimentAPI } from "./IBatimentAPI";
+import type { IBatimentAPI } from "../batiment/model/IBatimentAPI";
 
 /** Inspired from https://openlayers.org/en/latest/examples/icon.html */
 export default (aBatiment: IBatimentAPI) => {
