@@ -56,26 +56,30 @@ const retrieveBatiment = async (
   }
 };
 
-const retrieveAllBatiments = async (
-  router: Router
-): Promise<IBatimentAPI[]> => {
+const retrieveAllBatiments = async (): Promise<IBatimentAPI[]> => {
   const query = new Parse.Query(Parse.Object.extend("batiment"));
   query.select("latitudeLongitude", "usageBatiment", "surfacePlancher");
-  let batiments: IBatimentAPI[] = [];
+  const results = await query.find();
+  return results.map((aResult): IBatimentAPI => {
+    const aBatiment: IBatimentAPI = {
+      id: aResult.id,
+      latitudeLongitude: aResult.get("latitudeLongitude"),
+      usageBatiment: aResult.get("usageBatiment"),
+      nomBatiment: aResult.get("nomBatiment"),
+      surfacePlancher: aResult.get("surfacePlancher"),
+    };
+    return aBatiment;
+  });
+};
+
+const retrieveAllBatimentsWithCatch = async (
+  router: Router
+): Promise<IBatimentAPI[]> => {
   try {
-    const results = await query.find();
-    batiments = results.map((aResult): IBatimentAPI => {
-      const aBatiment: IBatimentAPI = {
-        id: aResult.id,
-        latitudeLongitude: aResult.get("latitudeLongitude"),
-        usageBatiment: aResult.get("usageBatiment"),
-        nomBatiment: aResult.get("nomBatiment"),
-        surfacePlancher: aResult.get("surfacePlancher"),
-      };
-      return aBatiment;
-    });
+    return await retrieveAllBatiments();
   } catch (error: any) {
-    // https://github.com/parse-community/parse-server/blob/63d51fa6c87d3d8b9599e892cf04612dbe3ee7a8/spec/ParseUser.spec.js#L2587 -->
+    // https://github.com/parse-community/parse-server/blob/63d51fa6c87d3d8b9599e892cf04612dbe3ee7a8/spec/ParseUser.spec.js#L2587
+    // -->
     if (error.code === 209) {
       Parse.User.logOut();
       Store.user.isAuthenticated.value = false;
@@ -83,10 +87,9 @@ const retrieveAllBatiments = async (
     } else {
       alert("Error while fetching batiment (see console)");
       console.error(error);
-      return [];
     }
   }
-  return batiments;
+  return [];
 };
 
 export default {
@@ -95,5 +98,5 @@ export default {
   destructuringColumns,
   destructuringTableEnum,
   retrieveBatiment,
-  retrieveAllBatiments,
+  retrieveAllBatimentsWithCatch,
 };

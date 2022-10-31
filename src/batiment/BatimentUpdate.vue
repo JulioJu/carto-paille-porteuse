@@ -175,7 +175,8 @@
         </label>
       </div>
     </div>
-    <button>Soumettre</button>
+    <button :disabled="submitPending">Soumettre</button>
+    <div v-if="submitPending">En cours d'enregistrement</div>
   </form>
 </template>
 <script lang="ts">
@@ -344,8 +345,21 @@ const batimentToSave = () => {
   return batimentToSave;
 };
 
+const submitPending = ref<boolean>(false);
+
 const onSubmit = async () => {
-  const allBatiments = await batimentService.retrieveAllBatiments(useRouter());
+  if (submitPending.value) {
+    return;
+  }
+  submitPending.value = true;
+  const allBatiments = await batimentService.retrieveAllBatimentsWithCatch(
+    useRouter()
+  );
+  if (allBatiments.length === 0) {
+    alert("Nothing saved");
+    submitPending.value = false;
+    return;
+  }
   if (isCreation.value) {
     let shouldSave = true;
     allBatiments.forEach((aBatiment) => {
@@ -360,6 +374,7 @@ const onSubmit = async () => {
       }
     });
     if (!shouldSave) {
+      submitPending.value = false;
       return;
     }
   }
@@ -370,6 +385,7 @@ const onSubmit = async () => {
       params: { batimentId: batimentSaved.id },
     });
   } catch (error: any) {
+    submitPending.value = false;
     // TODO
     // If unauthorized or forbidden, you should logout
     console.error(error);
@@ -377,7 +393,13 @@ const onSubmit = async () => {
   }
 };
 
-defineExpose({ batiment, redirectToHomePage, setLatLong, isCreationFunc });
+defineExpose({
+  batiment,
+  redirectToHomePage,
+  setLatLong,
+  isCreationFunc,
+  submitPending,
+});
 </script>
 <style lang="scss" scoped>
 .batiment-update {
