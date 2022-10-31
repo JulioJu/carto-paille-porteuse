@@ -24,6 +24,7 @@ This template should help get you started developing with Vue 3 in Vite.
 * [Security configuration](#security-configuration)
 * [TODO](#todo)
 * [Note](#note)
+* [Credits](#credits)
 
 <!-- vim-markdown-toc -->
 
@@ -187,3 +188,7 @@ See
 
 * useRouter().beforeEach is triggered multiple times on navigation, contrary to beforeRouteEnter()
     Following guide is interesting https://github.com/vuejs/rfcs/discussions/302
+
+## Credits
+
+We use https://openlayers.org/en/latest/examples/data/icon.png (licence CC-BY 3.0)

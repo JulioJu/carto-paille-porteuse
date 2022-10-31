@@ -4,6 +4,6 @@ export interface IBatimentAPI {
   id: string;
   latitudeLongitude: Parse.GeoPoint;
   nomBatiment: string | undefined;
-  usageBatiment: string | undefined;
+  usageBatiment: { id: string; className: "UsageBatiment" } | undefined;
   surfacePlancher: number | undefined;
 }
