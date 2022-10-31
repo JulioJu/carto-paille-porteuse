@@ -1,28 +1,37 @@
 <!-- Inspired from https://openlayers.org/en/latest/examples/popup.html -->
 <template>
   <section>
-    <template v-if="isEditMode">
-      <div class="text-info">
-        Double cliquer sur la carte pour ajouter un bâti
-      </div>
-      <div class="text-danger mb-3">
-        Nous recommendons de positionner le bâti à une certaine distance de sa
-        position exacte.
-      </div>
+    <template v-if="isAuthenticated">
+      <template v-if="isEditMode">
+        <div class="text-info">
+          Double cliquer sur la carte pour ajouter un bâti
+        </div>
+        <div class="text-danger mb-3">
+          Nous recommendons de positionner le bâti à une certaine distance de sa
+          position exacte.
+        </div>
+      </template>
+      <button
+        @click.prevent="toggleEditionMode"
+        class="btn btn-primary jh-create-entity mb-3"
+      >
+        <template v-if="!isEditMode">
+          <!-- <font-awesome-icon icon="plus"></font-awesome-icon> -->
+          <span> Basculer en mode ajout d'un bâti </span>
+        </template>
+        <template v-else>
+          <span> Basculer en mode normal </span>
+        </template>
+      </button>
     </template>
-    <button
-      @click.prevent="toggleEditionMode"
-      class="btn btn-primary jh-create-entity mb-3"
-    >
-      <template v-if="!isEditMode">
-        <font-awesome-icon icon="plus"></font-awesome-icon>
-        <span> Basculer en mode ajout d'un bâti </span>
-      </template>
-      <template v-else>
-        <span> Basculer en mode normal </span>
-      </template>
-    </button>
-    <div class="map-container" ref="mapRoot"></div>
+    <template v-else>
+      <div>Pour ajouter un bâti, veuillez vous connecter.</div>
+    </template>
+    <div
+      class="map-container"
+      :class="isEditMode ? '' : 'map-container--add'"
+      ref="mapRoot"
+    ></div>
     <div ref="popup" class="ol-popup">
       <a ref="popupCloser" class="ol-popup-closer"></a>
       <div ref="popupContent"></div>
@@ -45,14 +54,17 @@ import eventRetrieveCoordAndNavigate from "./event-retrieve-coord-and-navigate";
 import { onMounted, ref } from "vue";
 import batimentService from "@/batiment/batiment.service";
 import { useRouter } from "vue-router";
+import Store from "@/store";
 
 const router = useRouter();
+
+const isAuthenticated = Store.user.isAuthenticated;
 
 // https://openlayers.org/en/latest/doc/faq.html#why-is-my-map-centered-on-the-gulf-of-guinea-or-africa-the-ocean-null-island-
 // https://openlayers.org/en/latest/doc/faq.html#why-is-the-order-of-a-coordinate-lon-lat-and-not-lat-lon-
 const franceLonLat = [2.2137, 46.2276];
 
-let isEditMode = false;
+const isEditMode = ref<boolean>(false);
 
 const mapRoot = ref<HTMLDivElement>();
 const popup = ref<HTMLDivElement>();
@@ -93,7 +105,7 @@ onMounted(async () => {
 });
 
 const toggleEditionMode = (): void => {
-  if (!isEditMode) {
+  if (!isEditMode.value) {
     eventRetrieveCoordAndNavigate.register(
       map,
       router,
@@ -105,7 +117,7 @@ const toggleEditionMode = (): void => {
       mapRoot.value as HTMLDivElement
     );
   }
-  isEditMode = !isEditMode;
+  isEditMode.value = !isEditMode.value;
 };
 </script>
 

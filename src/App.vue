@@ -2,8 +2,7 @@
 import { RouterLink, RouterView } from "vue-router";
 import parsePlatform from "./services/parse-platform";
 import Parse from "parse/dist/parse.min.js";
-import Store from "./store";
-import { computed } from "vue";
+import Store from "@/store";
 import FooterContainer from "./components/footer/FooterContainer.vue";
 
 parsePlatform.initializeParse();
@@ -11,14 +10,12 @@ parsePlatform.initializeParse();
 Store.user.isAuthenticated.value =
   Parse.User.current()?.authenticated() === true;
 
+const isAuthenticated = Store.user.isAuthenticated;
+
 const logout = () => {
   Parse.User.logOut();
   Store.user.isAuthenticated.value = false;
 };
-
-const isAuthenticated = computed(() => {
-  return Store.user.isAuthenticated.value;
-});
 </script>
 
 <template>
