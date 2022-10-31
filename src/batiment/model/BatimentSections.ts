@@ -1,10 +1,19 @@
 import { TableEnum } from "./batiment-dropdown";
 import { Column, Section, TableType, Validation } from "./Section";
+import Parse from "parse/dist/parse.min.js";
 
 export default class BatimentSection {
   private _definition = new Section({
     commentaire: "Définition",
     columnsGroup: {
+      objectId: {
+        objectId: new Column({
+          commentaire: "Identifiant",
+          type: TableType.STRING,
+          generatedByBack: true,
+          cssClass: "display-none",
+        }),
+      },
       latitudeLongitude: {
         latitudeLongitude: new Column({
           commentaire: "Latitude et longitude",
@@ -16,6 +25,14 @@ export default class BatimentSection {
         nomBatiment: new Column({
           commentaire: "Nom du bâtiment",
           type: TableType.STRING,
+        }),
+      },
+      owner: {
+        owner: new Column({
+          commentaire: "Propriétaire",
+          type: TableType.USER,
+          generatedByBack: true,
+          cssClass: "display-none",
         }),
       },
     },
@@ -503,6 +520,10 @@ export default class BatimentSection {
     };
   }
 
+  get id(): string | null {
+    return this._definition.columnsGroup.objectId.objectId.value.value;
+  }
+
   get latitude(): number {
     return this._definition.columnsGroup.latitudeLongitude.latitudeLongitude
       .value.value.latitude;
@@ -525,6 +546,16 @@ export default class BatimentSection {
       this._definition.columnsGroup.latitudeLongitude.latitudeLongitude.value.value.longitude =
         Number(longitude);
     }
+  }
+
+  get isOwner(): boolean {
+    if (!Parse.User.current()?.authenticated) {
+      return false;
+    }
+    return (
+      this._definition.columnsGroup.owner.owner.value.value?.id ===
+      Parse.User.current()?.id
+    );
   }
 
   get autorisation(): boolean {

@@ -275,11 +275,9 @@
             L'utilisateur est avertis que toutes les données qu'il renseigne sur
             le site internet sont consultables par tout autre utilisateur
             enregistré, y compris l'adresse e-mail fournis au moment de
-            l'inscription. Seul le mot de passe reste confidentiel&nbsp;: ni les
-            administrateurs ni les utilisateurs tiers ne peuvent y accéder. À
-            terme, l'email fournis au moment de l'inscription ne sera pas
-            accessible aux autres utilisateurs, mais seulement aux
-            administrateurs du site.
+            l'inscription. Seul le mot de passe reste totalement
+            confidentiel&nbsp;: ni les administrateurs, ni les développeurs, ni
+            les utilisateurs tiers ne peuvent y accéder.
           </li>
           <li>
             Il est rappelé aux utilisateurs que même si Nebraska n'utilisera pas

@@ -77,6 +77,9 @@ const createAColumn = (
   columnName: string,
   column: Column
 ) => {
+  if (column.generatedByBack === true) {
+    return;
+  }
   let columnType = column.type;
   const required = column.validation?.required
     ? { required: true }

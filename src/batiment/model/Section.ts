@@ -11,6 +11,7 @@ export enum TableType {
   DATE,
   IMAGE,
   GEOPOINT,
+  USER,
 }
 
 export const batimentTable = "batiment";
@@ -61,25 +62,23 @@ export class Column {
   private _type: TableType | TypeTableEnum;
   private _validation?: Validation;
   private _cssClass?: string;
+  private _genaratedByBack = false;
   public value: Ref<any>;
 
-  constructor({
-    commentaire,
-    type,
-    validation,
-    cssClass,
-  }: {
+  constructor(param: {
     commentaire: string;
     type: TableType | TypeTableEnum;
     validation?: Validation;
     cssClass?: string;
+    generatedByBack?: boolean;
   }) {
-    this._commentaire = commentaire;
-    this._type = type;
-    this._validation = validation;
-    this._validation = validation;
-    this._cssClass = cssClass;
-    switch (type) {
+    this._commentaire = param.commentaire;
+    this._type = param.type;
+    this._validation = param.validation;
+    this._validation = param.validation;
+    this._cssClass = param.cssClass;
+    this._genaratedByBack = param.generatedByBack ? true : false;
+    switch (param.type) {
       case TableType.BOOLEAN:
         this.value = ref<boolean | null>(null);
         break;
@@ -120,6 +119,10 @@ export class Column {
 
   get cssClass() {
     return this._cssClass;
+  }
+
+  get generatedByBack(): boolean {
+    return this._genaratedByBack;
   }
 }
 

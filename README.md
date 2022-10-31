@@ -184,6 +184,11 @@ See
     * Currently we could use backoffice to clean up of file
         See https://parse-dashboard.back4app.com/apps/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/settings/general
 
+* See
+    > Requires Parse Server 5.0.0+
+    > By default, Parse Server creates Users with public read access. This allows other users, and un-authenticated users, to read data such as email. When moving to production, set the key enforcePrivateUsers to true, as this will remove the public read access to new users.
+    > http://docs.parseplatform.org/ios/guide/#enforcing-private-users
+
 ## Note
 
 * useRouter().beforeEach is triggered multiple times on navigation, contrary to beforeRouteEnter()

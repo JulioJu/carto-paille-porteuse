@@ -23,35 +23,33 @@ const destructuringTableEnum = (
   aTableEnum: TypeTableEnum["enum"]
 ): [key: string, value: string][] => Object.entries(aTableEnum);
 
-const retrieveBatiment = async (
+const retrieveABatiment = async (
   id: string,
   batiment: BatimentSection
 ): Promise<void> => {
   const query = new Parse.Query(Parse.Object.extend("batiment"));
   query.equalTo("objectId", id);
-  try {
-    const aBatiment = await query.first();
-    if (aBatiment) {
-      Object.values(batiment).forEach((aSection: Section) => {
-        Object.values(aSection.columnsGroup).forEach((columnsGroup) => {
-          Object.entries(columnsGroup).forEach(([keyColumn, valueColumn]) => {
-            const value = aBatiment.get(keyColumn);
-            if (value === undefined || value === null) {
-              return;
-            }
-            if (typeof valueColumn.type === "number") {
-              valueColumn.value.value = value;
-            } else {
-              valueColumn.value.value = value?.id;
-            }
-          });
+  const batimentRetrieved = await query.first();
+  if (batimentRetrieved) {
+    Object.values(batiment).forEach((aSection: Section) => {
+      Object.values(aSection.columnsGroup).forEach((columnsGroup) => {
+        Object.entries(columnsGroup).forEach(([keyColumn, valueColumn]) => {
+          const value = batimentRetrieved.get(keyColumn);
+          if (value === undefined || value === null) {
+            return;
+          }
+          if (typeof valueColumn.type === "number") {
+            valueColumn.value.value = value;
+          } else {
+            valueColumn.value.value = value?.id;
+          }
         });
       });
-    } else {
-      alert("Nothing found, please try again");
-    }
-  } catch (error) {
-    console.error(error);
+    });
+    batiment.allSections.definition.columnsGroup.objectId.objectId.value.value =
+      batimentRetrieved.id;
+  } else {
+    alert("Nothing found, please try again");
   }
 };
 
@@ -96,6 +94,6 @@ export default {
   destructuringColumnsGroup,
   destructuringColumns,
   destructuringTableEnum,
-  retrieveBatiment,
+  retrieveABatiment,
   retrieveAllBatimentsWithCatch,
 };

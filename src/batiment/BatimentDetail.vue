@@ -1,6 +1,8 @@
 <template>
   <br />
-  <RouterLink :to="'/batiment/' + batimentId + '/edit'">Éditer</RouterLink>
+  <RouterLink v-if="batiment.isOwner" :to="'/batiment/' + batiment.id + '/edit'"
+    >Éditer</RouterLink
+  >
   <div
     v-for="[keySection, valueSection] in batimentService.destructuringBatiment(
       batiment
@@ -64,6 +66,18 @@
                 {{ valueColumn.value.value?.latitude }},
                 {{ valueColumn.value.value?.longitude }}
               </template>
+              <template v-else-if="valueColumn.type === TableType.USER">
+                <template
+                  v-if="
+                    valueColumn.value.value?.id === Parse.User.current()?.id
+                  "
+                >
+                  Vous avez créé cet bâtit, vous pouvez le modifier
+                </template>
+                <template v-else>
+                  Vous n'avez pas créé cet bâtit, vous ne pouvez pas le modifier
+                </template>
+              </template>
               <template v-else>
                 <template v-if="valueColumn.value.value">
                   {{ valueColumn.value.value }}
@@ -87,13 +101,13 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, type ComponentPublicInstance } from "vue";
+import { defineComponent, type ComponentPublicInstance } from "vue";
 import BatimentSection from "./model/BatimentSections";
 import { TableType } from "./model/Section";
 import batimentService from "./batiment.service";
+import Parse from "parse/dist/parse.min.js";
 
 interface IInstance extends ComponentPublicInstance {
-  batimentId: string;
   batiment: BatimentSection;
 }
 
@@ -102,9 +116,8 @@ export default defineComponent({
     next((vm) => {
       const instance = vm as IInstance;
       if (to.params.batimentId) {
-        instance.batimentId = to.params.batimentId as string;
         // For instance http://127.0.0.1:5173/batiment/2961/edit
-        batimentService.retrieveBatiment(
+        batimentService.retrieveABatiment(
           to.params.batimentId as string,
           instance.batiment
         );
@@ -115,9 +128,8 @@ export default defineComponent({
 </script>
 <script setup lang="ts">
 const batiment = new BatimentSection();
-const batimentId = ref<string>("");
 
-defineExpose({ batiment, batimentId });
+defineExpose({ batiment });
 </script>
 <style lang="scss" scoped>
 .batiment-detail {

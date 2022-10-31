@@ -1,9 +1,7 @@
 <template>
   <h2>
-    <template v-if="isCreation?.valueOf"> Création d'un bâtiment </template>
-    <template v-else-if="!isCreation?.valueOf">
-      Mise à jour du bâtiment
-    </template>
+    <template v-if="isCreation"> Création d'un bâtiment </template>
+    <template v-else> Mise à jour du bâtiment </template>
   </h2>
   <form class="batiment-update" @submit.prevent="onSubmit">
     <div
@@ -208,7 +206,7 @@ export default defineComponent({
       if (to.params.batimentId) {
         // For instance http://127.0.0.1:5173/batiment/2961/edit
         batimentService
-          .retrieveBatiment(to.params.batimentId as string, instance.batiment)
+          .retrieveABatiment(to.params.batimentId as string, instance.batiment)
           .then(() => {
             instance.batiment.autorisationSetToFalse();
             instance.setLatLong({
@@ -324,8 +322,11 @@ watchEffect(() => {
   }
 });
 
-const batimentToSave = () => {
+const createBatimentToSave = () => {
   const batimentToSave = new Parse.Object("batiment");
+  if (batiment.id) {
+    batimentToSave.id = batiment.id;
+  }
   Object.values(batiment.allSections).forEach((aSection: Section) => {
     Object.values(aSection.columnsGroup).forEach((columnsGroup) => {
       Object.entries(columnsGroup).forEach(([keyColumn, valueColumn]) => {
@@ -353,7 +354,9 @@ const batimentToSave = () => {
       });
     });
   });
-  batimentToSave.set("owner", Parse.User.current());
+  if (isCreation.value) {
+    batimentToSave.set("owner", Parse.User.current());
+  }
   return batimentToSave;
 };
 
@@ -395,7 +398,7 @@ const onSubmit = async () => {
     }
   }
   try {
-    const batimentSaved = await batimentToSave().save();
+    const batimentSaved = await createBatimentToSave().save();
     filesToRemove.forEach(async (aFileToRemove) => {
       // Needs master key https://docs.parseplatform.org/js/guide/#deleting-files
       // await aFileToRemove.destroy();
@@ -416,10 +419,9 @@ const onSubmit = async () => {
 
 defineExpose({
   batiment,
-  redirectToHomePage,
   setLatLong,
   isCreationFunc,
-  submitPending,
+  redirectToHomePage,
   filesToRemove,
 });
 </script>
@@ -440,6 +442,9 @@ defineExpose({
   }
   &__previsualization {
     height: 6.25rem;
+  }
+  .display-none {
+    display: none;
   }
 }
 </style>
