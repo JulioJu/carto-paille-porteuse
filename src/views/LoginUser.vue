@@ -3,6 +3,7 @@
     <input type="email" v-model="form.email" placeholder="email" />
     <input type="password" v-model="form.password" placeholder="password" />
     <button>Se connecter</button>
+    <RouterLink to="/forgotten-password">Mot de passe oublié</RouterLink>
   </form>
 </template>
 

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import batimentRouter from "./batiment-router";
 
+// TODO use constants to `path`
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -14,6 +15,11 @@ const router = createRouter({
       path: "/login-user",
       name: "Se connecter",
       component: () => import("../views/LoginUser.vue"),
+    },
+    {
+      path: "/forgotten-password",
+      name: "Mot de passe oublié",
+      component: () => import("../views/ForgottenPassword.vue"),
     },
     {
       path: "/register-user",
