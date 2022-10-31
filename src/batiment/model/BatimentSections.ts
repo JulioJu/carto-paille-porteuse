@@ -502,4 +502,28 @@ export default class BatimentSection {
       autorisation: this._autorisation,
     };
   }
+
+  get latitude(): number {
+    return this._definition.columnsGroup.latitudeLongitude.latitudeLongitude
+      .value.value.latitude;
+  }
+
+  set latitude(latitude: number) {
+    if (!isNaN(latitude)) {
+      this._definition.columnsGroup.latitudeLongitude.latitudeLongitude.value.value.latitude =
+        Number(latitude);
+    }
+  }
+
+  get longitude(): number {
+    return this._definition.columnsGroup.latitudeLongitude.latitudeLongitude
+      .value.value.longitude;
+  }
+
+  set longitude(longitude: number) {
+    if (!isNaN(longitude)) {
+      this._definition.columnsGroup.latitudeLongitude.latitudeLongitude.value.value.longitude =
+        Number(longitude);
+    }
+  }
 }

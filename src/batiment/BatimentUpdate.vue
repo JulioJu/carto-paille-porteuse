@@ -182,6 +182,7 @@
 import {
   defineComponent,
   ref,
+  watchEffect,
   type ComponentPublicInstance,
   type Ref,
 } from "vue";
@@ -191,7 +192,7 @@ import { Section, TableType } from "./model/Section";
 
 interface IInstance extends ComponentPublicInstance {
   batiment: BatimentSection;
-  setLatLong(queryParam: { latitude: string; longitude: string }): void;
+  setLatLong(queryParam: { latitude: number; longitude: number }): void;
   isCreationFunc(isCreation: boolean): void;
   redirectToHomePage(): void;
 }
@@ -202,10 +203,14 @@ export default defineComponent({
       const instance = vm as IInstance;
       if (to.params.batimentId) {
         // For instance http://127.0.0.1:5173/batiment/2961/edit
-        batimentService.retrieveBatiment(
-          to.params.batimentId as string,
-          instance.batiment
-        );
+        batimentService
+          .retrieveBatiment(to.params.batimentId as string, instance.batiment)
+          .then(() => {
+            instance.setLatLong({
+              latitude: instance.batiment.latitude,
+              longitude: instance.batiment.longitude,
+            });
+          });
         instance.isCreationFunc(false);
       } else if (
         to.query.lat &&
@@ -218,8 +223,8 @@ export default defineComponent({
         Number(to.query.long) <= 90
       ) {
         instance.setLatLong({
-          latitude: to.query.lat.toString(),
-          longitude: to.query.long.toString(),
+          latitude: Number(to.query.lat),
+          longitude: Number(to.query.long),
         });
         instance.isCreationFunc(true);
       } else {
@@ -297,6 +302,15 @@ const isCreationFunc = (isCreationParam: boolean) => {
   isCreation.value = isCreationParam;
 };
 
+watchEffect(() => {
+  if (!isNaN(latitude.value as number)) {
+    batiment.latitude = Number(latitude.value);
+  }
+  if (!isNaN(longitude.value as number)) {
+    batiment.longitude = Number(longitude.value);
+  }
+});
+
 const batimentToSave = () => {
   const batimentToSave = new Parse.Object("batiment");
   Object.values(batiment.allSections).forEach((aSection: Section) => {
@@ -326,10 +340,6 @@ const batimentToSave = () => {
       });
     });
   });
-  batimentToSave.set(
-    "latitudeLongitude",
-    new Parse.GeoPoint(Number(latitude.value), Number(longitude.value))
-  );
   batimentToSave.set("owner", Parse.User.current());
   return batimentToSave;
 };

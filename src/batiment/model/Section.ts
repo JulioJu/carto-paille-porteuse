@@ -1,5 +1,6 @@
 import { ref, type Ref } from "vue";
 import type { TypeTableEnum } from "./batiment-dropdown";
+import Parse from "parse/dist/parse.min.js";
 
 export enum TableType {
   STRING,
@@ -88,14 +89,16 @@ export class Column {
       case TableType.IMAGE:
         this.value = ref<BinaryType | null>(null);
         break;
-      case TableType.NUMBER | TableType.NATURAL_NUMBER:
+      case TableType.NUMBER:
+      case TableType.NATURAL_NUMBER:
         this.value = ref<number | null>(null);
         break;
-      case TableType.STRING | TableType.TEXTAREA:
+      case TableType.STRING:
+      case TableType.TEXTAREA:
         this.value = ref<string | null>(null);
         break;
       case TableType.GEOPOINT:
-        this.value = ref<string | null>(null);
+        this.value = ref<Parse.GeoPoint>(new Parse.GeoPoint());
         break;
       default:
         this.value = ref<null>(null);

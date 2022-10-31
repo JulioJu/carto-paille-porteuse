@@ -56,13 +56,13 @@
               </template>
               <template v-else-if="valueColumn.type === TableType.DATE">
                 <template v-if="valueColumn.value.value">
-                  {{ valueColumn.value.value.toDateString() }}
+                  {{ valueColumn.value.value?.toDateString() }}
                 </template>
                 <template v-else> Inconnu </template>
               </template>
               <template v-else-if="valueColumn.type === TableType.GEOPOINT">
-                {{ valueColumn.value.value.latitude }},
-                {{ valueColumn.value.value.longitude }}
+                {{ valueColumn.value.value?.latitude }},
+                {{ valueColumn.value.value?.longitude }}
               </template>
               <template v-else>
                 <template v-if="valueColumn.value.value">
