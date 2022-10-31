@@ -40,7 +40,7 @@
           "
         >
           <template v-if="typeof valueColumn.type === 'number'">
-            <dt>{{ valueColumn.commentaire }}</dt>
+            <dt v-html="valueColumn.commentaire"></dt>
             <dd>
               <template v-if="valueColumn.type === TableType.IMAGE">
                 <img

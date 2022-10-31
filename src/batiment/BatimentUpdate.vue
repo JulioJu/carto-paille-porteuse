@@ -46,7 +46,7 @@
             (valueColumn.cssClass ? valueColumn.cssClass : '')
           "
         >
-          {{ valueColumn.commentaire }}
+          <span v-html="valueColumn.commentaire"></span>
           <template v-if="typeof valueColumn.type === 'number'">
             <input
               :id="'input__' + keyColumn"
@@ -210,6 +210,7 @@ export default defineComponent({
         batimentService
           .retrieveBatiment(to.params.batimentId as string, instance.batiment)
           .then(() => {
+            instance.batiment.autorisationSetToFalse();
             instance.setLatLong({
               latitude: instance.batiment.latitude,
               longitude: instance.batiment.longitude,
@@ -360,6 +361,10 @@ const submitPending = ref<boolean>(false);
 
 const onSubmit = async () => {
   if (submitPending.value) {
+    return;
+  }
+  if (batiment.autorisation !== true) {
+    alert("Vous devez accepter les CGU");
     return;
   }
   submitPending.value = true;

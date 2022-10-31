@@ -478,7 +478,7 @@ export default class BatimentSection {
       conditionsLuesEtAcceptes: {
         conditionsLuesEtAcceptes: new Column({
           commentaire:
-            "Le propriétaire du bâtit a coché sur la case. Ce devrait être systématique, sauf pour les ajouts provenant de recensements divers (Nebreska Construction, RFCP)",
+            "Vous avez lu et vous acceptez les <a href='http://localhost/legal-info'>CGU</a>. Vous êtes avertis que les données sont publiques. Afin d'éviter tout problème, nous vous conseillons de ne pas ne pas placer votre bâtit sur la carte de manière exacte.",
           type: TableType.BOOLEAN,
         }),
       },
@@ -525,5 +525,15 @@ export default class BatimentSection {
       this._definition.columnsGroup.latitudeLongitude.latitudeLongitude.value.value.longitude =
         Number(longitude);
     }
+  }
+
+  get autorisation(): boolean {
+    return this._autorisation.columnsGroup.conditionsLuesEtAcceptes
+      .conditionsLuesEtAcceptes.value.value;
+  }
+
+  autorisationSetToFalse() {
+    this._autorisation.columnsGroup.conditionsLuesEtAcceptes.conditionsLuesEtAcceptes.value.value =
+      false;
   }
 }
