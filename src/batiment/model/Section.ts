@@ -63,7 +63,7 @@ export class Column {
   private _validation?: Validation;
   private _cssClass?: string;
   private _genaratedByBack = false;
-  public value: Ref<any>;
+  public vueRef: Ref<any>;
 
   constructor(param: {
     commentaire: string;
@@ -80,27 +80,27 @@ export class Column {
     this._genaratedByBack = param.generatedByBack ? true : false;
     switch (param.type) {
       case TableType.BOOLEAN:
-        this.value = ref<boolean | null>(null);
+        this.vueRef = ref<boolean | null>(null);
         break;
       case TableType.DATE:
-        this.value = ref<Date | null>(null);
+        this.vueRef = ref<Date | null>(null);
         break;
       case TableType.IMAGE:
-        this.value = ref<Parse.File | null>(null);
+        this.vueRef = ref<Parse.File | null>(null);
         break;
       case TableType.NUMBER:
       case TableType.NATURAL_NUMBER:
-        this.value = ref<number | null>(null);
+        this.vueRef = ref<number | null>(null);
         break;
       case TableType.STRING:
       case TableType.TEXTAREA:
-        this.value = ref<string | null>(null);
+        this.vueRef = ref<string | null>(null);
         break;
       case TableType.GEOPOINT:
-        this.value = ref<Parse.GeoPoint>(new Parse.GeoPoint());
+        this.vueRef = ref<Parse.GeoPoint>(new Parse.GeoPoint());
         break;
       default:
-        this.value = ref<null>(null);
+        this.vueRef = ref<null>(null);
         break;
     }
   }

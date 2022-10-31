@@ -46,30 +46,30 @@
             <dd>
               <template v-if="valueColumn.type === TableType.IMAGE">
                 <img
-                  v-if="valueColumn.value.value"
-                  :src="valueColumn.value.value?._url"
+                  v-if="valueColumn.vueRef.value"
+                  :src="valueColumn.vueRef.value?._url"
                   class="batiment-detail__previsualization"
                 />
                 <template v-else> Aucune </template>
               </template>
               <template v-else-if="valueColumn.type === TableType.BOOLEAN">
-                <template v-if="valueColumn.value.value"> Vrai </template>
+                <template v-if="valueColumn.vueRef.value"> Vrai </template>
                 <template v-else> Faux </template>
               </template>
               <template v-else-if="valueColumn.type === TableType.DATE">
-                <template v-if="valueColumn.value.value">
-                  {{ valueColumn.value.value?.toDateString() }}
+                <template v-if="valueColumn.vueRef.value">
+                  {{ valueColumn.vueRef.value?.toDateString() }}
                 </template>
                 <template v-else> Inconnu </template>
               </template>
               <template v-else-if="valueColumn.type === TableType.GEOPOINT">
-                {{ valueColumn.value.value?.latitude }},
-                {{ valueColumn.value.value?.longitude }}
+                {{ valueColumn.vueRef.value?.latitude }},
+                {{ valueColumn.vueRef.value?.longitude }}
               </template>
               <template v-else-if="valueColumn.type === TableType.USER">
                 <template
                   v-if="
-                    valueColumn.value.value?.id === Parse.User.current()?.id
+                    valueColumn.vueRef.value?.id === Parse.User.current()?.id
                   "
                 >
                   Vous avez créé cet bâtit, vous pouvez le modifier
@@ -79,8 +79,8 @@
                 </template>
               </template>
               <template v-else>
-                <template v-if="valueColumn.value.value">
-                  {{ valueColumn.value.value }}
+                <template v-if="valueColumn.vueRef.value">
+                  {{ valueColumn.vueRef.value }}
                 </template>
                 <template v-else> Néant </template>
               </template>
@@ -89,8 +89,8 @@
           <template v-else>
             <dt>{{ valueColumn.commentaire }}</dt>
             <dd>
-              <template v-if="valueColumn.value.value">
-                {{ valueColumn.type.enum[valueColumn.value.value] }}
+              <template v-if="valueColumn.vueRef.value">
+                {{ valueColumn.type.enum[valueColumn.vueRef.value] }}
               </template>
               <template v-else> Néant </template>
             </dd>

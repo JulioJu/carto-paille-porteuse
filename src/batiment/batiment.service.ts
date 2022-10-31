@@ -39,14 +39,14 @@ const retrieveABatiment = async (
             return;
           }
           if (typeof valueColumn.type === "number") {
-            valueColumn.value.value = value;
+            valueColumn.vueRef.value = value;
           } else {
-            valueColumn.value.value = value?.id;
+            valueColumn.vueRef.value = value?.id;
           }
         });
       });
     });
-    batiment.allSections.definition.columnsGroup.objectId.objectId.value.value =
+    batiment.allSections.definition.columnsGroup.objectIdGroup.objectId.vueRef.value =
       batimentRetrieved.id;
   } else {
     alert("Nothing found, please try again");

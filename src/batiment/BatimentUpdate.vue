@@ -49,7 +49,7 @@
             <input
               :id="'input__' + keyColumn"
               v-if="valueColumn.type === TableType.STRING"
-              v-model="valueColumn.value.value"
+              v-model="valueColumn.vueRef.value"
               type="text"
               :required="valueColumn.validation?.required"
               :maxlength="valueColumn.validation?.maxlength"
@@ -57,20 +57,20 @@
             <textarea
               :id="'input__' + keyColumn"
               v-else-if="valueColumn.type === TableType.TEXTAREA"
-              v-model="valueColumn.value.value"
+              v-model="valueColumn.vueRef.value"
               :required="valueColumn.validation?.required"
             />
             <input
               :id="'input__' + keyColumn"
               v-else-if="valueColumn.type === TableType.BOOLEAN"
-              v-model="valueColumn.value.value"
+              v-model="valueColumn.vueRef.value"
               type="checkbox"
               :required="valueColumn.validation?.required"
             />
             <input
               :id="'input__' + keyColumn"
               v-else-if="valueColumn.type === TableType.NUMBER"
-              v-model="valueColumn.value.value"
+              v-model="valueColumn.vueRef.value"
               type="number"
               step="any"
               :required="valueColumn.validation?.required"
@@ -80,7 +80,7 @@
             <input
               :id="'input__' + keyColumn"
               v-else-if="valueColumn.type === TableType.NATURAL_NUMBER"
-              v-model="valueColumn.value.value"
+              v-model="valueColumn.vueRef.value"
               type="number"
               :required="valueColumn.validation?.required"
               :min="valueColumn.validation?.min"
@@ -89,7 +89,7 @@
             <input
               :id="'input__' + keyColumn"
               v-else-if="valueColumn.type === TableType.DATE"
-              v-model="valueColumn.value.value"
+              v-model="valueColumn.vueRef.value"
               type="date"
               :required="valueColumn.validation?.required"
               :min="valueColumn.validation?.min"
@@ -98,17 +98,17 @@
             <template v-else-if="valueColumn.type === TableType.IMAGE">
               <div
                 class="batiment-update__img-group"
-                v-if="valueColumn.value.value"
+                v-if="valueColumn.vueRef.value"
               >
                 <img
                   class="batiment-update__previsualization"
                   :alt="'Previsualization ' + keyColumn"
-                  :src="valueColumn.value.value?._url"
+                  :src="valueColumn.vueRef.value?._url"
                   :ref="'previsualization' + keyColumn"
                 />
                 <button
                   v-on:click.prevent="
-                    clearInputImage(valueColumn.value, 'fileInput' + keyColumn)
+                    clearInputImage(valueColumn.vueRef, 'fileInput' + keyColumn)
                   "
                 >
                   Remove image downloaded
@@ -120,7 +120,7 @@
                 v-on:change="
                   setFileData(
                     $event,
-                    valueColumn.value,
+                    valueColumn.vueRef,
                     'previsualization' + keyColumn
                   )
                 "
@@ -154,7 +154,7 @@
           <template v-else>
             <select
               :id="'input__' + keyColumn"
-              v-model="valueColumn.value.value"
+              v-model="valueColumn.vueRef.value"
               :required="valueColumn.validation?.required"
             >
               <option
@@ -330,7 +330,7 @@ const createBatimentToSave = () => {
   Object.values(batiment.allSections).forEach((aSection: Section) => {
     Object.values(aSection.columnsGroup).forEach((columnsGroup) => {
       Object.entries(columnsGroup).forEach(([keyColumn, valueColumn]) => {
-        let value = valueColumn.value.value;
+        let value = valueColumn.vueRef.value;
         let columnType = valueColumn.type;
         if (value === "" || value === null || value === undefined) {
           return;

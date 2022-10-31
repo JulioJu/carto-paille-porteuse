@@ -6,7 +6,7 @@ export default class BatimentSection {
   private _definition = new Section({
     commentaire: "Définition",
     columnsGroup: {
-      objectId: {
+      objectIdGroup: {
         objectId: new Column({
           commentaire: "Identifiant",
           type: TableType.STRING,
@@ -14,20 +14,20 @@ export default class BatimentSection {
           cssClass: "display-none",
         }),
       },
-      latitudeLongitude: {
+      latitudeLongitudeGroup: {
         latitudeLongitude: new Column({
           commentaire: "Latitude et longitude",
           type: TableType.GEOPOINT,
           validation: new Validation({ required: true }),
         }),
       },
-      nomBatiment: {
+      nomBatimentGroup: {
         nomBatiment: new Column({
           commentaire: "Nom du bâtiment",
           type: TableType.STRING,
         }),
       },
-      owner: {
+      ownerGroup: {
         owner: new Column({
           commentaire: "Propriétaire",
           type: TableType.USER,
@@ -41,7 +41,7 @@ export default class BatimentSection {
   private _informationsGenerales = new Section({
     commentaire: "Informations générales",
     columnsGroup: {
-      usageBatiment: {
+      usageBatimentGroup: {
         usageBatiment: new Column({
           commentaire: "Usage",
           type: TableEnum.UsageBatiment,
@@ -51,19 +51,19 @@ export default class BatimentSection {
           type: TableType.TEXTAREA,
         }),
       },
-      coutTravauxTTC: {
+      coutTravauxTTCGroup: {
         coutTravauxTTC: new Column({
           commentaire: "Coût travaux TTC (hors études) (€)",
           type: TableType.NUMBER,
         }),
       },
-      surfacePlancher: {
+      surfacePlancherGroup: {
         surfacePlancher: new Column({
           commentaire: "Surface de plancher (m²)",
           type: TableType.NUMBER,
         }),
       },
-      niveaux: {
+      niveauxGroup: {
         niveaux: new Column({
           commentaire:
             "Nombre de niveaux du bâtiment (ex: RDC = 1, 1 étage = 2 niveau, sous-sol non compté)",
@@ -76,7 +76,7 @@ export default class BatimentSection {
   private _photo = new Section({
     commentaire: "Photo",
     columnsGroup: {
-      photoPrincipale: {
+      photoPrincipaleGroup: {
         photoPrincipale: new Column({
           commentaire: "Photo",
           type: TableType.IMAGE,
@@ -93,7 +93,7 @@ export default class BatimentSection {
           type: TableType.TEXTAREA,
         }),
       },
-      photo1: {
+      photo1Group: {
         photo1: new Column({
           commentaire: "Photo",
           type: TableType.IMAGE,
@@ -110,7 +110,7 @@ export default class BatimentSection {
           type: TableType.TEXTAREA,
         }),
       },
-      photo2: {
+      photo2Group: {
         photo2: new Column({
           commentaire: "Photo",
           type: TableType.IMAGE,
@@ -127,7 +127,7 @@ export default class BatimentSection {
           type: TableType.TEXTAREA,
         }),
       },
-      photo3: {
+      photo3Group: {
         photo3: new Column({
           commentaire: "Photo",
           type: TableType.IMAGE,
@@ -144,7 +144,7 @@ export default class BatimentSection {
           type: TableType.TEXTAREA,
         }),
       },
-      photo4: {
+      photo4Group: {
         photo4: new Column({
           commentaire: "Photo",
           type: TableType.IMAGE,
@@ -161,7 +161,7 @@ export default class BatimentSection {
           type: TableType.TEXTAREA,
         }),
       },
-      photo5: {
+      photo5Group: {
         photo5: new Column({
           commentaire: "Photo",
           type: TableType.IMAGE,
@@ -184,31 +184,31 @@ export default class BatimentSection {
   private _natureDesTravaux = new Section({
     commentaire: "Nature des travaux",
     columnsGroup: {
-      travauxNeuf: {
+      travauxNeufGroup: {
         travauxNeuf: new Column({
           commentaire: "Neuf",
           type: TableType.BOOLEAN,
         }),
       },
-      travauxExtension: {
+      travauxExtensionGroup: {
         travauxExtension: new Column({
           commentaire: "Extension",
           type: TableType.BOOLEAN,
         }),
       },
-      travauxRenov: {
+      travauxRenovGroup: {
         travauxRenov: new Column({
           commentaire: "Rénovation",
           type: TableType.BOOLEAN,
         }),
       },
-      travauxIte: {
+      travauxIteGroup: {
         travauxIte: new Column({
           commentaire: "Isolation thermique par l'extérieur",
           type: TableType.BOOLEAN,
         }),
       },
-      travauxIti: {
+      travauxItiGroup: {
         travauxIti: new Column({
           commentaire: "Isolation thermique par l'intérieur",
           type: TableType.BOOLEAN,
@@ -220,13 +220,13 @@ export default class BatimentSection {
   private _chronologie = new Section({
     commentaire: "Chronologie",
     columnsGroup: {
-      constructionDebut: {
+      constructionDebutGroup: {
         constructionDebut: new Column({
           commentaire: "Début de construction",
           type: TableType.DATE,
         }),
       },
-      constructionFin: {
+      constructionFinGroup: {
         constructionFin: new Column({
           commentaire: "Achèvement",
           type: TableType.DATE,
@@ -238,7 +238,7 @@ export default class BatimentSection {
   private _botteDePaille = new Section({
     commentaire: "Botte de paille",
     columnsGroup: {
-      bottesTaille: {
+      bottesTailleGroup: {
         bottesTaille: new Column({
           commentaire: "Taille des bottes",
           type: TableEnum.TaillesBottes,
@@ -248,19 +248,19 @@ export default class BatimentSection {
           type: TableType.TEXTAREA,
         }),
       },
-      bottesDensite: {
+      bottesDensiteGroup: {
         bottesDensite: new Column({
           commentaire: "Bottes, densité sur base sèche (kg/m³)",
           type: TableType.NUMBER,
         }),
       },
-      bottesCereale: {
+      bottesCerealeGroup: {
         bottesCereale: new Column({
           commentaire: "Bottes, céréale",
           type: TableEnum.Cereale,
         }),
       },
-      bottesDistanceApprovisionnement: {
+      bottesDistanceApprovisionnementGroup: {
         bottesDistanceApprovisionnement: new Column({
           commentaire: "Bottes, distance d'approvisionnement (km)",
           type: TableType.NUMBER,
@@ -272,13 +272,13 @@ export default class BatimentSection {
   private _chantier = new Section({
     commentaire: "Chantier",
     columnsGroup: {
-      autoconstruction: {
+      autoconstructionGroup: {
         autoconstruction: new Column({
           commentaire: "Autoconstruction",
           type: TableEnum.YesNoPartial,
         }),
       },
-      participatif: {
+      participatifGroup: {
         participatif: new Column({
           commentaire: "Participatif",
           type: TableEnum.YesNoPartial,
@@ -290,7 +290,7 @@ export default class BatimentSection {
   private _construction = new Section({
     commentaire: "Construction",
     columnsGroup: {
-      structCompl: {
+      structComplGroup: {
         structCompl: new Column({
           commentaire:
             "Structure complémentaire à la structure en paille porteuse (poteau, mur de refend, …)",
@@ -305,25 +305,25 @@ export default class BatimentSection {
           type: TableType.TEXTAREA,
         }),
       },
-      longMaxSansMurRefend: {
+      longMaxSansMurRefendGroup: {
         longMaxSansMurRefend: new Column({
           commentaire: "Longueur maximum sans mur de refend (mètre)",
           type: TableType.NUMBER,
         }),
       },
-      noteCalcul: {
+      noteCalculGroup: {
         noteCalcul: new Column({
           commentaire: "Note de calcul",
           type: TableType.BOOLEAN,
         }),
       },
-      nbrRangDeBottes: {
+      nbrRangDeBottesGroup: {
         nbrRangDeBottes: new Column({
           commentaire: "Nombre de rangs de bottes",
           type: TableType.NATURAL_NUMBER,
         }),
       },
-      integBaie: {
+      integBaieGroup: {
         integBaie: new Column({
           commentaire: "Intégration des baies",
           type: TableEnum.IntegBaie,
@@ -333,7 +333,7 @@ export default class BatimentSection {
           type: TableType.TEXTAREA,
         }),
       },
-      supportAncrage: {
+      supportAncrageGroup: {
         supportAncrage: new Column({
           commentaire: "Nature du support d'ancrage",
           type: TableEnum.SupportAncrage,
@@ -349,7 +349,7 @@ export default class BatimentSection {
   private _revetement = new Section({
     commentaire: "Revêtement",
     columnsGroup: {
-      revetInt: {
+      revetIntGroup: {
         revetInt: new Column({
           commentaire: "Revêtement intérieur",
           type: TableEnum.RevetementInterieur,
@@ -359,7 +359,7 @@ export default class BatimentSection {
           type: TableType.TEXTAREA,
         }),
       },
-      revetExt: {
+      revetExtGroup: {
         revetExt: new Column({
           commentaire: "Revêtement extérieur",
           type: TableEnum.RevetementExterieur,
@@ -375,51 +375,51 @@ export default class BatimentSection {
   private _actricesActeurs = new Section({
     commentaire: "Actrices / acteurs",
     columnsGroup: {
-      maitreDOuvrage: {
+      maitreDOuvrageGroup: {
         maitreDOuvrage: new Column({
           commentaire: "Maître d'ouvrage",
           type: TableType.STRING,
         }),
       },
-      maitreDOeuvre: {
+      maitreDOeuvreGroup: {
         maitreDOeuvre: new Column({
           commentaire: "Maître d'œuvre",
           type: TableType.STRING,
         }),
       },
-      architecte: {
+      architecteGroup: {
         architecte: new Column({
           commentaire: "Architecte",
           type: TableType.STRING,
         }),
       },
-      bureauDEtudeStructure: {
+      bureauDEtudeStructureGroup: {
         bureauDEtudeStructure: new Column({
           commentaire: "Bureau d'étude Structure",
           type: TableType.STRING,
         }),
       },
-      bureauControl: {
+      bureauControlGroup: {
         bureauControl: new Column({
           commentaire: "Bureau contrôle",
           type: TableType.STRING,
         }),
       },
-      entrepriseBottes: {
+      entrepriseBottesGroup: {
         entrepriseBottes: new Column({
           commentaire:
             "Entreprise de mise en œuvre des bottes, si autoconstruction le préciser",
           type: TableType.STRING,
         }),
       },
-      entrepriseCharpente: {
+      entrepriseCharpenteGroup: {
         entrepriseCharpente: new Column({
           commentaire:
             "Entreprise de mise en oeuvre de la charpente, si autoconstruction le préciser",
           type: TableType.STRING,
         }),
       },
-      entrepriseEnduits: {
+      entrepriseEnduitsGroup: {
         entrepriseEnduits: new Column({
           commentaire:
             "Entreprise de mise en oeuvre des enduits, si autoconstruction le préciser",
@@ -432,25 +432,25 @@ export default class BatimentSection {
   private _commentaire = new Section({
     commentaire: "Commentaire",
     columnsGroup: {
-      descriptionProjet: {
+      descriptionProjetGroup: {
         descriptionProjet: new Column({
           commentaire: "Description du projet",
           type: TableType.TEXTAREA,
         }),
       },
-      difficultees: {
+      difficulteesGroup: {
         difficultees: new Column({
           commentaire: "Difficultés rencontrés",
           type: TableType.TEXTAREA,
         }),
       },
-      astuces: {
+      astucesGroup: {
         astuces: new Column({
           commentaire: "Trucs et astuces",
           type: TableType.TEXTAREA,
         }),
       },
-      divers: {
+      diversGroup: {
         divers: new Column({
           commentaire: "Autre commentaires",
           type: TableType.TEXTAREA,
@@ -462,25 +462,25 @@ export default class BatimentSection {
   private _contact = new Section({
     commentaire: "Contact",
     columnsGroup: {
-      contactNom: {
+      contactNomGroup: {
         contactNom: new Column({
           commentaire: "Nom",
           type: TableType.STRING,
         }),
       },
-      contactMail: {
+      contactMailGroup: {
         contactMail: new Column({
           commentaire: "Mail",
           type: TableType.STRING,
         }),
       },
-      contactPhone: {
+      contactPhoneGroup: {
         contactPhone: new Column({
           commentaire: "Téléphone",
           type: TableType.STRING,
         }),
       },
-      codePostal: {
+      codePostalGroup: {
         codePostal: new Column({
           commentaire: "Code postal",
           type: TableType.STRING,
@@ -492,7 +492,7 @@ export default class BatimentSection {
   private _autorisation = new Section({
     commentaire: "Autorisation",
     columnsGroup: {
-      conditionsLuesEtAcceptes: {
+      conditionsLuesEtAcceptesGroup: {
         conditionsLuesEtAcceptes: new Column({
           commentaire:
             "Vous avez lu et vous acceptez les <a href='http://localhost/legal-info'>CGU</a>. Vous êtes avertis que les données sont publiques. Afin d'éviter tout problème, nous vous conseillons de ne pas ne pas placer votre bâtit sur la carte de manière exacte.",
@@ -521,29 +521,29 @@ export default class BatimentSection {
   }
 
   get id(): string | null {
-    return this._definition.columnsGroup.objectId.objectId.value.value;
+    return this._definition.columnsGroup.objectIdGroup.objectId.vueRef.value;
   }
 
   get latitude(): number {
-    return this._definition.columnsGroup.latitudeLongitude.latitudeLongitude
-      .value.value.latitude;
+    return this._definition.columnsGroup.latitudeLongitudeGroup
+      .latitudeLongitude.vueRef.value.latitude;
   }
 
   set latitude(latitude: number) {
     if (!isNaN(latitude)) {
-      this._definition.columnsGroup.latitudeLongitude.latitudeLongitude.value.value.latitude =
+      this._definition.columnsGroup.latitudeLongitudeGroup.latitudeLongitude.vueRef.value.latitude =
         Number(latitude);
     }
   }
 
   get longitude(): number {
-    return this._definition.columnsGroup.latitudeLongitude.latitudeLongitude
-      .value.value.longitude;
+    return this._definition.columnsGroup.latitudeLongitudeGroup
+      .latitudeLongitude.vueRef.value.longitude;
   }
 
   set longitude(longitude: number) {
     if (!isNaN(longitude)) {
-      this._definition.columnsGroup.latitudeLongitude.latitudeLongitude.value.value.longitude =
+      this._definition.columnsGroup.latitudeLongitudeGroup.latitudeLongitude.vueRef.value.longitude =
         Number(longitude);
     }
   }
@@ -553,18 +553,18 @@ export default class BatimentSection {
       return false;
     }
     return (
-      this._definition.columnsGroup.owner.owner.value.value?.id ===
+      this._definition.columnsGroup.ownerGroup.owner.vueRef.value?.id ===
       Parse.User.current()?.id
     );
   }
 
   get autorisation(): boolean {
-    return this._autorisation.columnsGroup.conditionsLuesEtAcceptes
-      .conditionsLuesEtAcceptes.value.value;
+    return this._autorisation.columnsGroup.conditionsLuesEtAcceptesGroup
+      .conditionsLuesEtAcceptes.vueRef.value;
   }
 
   autorisationSetToFalse() {
-    this._autorisation.columnsGroup.conditionsLuesEtAcceptes.conditionsLuesEtAcceptes.value.value =
+    this._autorisation.columnsGroup.conditionsLuesEtAcceptesGroup.conditionsLuesEtAcceptes.vueRef.value =
       false;
   }
 }
