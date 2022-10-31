@@ -178,6 +178,11 @@ See
     * https://github.com/parse-community/parse-server/issues/7289
     * https://sapandiwakar.in/uniqueness-constraints-in-parse-database/
 
+* To delete a file you should use master key. Therefore create a cloud function.
+    https://docs.parseplatform.org/js/guide/#deleting-files
+    * Currently we could use backoffice to clean up of file
+        See https://parse-dashboard.back4app.com/apps/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/settings/general
+
 ## Note
 
 * useRouter().beforeEach is triggered multiple times on navigation, contrary to beforeRouteEnter()

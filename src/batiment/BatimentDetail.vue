@@ -45,7 +45,7 @@
               <template v-if="valueColumn.type === TableType.IMAGE">
                 <img
                   v-if="valueColumn.value.value"
-                  :src="valueColumn.value.value"
+                  :src="valueColumn.value.value?._url"
                   class="batiment-detail__previsualization"
                 />
                 <template v-else> Aucune </template>

@@ -87,7 +87,7 @@ export class Column {
         this.value = ref<Date | null>(null);
         break;
       case TableType.IMAGE:
-        this.value = ref<BinaryType | null>(null);
+        this.value = ref<Parse.File | null>(null);
         break;
       case TableType.NUMBER:
       case TableType.NATURAL_NUMBER:

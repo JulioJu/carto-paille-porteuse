@@ -105,10 +105,11 @@
                 <img
                   class="batiment-update__previsualization"
                   :alt="'Previsualization ' + keyColumn"
+                  :src="valueColumn.value.value?._url"
                   :ref="'previsualization' + keyColumn"
                 />
                 <button
-                  v-on:click="
+                  v-on:click.prevent="
                     clearInputImage(valueColumn.value, 'fileInput' + keyColumn)
                   "
                 >
@@ -182,6 +183,7 @@
 <script lang="ts">
 import {
   defineComponent,
+  reactive,
   ref,
   watchEffect,
   type ComponentPublicInstance,
@@ -196,6 +198,7 @@ interface IInstance extends ComponentPublicInstance {
   setLatLong(queryParam: { latitude: number; longitude: number }): void;
   isCreationFunc(isCreation: boolean): void;
   redirectToHomePage(): void;
+  filesToRemove: Parse.File[];
 }
 
 export default defineComponent({
@@ -236,6 +239,9 @@ export default defineComponent({
   },
   methods: {
     clearInputImage(valueColumn: Ref<any>, inputRefString: string): void {
+      if (valueColumn.value?._url) {
+        this.filesToRemove.push(reactive(valueColumn.value));
+      }
       valueColumn.value = null;
       const inputRef: any = this.$refs[inputRefString];
       if (inputRef && inputRef[0]) {
@@ -244,7 +250,7 @@ export default defineComponent({
     },
     setFileData(
       event: any,
-      valueColumn: Ref<any>,
+      valueColumn: Ref<Parse.File | null>,
       previsualizationRefString: string
     ): void {
       if (event?.target?.files && event.target.files[0]) {
@@ -252,6 +258,9 @@ export default defineComponent({
         if (!/^image\//.test(file.type)) {
           alert(`You could upload only an image. Your file is "${file.type}".`);
           return;
+        }
+        if (valueColumn.value?._url) {
+          this.filesToRemove.push(reactive(valueColumn.value));
         }
         try {
           valueColumn.value = new Parse.File(Date.now().toString(), file);
@@ -302,6 +311,8 @@ const setLatLong = (queryParam: { latitude: number; longitude: number }) => {
 const isCreationFunc = (isCreationParam: boolean) => {
   isCreation.value = isCreationParam;
 };
+
+const filesToRemove: Parse.File[] = [];
 
 watchEffect(() => {
   if (!isNaN(latitude.value as number)) {
@@ -380,6 +391,11 @@ const onSubmit = async () => {
   }
   try {
     const batimentSaved = await batimentToSave().save();
+    filesToRemove.forEach(async (aFileToRemove) => {
+      // Needs master key https://docs.parseplatform.org/js/guide/#deleting-files
+      // await aFileToRemove.destroy();
+      console.warn(`Please delete ${aFileToRemove._url}`);
+    });
     router.push({
       name: "BatimentDetail",
       params: { batimentId: batimentSaved.id },
@@ -399,6 +415,7 @@ defineExpose({
   setLatLong,
   isCreationFunc,
   submitPending,
+  filesToRemove,
 });
 </script>
 <style lang="scss" scoped>

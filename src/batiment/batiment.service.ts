@@ -4,7 +4,7 @@ import type { Router } from "vue-router";
 import type { TypeTableEnum } from "./model/batiment-dropdown";
 import type BatimentSection from "./model/BatimentSections";
 import type { IBatimentAPI } from "./model/IBatimentAPI";
-import { TableType, type Column, type Section } from "./model/Section";
+import type { Column, Section } from "./model/Section";
 
 const destructuringBatiment = (
   aBatiment: BatimentSection
@@ -36,12 +36,11 @@ const retrieveBatiment = async (
         Object.values(aSection.columnsGroup).forEach((columnsGroup) => {
           Object.entries(columnsGroup).forEach(([keyColumn, valueColumn]) => {
             const value = aBatiment.get(keyColumn);
+            if (value === undefined || value === null) {
+              return;
+            }
             if (typeof valueColumn.type === "number") {
-              if (valueColumn.type === TableType.IMAGE) {
-                valueColumn.value.value = value?._url;
-              } else {
-                valueColumn.value.value = value;
-              }
+              valueColumn.value.value = value;
             } else {
               valueColumn.value.value = value?.id;
             }
