@@ -55,6 +55,7 @@ const retrieveABatiment = async (
 
 const retrieveAllBatiments = async (): Promise<IBatimentAPI[]> => {
   const query = new Parse.Query(Parse.Object.extend("batiment"));
+  query.limit(10000);
   query.select(
     "latitudeLongitude",
     "usageBatiment",

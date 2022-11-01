@@ -196,6 +196,8 @@ See
 
 * If there is no existing batiments, we can't create a batiment.
 
+* I've set limit to not retrieve more than 10000 objects (default is 99)
+
 ## Credits
 
 We use https://openlayers.org/en/latest/examples/data/icon.png (licence CC-BY 3.0)
