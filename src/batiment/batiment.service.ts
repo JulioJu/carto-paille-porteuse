@@ -53,15 +53,12 @@ const retrieveABatiment = async (
   }
 };
 
-const retrieveAllBatiments = async (): Promise<IBatimentAPI[]> => {
+const retrieveAllBatiments = async (
+  querySelect: string[]
+): Promise<IBatimentAPI[]> => {
   const query = new Parse.Query(Parse.Object.extend("batiment"));
   query.limit(10000);
-  query.select(
-    "latitudeLongitude",
-    "usageBatiment",
-    "surfacePlancher",
-    "photoPrincipale"
-  );
+  query.select(...querySelect);
   const results = await query.find();
   return results.map((aResult): IBatimentAPI => {
     const aBatiment: IBatimentAPI = {
@@ -77,10 +74,11 @@ const retrieveAllBatiments = async (): Promise<IBatimentAPI[]> => {
 };
 
 const retrieveAllBatimentsWithCatch = async (
-  router: Router
+  router: Router,
+  querySelect: string[]
 ): Promise<IBatimentAPI[]> => {
   try {
-    return await retrieveAllBatiments();
+    return await retrieveAllBatiments(querySelect);
   } catch (error: any) {
     // https://github.com/parse-community/parse-server/blob/63d51fa6c87d3d8b9599e892cf04612dbe3ee7a8/spec/ParseUser.spec.js#L2587
     // -->

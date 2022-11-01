@@ -96,7 +96,10 @@ onMounted(async () => {
     }),
   });
 
-  const batiments = await batimentService.retrieveAllBatimentsWithCatch(router);
+  const batiments = await batimentService.retrieveAllBatimentsWithCatch(
+    router,
+    ["latitudeLongitude", "usageBatiment", "surfacePlancher", "photoPrincipale"]
+  );
   batiments.forEach((aBatiment) => {
     const icon = drawIcon(aBatiment);
     map.addLayer(icon);

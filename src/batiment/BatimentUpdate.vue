@@ -372,7 +372,8 @@ const onSubmit = async () => {
   }
   submitPending.value = true;
   const allBatiments = await batimentService.retrieveAllBatimentsWithCatch(
-    useRouter()
+    useRouter(),
+    ["latitudeLongitude"]
   );
   if (allBatiments.length === 0) {
     alert("Nothing saved");
