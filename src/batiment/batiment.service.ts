@@ -61,7 +61,7 @@ const retrieveAllBatiments = async (
   query.select(...querySelect);
   const results = await query.find();
   return results.map((aResult): IBatimentAPI => {
-    const aBatiment: IBatimentAPI = {
+    return {
       id: aResult.id,
       latitudeLongitude: aResult.get("latitudeLongitude"),
       usageBatiment: aResult.get("usageBatiment"),
@@ -69,7 +69,6 @@ const retrieveAllBatiments = async (
       surfacePlancher: aResult.get("surfacePlancher"),
       photoPrincipale: aResult.get("photoPrincipale"),
     };
-    return aBatiment;
   });
 };
 

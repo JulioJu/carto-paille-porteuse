@@ -4,8 +4,27 @@
     compte.
   </p>
   <form class="register-user" @submit.prevent="onSubmit">
-    <input type="email" v-model="form.email" placeholder="email" />
-    <input type="password" v-model="form.password" placeholder="password" />
+    <em class="div-input--required">champs requit</em>
+    <div class="div-input div-input--required">
+      <input
+        type="pseudo"
+        v-model="form.pseudo"
+        placeholder="pseudo (peut-être votre prénom + nom)"
+        required
+      />
+    </div>
+    <div class="div-input">
+      <input type="firstname" v-model="form.firstname" placeholder="Prénom" />
+    </div>
+    <div class="div-input">
+      <input type="lastname" v-model="form.lastname" placeholder="Nom" />
+    </div>
+    <div class="div-input div-input--required">
+      <input type="email" v-model="form.email" placeholder="email" />
+    </div>
+    <div class="div-input div-input--required">
+      <input type="password" v-model="form.password" placeholder="password" />
+    </div>
     <label>
       Vous avez lu et vous acceptez les
       <a href="/legal-info">CGU</a>
@@ -22,6 +41,9 @@ import Parse from "parse/dist/parse.min.js";
 const cgu = ref(false);
 
 const form = reactive({
+  pseudo: "",
+  firstname: "",
+  lastname: "",
   email: "",
   password: "",
 });
@@ -31,6 +53,9 @@ const onSubmit = async () => {
     return;
   }
   const user = new Parse.User();
+  user.set("pseudo", form.pseudo);
+  user.set("firstname", form.firstname);
+  user.set("lastname", form.lastname);
   user.set("username", Date.now().toString());
   user.set("password", form.password);
   user.set("email", form.email);
@@ -42,16 +67,39 @@ const onSubmit = async () => {
     );
     console.info(userCreated);
   } catch (error: any) {
+    if (error.code === 137) {
+      alert(
+        `Un autre utilisateur dispose déjà d'un pseudo "${form.pseudo}". Veuillez en choisir un autre.`
+      );
+      return;
+    }
     alert("Error: " + error.code + " " + error.message);
   }
 };
 </script>
 
-<style scoped lang="css">
+<style scoped lang="scss">
 .register-user {
   max-width: 30rem;
   display: grid;
   grid-template-rows: repeat(3, auto);
   grid-gap: 2rem;
+  .div-input {
+    display: flex;
+    width: 25rem;
+    padding-left: 1rem;
+    box-sizing: border-box;
+    input {
+      width: 100%;
+    }
+    &--required {
+      padding-left: 0rem;
+      &::before {
+        content: "*";
+        color: red;
+        padding-right: 0.5rem;
+      }
+    }
+  }
 }
 </style>
