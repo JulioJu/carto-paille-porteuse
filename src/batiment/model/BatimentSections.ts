@@ -29,7 +29,7 @@ export default class BatimentSection {
       },
       ownerGroup: {
         owner: new Column({
-          commentaire: "Propriétaire",
+          commentaire: "Droits modification & suppression",
           type: TableType.USER,
           generatedByBack: true,
           cssClass: "display-none",

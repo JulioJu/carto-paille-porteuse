@@ -1,8 +1,12 @@
 <template>
   <br />
-  <RouterLink v-if="batiment.isOwner" :to="'/batiment/' + batiment.id + '/edit'"
-    >Éditer</RouterLink
-  >
+  <template v-if="batiment.isOwner">
+    <RouterLink :to="'/batiment/' + batiment.id + '/edit'">Éditer</RouterLink>
+    <br />
+    <button v-on:click.prevent="deleteCurrentBatiment()">
+      Supprimer le bâtiment
+    </button>
+  </template>
   <div
     v-for="[keySection, valueSection] in batimentService.destructuringBatiment(
       batiment
@@ -75,7 +79,8 @@
                   Vous avez créé cet bâtit, vous pouvez le modifier
                 </template>
                 <template v-else>
-                  Vous n'avez pas créé cet bâtit, vous ne pouvez pas le modifier
+                  Vous n'avez pas enregistré cet bâtit, vous ne pouvez ni le
+                  modifier, ni le supprimer
                 </template>
               </template>
               <template v-else>
@@ -106,6 +111,7 @@ import BatimentSection from "./model/BatimentSections";
 import { TableType } from "./model/Section";
 import batimentService from "./batiment.service";
 import Parse from "parse/dist/parse.min.js";
+import { useRouter } from "vue-router";
 
 interface IInstance extends ComponentPublicInstance {
   batiment: BatimentSection;
@@ -128,6 +134,26 @@ export default defineComponent({
 </script>
 <script setup lang="ts">
 const batiment = new BatimentSection();
+
+const router = useRouter();
+
+const deleteCurrentBatiment = async () => {
+  const confirmation = confirm(
+    "Êtes-vous certain de vouloir supprimer ce bâtiment (oppération irréversible)"
+  );
+  const batimentToDelete = new Parse.Object("batiment");
+  if (!confirmation) {
+    return;
+  }
+  batimentToDelete.id = batiment.id as string;
+  try {
+    await batimentToDelete.destroy();
+    router.push("/");
+  } catch (error: any) {
+    console.error(error);
+    alert("Failed to delete object");
+  }
+};
 
 defineExpose({ batiment });
 </script>

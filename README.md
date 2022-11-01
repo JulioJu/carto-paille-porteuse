@@ -191,12 +191,19 @@ See
 
 ## Note
 
+* First development on Parse Platform 4.5.0 in 2022. On Back4App it was the last production release.
+
 * useRouter().beforeEach is triggered multiple times on navigation, contrary to beforeRouteEnter()
     Following guide is interesting https://github.com/vuejs/rfcs/discussions/302
 
 * If there is no existing batiments, we can't create a batiment.
 
 * I've set limit to not retrieve more than 10000 objects (default is 99)
+
+* With Parse 4.5.0 If you try to make a CRUD on an object without right, you have error:
+    ```
+    Error: Object not found.
+    ```
 
 ## Credits
 
