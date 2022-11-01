@@ -6,4 +6,5 @@ export interface IBatimentAPI {
   nomBatiment: string | undefined;
   usageBatiment: { id: string; className: "UsageBatiment" } | undefined;
   surfacePlancher: number | undefined;
+  photoPrincipale: Parse.File | undefined;
 }

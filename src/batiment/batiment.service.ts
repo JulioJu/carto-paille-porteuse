@@ -55,7 +55,12 @@ const retrieveABatiment = async (
 
 const retrieveAllBatiments = async (): Promise<IBatimentAPI[]> => {
   const query = new Parse.Query(Parse.Object.extend("batiment"));
-  query.select("latitudeLongitude", "usageBatiment", "surfacePlancher");
+  query.select(
+    "latitudeLongitude",
+    "usageBatiment",
+    "surfacePlancher",
+    "photoPrincipale"
+  );
   const results = await query.find();
   return results.map((aResult): IBatimentAPI => {
     const aBatiment: IBatimentAPI = {
@@ -64,6 +69,7 @@ const retrieveAllBatiments = async (): Promise<IBatimentAPI[]> => {
       usageBatiment: aResult.get("usageBatiment"),
       nomBatiment: aResult.get("nomBatiment"),
       surfacePlancher: aResult.get("surfacePlancher"),
+      photoPrincipale: aResult.get("photoPrincipale"),
     };
     return aBatiment;
   });

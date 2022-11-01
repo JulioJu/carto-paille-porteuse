@@ -1,6 +1,9 @@
 import "ol/ol.css";
+
 import { Map, Overlay } from "ol";
+
 import type { Router } from "vue-router";
+import type { FeatureLike } from "ol/Feature";
 
 const appendList = (
   list: HTMLUListElement,
@@ -22,18 +25,55 @@ const appendList = (
   list.appendChild(li);
 };
 
+const addSeeMoreLink = (list: HTMLUListElement, id: string, router: Router) => {
+  const anchor = document.createElement("a");
+  anchor.innerText = "Voir +";
+  anchor.classList.add("link-primary");
+  anchor.addEventListener("click", (ev: MouseEvent) => {
+    ev.preventDefault();
+    router.push({
+      name: "BatimentDetail",
+      params: { batimentId: id },
+    });
+  });
+  const li = document.createElement("li");
+  li.appendChild(anchor);
+  list.appendChild(li);
+};
+
+const createList = (param: {
+  router: Router;
+  feature: FeatureLike;
+}): HTMLUListElement => {
+  const list = document.createElement("ul");
+  appendList(list, param.feature.get("name"), true);
+  appendList(list, param.feature.get("usageBatiment"));
+  appendList(list, param.feature.get("surface"));
+  addSeeMoreLink(list, param.feature.get("id"), param.router);
+  return list;
+};
+
+const addPrincipalePhoto = (
+  popup: HTMLDivElement,
+  photoPrincipaleSrc: string
+) => {
+  if (photoPrincipaleSrc === undefined) {
+    return;
+  }
+  const photo = new Image();
+  photo.style.maxHeight = "5rem";
+  photo.classList.add("mt-2");
+  photo.alt = "Image du bâtiment";
+  photo.src = photoPrincipaleSrc;
+  popup.appendChild(photo);
+};
+
 const disposePopup = (overlay: Overlay, popupCloser: HTMLDivElement) => {
   overlay.setPosition(undefined);
   popupCloser.blur();
 };
 
-const registerMapEvents = ({
-  map,
-  popupContent,
-  overlay,
-  popupCloser,
-  router,
-}: {
+const registerMapEvents = (param: {
   map: Map;
   popupContent: HTMLDivElement;
   overlay: Overlay;
@@ -41,61 +81,31 @@ const registerMapEvents = ({
   router: Router;
 }) => {
   // display popup on click
-  map.on("click", async (evt) => {
-    const feature = map.forEachFeatureAtPixel(evt.pixel, (feature) => {
+  param.map.on("click", async (evt) => {
+    const feature = param.map.forEachFeatureAtPixel(evt.pixel, (feature) => {
       return feature;
     });
     if (feature) {
-      popupContent.innerHTML = "";
-      overlay.setPosition(evt.coordinate);
-      const list = document.createElement("ul");
-      const name = feature.get("name");
-      if (name) {
-        appendList(list, `${name}`, true);
-      }
-      appendList(list, feature.get("usageBatiment"));
-      appendList(list, feature.get("surface"));
-      const li = document.createElement("li");
-      const anchor = document.createElement("a");
-      anchor.innerText = "Voir +";
-      anchor.classList.add("link-primary");
-      anchor.addEventListener("click", (ev: MouseEvent) => {
-        ev.preventDefault();
-        router.push({
-          name: "BatimentDetail",
-          params: { batimentId: feature.get("id") },
-        });
-      });
-      li.appendChild(anchor);
-      list.appendChild(li);
-      popupContent.appendChild(list);
-      // TODO not optimized, we retrieve all Batiment to get only a photo
-      const aBatiment = {
-        photoPrincipale: null,
-        photoPrincipaleContentType: null,
-      };
-      if (aBatiment.photoPrincipale) {
-        const photo = new Image();
-        photo.style.maxHeight = "5rem";
-        photo.classList.add("mt-2");
-        photo.alt = "Image du bâtiment";
-        photo.src = `data:${aBatiment.photoPrincipaleContentType};base64,${aBatiment.photoPrincipale}`;
-        list.appendChild(photo);
-      }
+      param.popupContent.innerHTML = "";
+      param.overlay.setPosition(evt.coordinate);
+      param.popupContent.appendChild(
+        createList({ router: param.router, feature })
+      );
+      addPrincipalePhoto(param.popupContent, feature.get("photoPrincipaleSrc"));
     } else {
-      disposePopup(overlay, popupCloser);
+      disposePopup(param.overlay, param.popupCloser);
     }
   });
 
   // change mouse cursor when over marker
-  map.on("pointermove", function (e) {
-    const pixel = map.getEventPixel(e.originalEvent);
-    const hit = map.hasFeatureAtPixel(pixel);
-    (map.getTarget() as HTMLElement).style.cursor = hit ? "pointer" : "";
+  param.map.on("pointermove", function (e) {
+    const pixel = param.map.getEventPixel(e.originalEvent);
+    const hit = param.map.hasFeatureAtPixel(pixel);
+    (param.map.getTarget() as HTMLElement).style.cursor = hit ? "pointer" : "";
   });
   // Close the popup when the map is moved
-  map.on("movestart", function () {
-    disposePopup(overlay, popupCloser);
+  param.map.on("movestart", function () {
+    disposePopup(param.overlay, param.popupCloser);
   });
 };
 

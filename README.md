@@ -194,6 +194,8 @@ See
 * useRouter().beforeEach is triggered multiple times on navigation, contrary to beforeRouteEnter()
     Following guide is interesting https://github.com/vuejs/rfcs/discussions/302
 
+* If there is no existing batiments, we can't create a batiment.
+
 ## Credits
 
 We use https://openlayers.org/en/latest/examples/data/icon.png (licence CC-BY 3.0)

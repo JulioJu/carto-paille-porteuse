@@ -34,6 +34,9 @@ export default (aBatiment: IBatimentAPI) => {
     surface: aBatiment.surfacePlancher
       ? `${aBatiment.surfacePlancher} m²`
       : undefined,
+    photoPrincipaleSrc: aBatiment.photoPrincipale
+      ? aBatiment.photoPrincipale._url
+      : undefined,
   });
 
   const iconStyle = new Style({
