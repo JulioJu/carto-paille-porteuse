@@ -23,8 +23,8 @@ export default (aBatiment: IBatimentAPI) => {
           aBatiment.latitudeLongitude.latitude,
         ],
         "EPSG:4326",
-        "EPSG:3857"
-      )
+        "EPSG:3857",
+      ),
     ),
     id: aBatiment.id,
     name: aBatiment.nomBatiment,

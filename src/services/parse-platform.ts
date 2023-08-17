@@ -6,7 +6,7 @@ import Parse from "parse/dist/parse.min.js";
 const initializeParse = () => {
   Parse.initialize(
     environment.parsePlatform.app_id,
-    environment.parsePlatform.js_key
+    environment.parsePlatform.js_key,
   );
   Parse.serverURL = environment.parsePlatform.serverURL;
 };

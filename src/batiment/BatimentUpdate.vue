@@ -20,7 +20,7 @@
           keyColumnsGroup,
           columnsGroup,
         ] in batimentService.destructuringColumnsGroup(
-          valueSection.columnsGroup
+          valueSection.columnsGroup,
         )"
         :key="keyColumnsGroup"
         class="batiment-update__columns-group"
@@ -121,7 +121,7 @@
                   setFileData(
                     $event,
                     valueColumn.vueRef,
-                    'previsualization' + keyColumn
+                    'previsualization' + keyColumn,
                   )
                 "
                 accept="image/*"
@@ -162,7 +162,7 @@
                   keyEnum,
                   labelEnum,
                 ] in batimentService.destructuringTableEnum(
-                  valueColumn.type.enum
+                  valueColumn.type.enum,
                 )"
                 :key="keyEnum"
                 :value="keyEnum"
@@ -250,7 +250,7 @@ export default defineComponent({
     setFileData(
       event: any,
       valueColumn: Ref<Parse.File | null>,
-      previsualizationRefString: string
+      previsualizationRefString: string,
     ): void {
       if (event?.target?.files && event.target.files[0]) {
         const file: File = event.target.files[0];
@@ -275,7 +275,7 @@ export default defineComponent({
           reader.readAsDataURL(file);
         } catch (error) {
           alert(
-            "Fail to upload your file. Please contact us to submit the error."
+            "Fail to upload your file. Please contact us to submit the error.",
           );
           console.error(error);
           return;
@@ -373,7 +373,7 @@ const onSubmit = async () => {
   submitPending.value = true;
   const allBatiments = await batimentService.retrieveAllBatimentsWithCatch(
     useRouter(),
-    ["latitudeLongitude"]
+    ["latitudeLongitude"],
   );
   if (allBatiments.length === 0) {
     alert("Nothing saved");
@@ -388,7 +388,7 @@ const onSubmit = async () => {
         aBatiment.latitudeLongitude.longitude === Number(longitude.value)
       ) {
         alert(
-          `Un bâtit avec une latitude '${latitude.value}' ou longitude '${longitude.value}' existe déjà. Rien n'a été enregistré.`
+          `Un bâtit avec une latitude '${latitude.value}' ou longitude '${longitude.value}' existe déjà. Rien n'a été enregistré.`,
         );
         shouldSave = false;
       }
@@ -406,7 +406,7 @@ const onSubmit = async () => {
       console.warn(`Please delete ${aFileToRemove._url}`);
     });
     alert(
-      "Bâtiment enregistré avec succès ! \nVous allez être redirigé vers la fiche du bâtit."
+      "Bâtiment enregistré avec succès ! \nVous allez être redirigé vers la fiche du bâtit.",
     );
     router.push({
       name: "BatimentDetail",

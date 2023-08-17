@@ -63,13 +63,13 @@ const onSubmit = async () => {
   try {
     const userCreated = await user.signUp();
     alert(
-      "Utilisateur créé avec succès. Veuillez consulter votre boîte mail pour valider votre compte."
+      "Utilisateur créé avec succès. Veuillez consulter votre boîte mail pour valider votre compte.",
     );
     console.info(userCreated);
   } catch (error: any) {
     if (error.code === 137) {
       alert(
-        `Un autre utilisateur dispose déjà d'un pseudo "${form.pseudo}". Veuillez en choisir un autre.`
+        `Un autre utilisateur dispose déjà d'un pseudo "${form.pseudo}". Veuillez en choisir un autre.`,
       );
       return;
     }

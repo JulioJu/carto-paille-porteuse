@@ -98,7 +98,12 @@ onMounted(async () => {
 
   const batiments = await batimentService.retrieveAllBatimentsWithCatch(
     router,
-    ["latitudeLongitude", "usageBatiment", "surfacePlancher", "photoPrincipale"]
+    [
+      "latitudeLongitude",
+      "usageBatiment",
+      "surfacePlancher",
+      "photoPrincipale",
+    ],
   );
   batiments.forEach((aBatiment) => {
     const icon = drawIcon(aBatiment);
@@ -119,12 +124,12 @@ const toggleEditionMode = (): void => {
     eventRetrieveCoordAndNavigate.register(
       map,
       router,
-      mapRoot.value as HTMLDivElement
+      mapRoot.value as HTMLDivElement,
     );
   } else {
     eventRetrieveCoordAndNavigate.unregister(
       map,
-      mapRoot.value as HTMLDivElement
+      mapRoot.value as HTMLDivElement,
     );
   }
   isEditMode.value = !isEditMode.value;

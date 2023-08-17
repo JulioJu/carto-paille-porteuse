@@ -7,11 +7,11 @@ import type { IBatimentAPI } from "./model/IBatimentAPI";
 import type { Column, Section } from "./model/Section";
 
 const destructuringBatiment = (
-  aBatiment: BatimentSection
+  aBatiment: BatimentSection,
 ): [key: string, value: Section][] => Object.entries(aBatiment);
 
 const destructuringColumnsGroup = (
-  columns: Section["columnsGroup"]
+  columns: Section["columnsGroup"],
 ): [keyColumnsGroup: string, columnsGroup: { [key: string]: Column }][] =>
   Object.entries(columns);
 
@@ -20,12 +20,12 @@ const destructuringColumns = (columns: {
 }): [key: string, value: Column][] => Object.entries(columns);
 
 const destructuringTableEnum = (
-  aTableEnum: TypeTableEnum["enum"]
+  aTableEnum: TypeTableEnum["enum"],
 ): [key: string, value: string][] => Object.entries(aTableEnum);
 
 const retrieveABatiment = async (
   id: string,
-  batiment: BatimentSection
+  batiment: BatimentSection,
 ): Promise<void> => {
   const query = new Parse.Query(Parse.Object.extend("batiment"));
   query.equalTo("objectId", id);
@@ -54,7 +54,7 @@ const retrieveABatiment = async (
 };
 
 const retrieveAllBatiments = async (
-  querySelect: string[]
+  querySelect: string[],
 ): Promise<IBatimentAPI[]> => {
   const query = new Parse.Query(Parse.Object.extend("batiment"));
   query.limit(10000);
@@ -74,7 +74,7 @@ const retrieveAllBatiments = async (
 
 const retrieveAllBatimentsWithCatch = async (
   router: Router,
-  querySelect: string[]
+  querySelect: string[],
 ): Promise<IBatimentAPI[]> => {
   try {
     return await retrieveAllBatiments(querySelect);

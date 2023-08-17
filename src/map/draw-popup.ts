@@ -8,7 +8,7 @@ import type { FeatureLike } from "ol/Feature";
 const appendList = (
   list: HTMLUListElement,
   content: string,
-  strong = false
+  strong = false,
 ) => {
   if (content === undefined) {
     return;
@@ -55,7 +55,7 @@ const createList = (param: {
 
 const addPrincipalePhoto = (
   popup: HTMLDivElement,
-  photoPrincipaleSrc: string
+  photoPrincipaleSrc: string,
 ) => {
   if (photoPrincipaleSrc === undefined) {
     return;
@@ -89,7 +89,7 @@ const registerMapEvents = (param: {
       param.popupContent.innerHTML = "";
       param.overlay.setPosition(evt.coordinate);
       param.popupContent.appendChild(
-        createList({ router: param.router, feature })
+        createList({ router: param.router, feature }),
       );
       addPrincipalePhoto(param.popupContent, feature.get("photoPrincipaleSrc"));
     } else {

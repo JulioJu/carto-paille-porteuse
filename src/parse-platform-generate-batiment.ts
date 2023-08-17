@@ -43,7 +43,7 @@ const droptablesCreated = async () => {
     tableToDelete.map(async (table: string) => {
       await new Parse.Schema(table).purge();
       await new Parse.Schema(table).delete();
-    })
+    }),
   );
 };
 
@@ -54,7 +54,7 @@ const createAEnum = async (tableName: string, tableEnum: TypeTableEnum) => {
       table.id = objectId;
       table.set("commentaire", tableEnum.enum[objectId]);
       await table.save();
-    })
+    }),
   );
 };
 
@@ -64,8 +64,8 @@ const createEnumTables = async () => {
   Parse.allowCustomObjectId = true;
   await Promise.all(
     Object.entries(TableEnum).map(
-      async ([tableName, tableEnum]) => await createAEnum(tableName, tableEnum)
-    )
+      async ([tableName, tableEnum]) => await createAEnum(tableName, tableEnum),
+    ),
   );
   // eslint-disable-next-line
   // @ts-ignore
@@ -75,7 +75,7 @@ const createEnumTables = async () => {
 const createAColumn = (
   batimentSchema: Parse.Schema,
   columnName: string,
-  column: Column
+  column: Column,
 ) => {
   if (column.generatedByBack === true) {
     return;
@@ -116,7 +116,7 @@ const createAColumn = (
 
 const createASection = (
   batimentSchema: Parse.Schema,
-  columnsGroup: Section["columnsGroup"]
+  columnsGroup: Section["columnsGroup"],
 ) => {
   Object.values(columnsGroup).forEach((columns) => {
     Object.entries(columns).forEach(([columnName, column]) => {
@@ -165,7 +165,7 @@ export default async () => {
     alert("Tables deleted then created again with success");
   } catch (error) {
     alert(
-      "Error, it's normal, master key is not corretly defined. See also JavaScript console."
+      "Error, it's normal, master key is not corretly defined. See also JavaScript console.",
     );
     console.error(error);
   }

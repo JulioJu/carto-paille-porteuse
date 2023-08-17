@@ -9,7 +9,7 @@
   </template>
   <div
     v-for="[keySection, valueSection] in batimentService.destructuringBatiment(
-      batiment
+      batiment,
     )"
     :key="keySection"
     :class="keySection.substring(1)"
@@ -21,7 +21,7 @@
           keyColumnsGroup,
           columnsGroup,
         ] in batimentService.destructuringColumnsGroup(
-          valueSection.columnsGroup
+          valueSection.columnsGroup,
         )"
         :key="keyColumnsGroup"
         class="batiment-detail__columns-group"
@@ -125,7 +125,7 @@ export default defineComponent({
         // For instance http://127.0.0.1:5173/batiment/2961/edit
         batimentService.retrieveABatiment(
           to.params.batimentId as string,
-          instance.batiment
+          instance.batiment,
         );
       }
     });
@@ -139,7 +139,7 @@ const router = useRouter();
 
 const deleteCurrentBatiment = async () => {
   const confirmation = confirm(
-    "Êtes-vous certain de vouloir supprimer ce bâtiment (oppération irréversible)"
+    "Êtes-vous certain de vouloir supprimer ce bâtiment (oppération irréversible)",
   );
   const batimentToDelete = new Parse.Object("batiment");
   if (!confirmation) {
