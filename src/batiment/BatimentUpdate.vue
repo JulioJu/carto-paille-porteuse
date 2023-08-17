@@ -388,7 +388,7 @@ const onSubmit = async () => {
         aBatiment.latitudeLongitude.longitude === Number(longitude.value)
       ) {
         alert(
-          `A batiment with latitude '${latitude.value}' or '${longitude.value}' already exists. Batiment is not saved.`
+          `Un bâtit avec une latitude '${latitude.value}' ou longitude '${longitude.value}' existe déjà. Rien n'a été enregistré.`
         );
         shouldSave = false;
       }
@@ -405,6 +405,9 @@ const onSubmit = async () => {
       // await aFileToRemove.destroy();
       console.warn(`Please delete ${aFileToRemove._url}`);
     });
+    alert(
+      "Bâtiment enregistré avec succès ! \nVous allez être redirigé vers la fiche du bâtit."
+    );
     router.push({
       name: "BatimentDetail",
       params: { batimentId: batimentSaved.id },
