@@ -58,7 +58,7 @@ export class Validation {
 }
 
 export class Column {
-  private _commentaire: string;
+  private _commentaire: string | null;
   private _type: TableType | TypeTableEnum;
   private _validation?: Validation;
   private _cssClass?: string;
@@ -66,7 +66,7 @@ export class Column {
   public vueRef: Ref<any>;
 
   constructor(param: {
-    commentaire: string;
+    commentaire: string | null;
     type: TableType | TypeTableEnum;
     validation?: Validation;
     cssClass?: string;
@@ -126,23 +126,44 @@ export class Column {
   }
 }
 
-export class Section {
-  private _commentaire: string;
-  private _columnsGroup: { [key: string]: { [key: string]: Column } };
+export class ColumnsGroup {
+  private _commentaire: string | null;
+  private _columns: { [key: string]: Column };
 
   constructor(param: {
-    commentaire: string;
-    columnsGroup: { [key: string]: { [key: string]: Column } };
+    commentaire: string | null;
+    columns: { [key: string]: Column };
   }) {
     this._commentaire = param.commentaire;
-    this._columnsGroup = param.columnsGroup;
+    this._columns = param.columns;
   }
 
-  get commentaire(): string {
+  get commentaire(): string | null {
     return this._commentaire;
   }
 
-  get columnsGroup() {
-    return this._columnsGroup;
+  get columns() {
+    return this._columns;
+  }
+}
+
+export class Section {
+  private _commentaire: string | null;
+  private _columnsGroups: { [key: string]: ColumnsGroup };
+
+  constructor(param: {
+    commentaire: string;
+    columnsGroups: { [key: string]: ColumnsGroup };
+  }) {
+    this._commentaire = param.commentaire;
+    this._columnsGroups = param.columnsGroups;
+  }
+
+  get commentaire(): string | null {
+    return this._commentaire;
+  }
+
+  get columnsGroups(): { [key: string]: ColumnsGroup } {
+    return this._columnsGroups;
   }
 }

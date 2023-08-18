@@ -11,6 +11,7 @@ import {
   type TypeTableEnum,
 } from "@/batiment/model/batiment-dropdown";
 import batimentSections from "@/batiment/model/BatimentSections";
+import batimentService from "./batiment/batiment.service";
 
 // BIG WARNING Security.
 // ====
@@ -116,13 +117,17 @@ const createAColumn = (
 
 const createASection = (
   batimentSchema: Parse.Schema,
-  columnsGroup: Section["columnsGroup"],
+  columnsGroups: Section["columnsGroups"],
 ) => {
-  Object.values(columnsGroup).forEach((columns) => {
-    Object.entries(columns).forEach(([columnName, column]) => {
-      createAColumn(batimentSchema, columnName, column);
+  batimentService
+    .destructuringColumnsGroup(columnsGroups)
+    .forEach(([_, columnsGroups]) => {
+      batimentService
+        .destructuringColumns(columnsGroups)
+        .forEach(([columnName, column]) => {
+          createAColumn(batimentSchema, columnName, column);
+        });
     });
-  });
 };
 
 /**
@@ -135,8 +140,9 @@ const createASection = (
  */
 const createBatimentTable = async () => {
   const batimentSchema = new Parse.Schema(batimentTable);
-  Object.values(new batimentSections().allSections).forEach((aBatiment) => {
-    createASection(batimentSchema, aBatiment.columnsGroup);
+  const batiment = new batimentSections();
+  batimentService.destructuringBatiment(batiment).forEach(([_, aBatiment]) => {
+    createASection(batimentSchema, aBatiment.columnsGroups);
   });
   batimentSchema.addPointer("owner", userTable, { required: true });
   await batimentSchema.save();

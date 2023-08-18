@@ -17,6 +17,7 @@ module.exports = {
         allow: ["debug", "info", "warn", "error", "trace"],
       },
     ],
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
   },
   parserOptions: {
     ecmaVersion: "latest",

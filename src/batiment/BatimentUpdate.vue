@@ -18,160 +18,176 @@
       <div
         v-for="[
           keyColumnsGroup,
-          columnsGroup,
+          columnsGroups,
         ] in batimentService.destructuringColumnsGroup(
-          valueSection.columnsGroup,
+          valueSection.columnsGroups,
         )"
         :key="keyColumnsGroup"
         class="batiment-update__columns-group"
         :class="
-          Object.keys(columnsGroup).length > 1
+          Object.keys(columnsGroups).length > 1
             ? 'batiment-update__columns-group--several'
             : ''
         "
       >
-        <label
-          v-for="[
-            keyColumn,
-            valueColumn,
-          ] in batimentService.destructuringColumns(columnsGroup)"
-          :key="keyColumn"
-          :class="
-            keySection.substring(1) +
-            '__' +
-            keyColumn +
-            ' ' +
-            (valueColumn.cssClass ? valueColumn.cssClass : '')
-          "
-        >
-          <span v-html="valueColumn.commentaire"></span>
-          <template v-if="typeof valueColumn.type === 'number'">
-            <input
-              :id="'input__' + keyColumn"
-              v-if="valueColumn.type === TableType.STRING"
-              v-model="valueColumn.vueRef.value"
-              type="text"
-              :required="valueColumn.validation?.required"
-              :maxlength="valueColumn.validation?.maxlength"
-            />
-            <textarea
-              :id="'input__' + keyColumn"
-              v-else-if="valueColumn.type === TableType.TEXTAREA"
-              v-model="valueColumn.vueRef.value"
-              :required="valueColumn.validation?.required"
-            />
-            <input
-              :id="'input__' + keyColumn"
-              v-else-if="valueColumn.type === TableType.BOOLEAN"
-              v-model="valueColumn.vueRef.value"
-              type="checkbox"
-              :required="valueColumn.validation?.required"
-            />
-            <input
-              :id="'input__' + keyColumn"
-              v-else-if="valueColumn.type === TableType.NUMBER"
-              v-model="valueColumn.vueRef.value"
-              type="number"
-              step="any"
-              :required="valueColumn.validation?.required"
-              :min="valueColumn.validation?.min"
-              :max="valueColumn.validation?.max"
-            />
-            <input
-              :id="'input__' + keyColumn"
-              v-else-if="valueColumn.type === TableType.NATURAL_NUMBER"
-              v-model="valueColumn.vueRef.value"
-              type="number"
-              :required="valueColumn.validation?.required"
-              :min="valueColumn.validation?.min"
-              :max="valueColumn.validation?.max"
-            />
-            <input
-              :id="'input__' + keyColumn"
-              v-else-if="valueColumn.type === TableType.DATE"
-              v-model="valueColumn.vueRef.value"
-              type="date"
-              :required="valueColumn.validation?.required"
-              :min="valueColumn.validation?.min"
-              :max="valueColumn.validation?.max"
-            />
-            <template v-else-if="valueColumn.type === TableType.IMAGE">
-              <div
-                class="batiment-update__img-group"
-                v-if="valueColumn.vueRef.value"
+        <fieldset>
+          <legend>{{ columnsGroups.commentaire }}</legend>
+          <div
+            v-for="[
+              keyColumn,
+              valueColumn,
+            ] in batimentService.destructuringColumns(columnsGroups)"
+            :key="keyColumn"
+          >
+            <label
+              :class="
+                keySection.substring(1) +
+                '__' +
+                keyColumn +
+                ' ' +
+                (valueColumn.cssClass ? valueColumn.cssClass : '')
+              "
+            >
+              <span v-html="valueColumn.commentaire"></span>
+              <template v-if="typeof valueColumn.type === 'number'">
+                <input
+                  :id="'input__' + keyColumn"
+                  v-if="valueColumn.type === TableType.STRING"
+                  v-model="valueColumn.vueRef.value"
+                  type="text"
+                  :required="valueColumn.validation?.required"
+                  :maxlength="valueColumn.validation?.maxlength"
+                />
+                <textarea
+                  :id="'input__' + keyColumn"
+                  v-else-if="valueColumn.type === TableType.TEXTAREA"
+                  v-model="valueColumn.vueRef.value"
+                  :required="valueColumn.validation?.required"
+                />
+                <input
+                  :id="'input__' + keyColumn"
+                  v-else-if="valueColumn.type === TableType.BOOLEAN"
+                  v-model="valueColumn.vueRef.value"
+                  type="checkbox"
+                  :required="valueColumn.validation?.required"
+                />
+                <input
+                  :id="'input__' + keyColumn"
+                  v-else-if="valueColumn.type === TableType.NUMBER"
+                  v-model="valueColumn.vueRef.value"
+                  type="number"
+                  step="any"
+                  :required="valueColumn.validation?.required"
+                  :min="valueColumn.validation?.min"
+                  :max="valueColumn.validation?.max"
+                />
+                <input
+                  :id="'input__' + keyColumn"
+                  v-else-if="valueColumn.type === TableType.NATURAL_NUMBER"
+                  v-model="valueColumn.vueRef.value"
+                  type="number"
+                  :required="valueColumn.validation?.required"
+                  :min="valueColumn.validation?.min"
+                  :max="valueColumn.validation?.max"
+                />
+                <input
+                  :id="'input__' + keyColumn"
+                  v-else-if="valueColumn.type === TableType.DATE"
+                  v-model="valueColumn.vueRef.value"
+                  type="date"
+                  :required="valueColumn.validation?.required"
+                  :min="valueColumn.validation?.min"
+                  :max="valueColumn.validation?.max"
+                />
+                <template v-else-if="valueColumn.type === TableType.IMAGE">
+                  <div
+                    class="batiment-update__img-group"
+                    v-if="valueColumn.vueRef.value"
+                  >
+                    <a
+                      v-on:click.prevent="
+                        clearInputImage(
+                          valueColumn.vueRef,
+                          'fileInput' + keyColumn,
+                        )
+                      "
+                    >
+                      Remove image downloaded
+                    </a>
+                  </div>
+                  <input
+                    :id="'input__' + keyColumn"
+                    type="file"
+                    v-on:change="
+                      setFileData(
+                        $event,
+                        valueColumn.vueRef,
+                        'previsualization' + keyColumn,
+                      )
+                    "
+                    accept="image/*"
+                    :required="valueColumn.validation?.required"
+                    :ref="'fileInput' + keyColumn"
+                  />
+                </template>
+                <template v-else-if="valueColumn.type === TableType.GEOPOINT">
+                  <!-- See also https://fr.wikipedia.org/wiki/Liste_de_points_extr%C3%AAmes_de_la_France#France_m%C3%A9tropolitaine_et_d%C3%A9partements_d'outre-mer -->
+                  <input
+                    :id="'input__' + keyColumn + 'latitude'"
+                    v-model="latitude"
+                    type="number"
+                    step="any"
+                    :required="valueColumn.validation?.required"
+                    min="41"
+                    max="52"
+                  />
+                  <input
+                    :id="'input__' + keyColumn + 'longitude'"
+                    v-model="longitude"
+                    type="number"
+                    step="any"
+                    :required="valueColumn.validation?.required"
+                    min="-5.1"
+                    max="10"
+                  />
+                </template>
+              </template>
+              <template v-else>
+                <select
+                  :id="'input__' + keyColumn"
+                  v-model="valueColumn.vueRef.value"
+                  :required="valueColumn.validation?.required"
+                >
+                  <option
+                    v-for="[
+                      keyEnum,
+                      labelEnum,
+                    ] in batimentService.destructuringTableEnum(
+                      valueColumn.type.enum,
+                    )"
+                    :key="keyEnum"
+                    :value="keyEnum"
+                    :label="labelEnum"
+                  ></option>
+                </select>
+              </template>
+              <br />
+              <template
+                v-if="
+                  valueColumn.type === TableType.IMAGE &&
+                  valueColumn.vueRef.value?.url
+                "
               >
                 <img
                   class="batiment-update__previsualization"
-                  :alt="'Previsualization ' + keyColumn"
+                  alt="Image indisponible"
                   :src="valueColumn.vueRef.value?._url"
                   :ref="'previsualization' + keyColumn"
                 />
-                <button
-                  v-on:click.prevent="
-                    clearInputImage(valueColumn.vueRef, 'fileInput' + keyColumn)
-                  "
-                >
-                  Remove image downloaded
-                </button>
-              </div>
-              <input
-                :id="'input__' + keyColumn"
-                type="file"
-                v-on:change="
-                  setFileData(
-                    $event,
-                    valueColumn.vueRef,
-                    'previsualization' + keyColumn,
-                  )
-                "
-                accept="image/*"
-                :required="valueColumn.validation?.required"
-                :ref="'fileInput' + keyColumn"
-              />
-            </template>
-            <template v-else-if="valueColumn.type === TableType.GEOPOINT">
-              <!-- See also https://fr.wikipedia.org/wiki/Liste_de_points_extr%C3%AAmes_de_la_France#France_m%C3%A9tropolitaine_et_d%C3%A9partements_d'outre-mer -->
-              <input
-                :id="'input__' + keyColumn + 'latitude'"
-                v-model="latitude"
-                type="number"
-                step="any"
-                :required="valueColumn.validation?.required"
-                min="41"
-                max="52"
-              />
-              <input
-                :id="'input__' + keyColumn + 'longitude'"
-                v-model="longitude"
-                type="number"
-                step="any"
-                :required="valueColumn.validation?.required"
-                min="-5.1"
-                max="10"
-              />
-            </template>
-          </template>
-          <template v-else>
-            <select
-              :id="'input__' + keyColumn"
-              v-model="valueColumn.vueRef.value"
-              :required="valueColumn.validation?.required"
-            >
-              <option
-                v-for="[
-                  keyEnum,
-                  labelEnum,
-                ] in batimentService.destructuringTableEnum(
-                  valueColumn.type.enum,
-                )"
-                :key="keyEnum"
-                :value="keyEnum"
-                :label="labelEnum"
-              ></option>
-            </select>
-          </template>
-          <br />
-        </label>
+              </template>
+            </label>
+          </div>
+        </fieldset>
       </div>
     </div>
     <button :disabled="submitPending">Soumettre</button>
@@ -189,7 +205,7 @@ import {
 } from "vue";
 import type { TypeTableEnum } from "./model/batiment-dropdown";
 import BatimentSection from "./model/BatimentSections";
-import { Section, TableType } from "./model/Section";
+import { TableType } from "./model/Section";
 
 interface IInstance extends ComponentPublicInstance {
   batiment: BatimentSection;
@@ -327,32 +343,36 @@ const createBatimentToSave = () => {
   if (batiment.id) {
     batimentToSave.id = batiment.id;
   }
-  Object.values(batiment.allSections).forEach((aSection: Section) => {
-    Object.values(aSection.columnsGroup).forEach((columnsGroup) => {
-      Object.entries(columnsGroup).forEach(([keyColumn, valueColumn]) => {
-        let value = valueColumn.vueRef.value;
-        let columnType = valueColumn.type;
-        if (value === "" || value === null || value === undefined) {
-          return;
-        }
-        if (typeof columnType === "number") {
-          if (
-            columnType === TableType.NUMBER ||
-            columnType === TableType.NATURAL_NUMBER
-          ) {
-            value = Number(value);
-          } else if (columnType === TableType.DATE) {
-            value = new Date(value);
-          }
-          batimentToSave.set(keyColumn, value);
-        } else {
-          columnType = columnType as TypeTableEnum;
-          const pointer = new Parse.Object(columnType.name);
-          pointer.id = value;
-          batimentToSave.set(keyColumn, pointer);
-        }
+  batimentService.destructuringBatiment(batiment).forEach(([_, aSection]) => {
+    batimentService
+      .destructuringColumnsGroup(aSection.columnsGroups)
+      .forEach(([_, columnsGroups]) => {
+        batimentService
+          .destructuringColumns(columnsGroups)
+          .forEach(([keyColumn, valueColumn]) => {
+            let value = valueColumn.vueRef.value;
+            let columnType = valueColumn.type;
+            if (value === "" || value === null || value === undefined) {
+              return;
+            }
+            if (typeof columnType === "number") {
+              if (
+                columnType === TableType.NUMBER ||
+                columnType === TableType.NATURAL_NUMBER
+              ) {
+                value = Number(value);
+              } else if (columnType === TableType.DATE) {
+                value = new Date(value);
+              }
+              batimentToSave.set(keyColumn, value);
+            } else {
+              columnType = columnType as TypeTableEnum;
+              const pointer = new Parse.Object(columnType.name);
+              pointer.id = value;
+              batimentToSave.set(keyColumn, pointer);
+            }
+          });
       });
-    });
   });
   if (isCreation.value) {
     batimentToSave.set("owner", Parse.User.current());

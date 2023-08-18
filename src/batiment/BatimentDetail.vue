@@ -21,7 +21,7 @@
           keyColumnsGroup,
           columnsGroup,
         ] in batimentService.destructuringColumnsGroup(
-          valueSection.columnsGroup,
+          valueSection.columnsGroups,
         )"
         :key="keyColumnsGroup"
         class="batiment-detail__columns-group"
@@ -122,7 +122,7 @@ export default defineComponent({
     next((vm) => {
       const instance = vm as IInstance;
       if (to.params.batimentId) {
-        // For instance http://127.0.0.1:5173/batiment/2961/edit
+        // For instance http://127.0.0.1:5173/batiment/2961/view
         batimentService.retrieveABatiment(
           to.params.batimentId as string,
           instance.batiment,

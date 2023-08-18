@@ -4,20 +4,19 @@ import type { Router } from "vue-router";
 import type { TypeTableEnum } from "./model/batiment-dropdown";
 import type BatimentSection from "./model/BatimentSections";
 import type { IBatimentAPI } from "./model/IBatimentAPI";
-import type { Column, Section } from "./model/Section";
+import type { Column, ColumnsGroup, Section } from "./model/Section";
 
 const destructuringBatiment = (
   aBatiment: BatimentSection,
 ): [key: string, value: Section][] => Object.entries(aBatiment);
 
-const destructuringColumnsGroup = (
-  columns: Section["columnsGroup"],
-): [keyColumnsGroup: string, columnsGroup: { [key: string]: Column }][] =>
-  Object.entries(columns);
+const destructuringColumnsGroups = (
+  columnsGroups: Section["columnsGroups"],
+): [key: string, column: ColumnsGroup][] => Object.entries(columnsGroups);
 
-const destructuringColumns = (columns: {
-  [key: string]: Column;
-}): [key: string, value: Column][] => Object.entries(columns);
+const destructuringColumns = (
+  columnsGroup: ColumnsGroup,
+): [key: string, column: Column][] => Object.entries(columnsGroup.columns);
 
 const destructuringTableEnum = (
   aTableEnum: TypeTableEnum["enum"],
@@ -31,22 +30,26 @@ const retrieveABatiment = async (
   query.equalTo("objectId", id);
   const batimentRetrieved = await query.first();
   if (batimentRetrieved) {
-    Object.values(batiment).forEach((aSection: Section) => {
-      Object.values(aSection.columnsGroup).forEach((columnsGroup) => {
-        Object.entries(columnsGroup).forEach(([keyColumn, valueColumn]) => {
-          const value = batimentRetrieved.get(keyColumn);
-          if (value === undefined || value === null) {
-            return;
-          }
-          if (typeof valueColumn.type === "number") {
-            valueColumn.vueRef.value = value;
-          } else {
-            valueColumn.vueRef.value = value?.id;
-          }
-        });
-      });
+    destructuringBatiment(batiment).forEach(([_, aSection]) => {
+      destructuringColumnsGroups(aSection.columnsGroups).forEach(
+        ([_, columnsGroups]) => {
+          destructuringColumns(columnsGroups).forEach(
+            ([keyColumn, valueColumn]) => {
+              const value = batimentRetrieved.get(keyColumn);
+              if (value === undefined || value === null) {
+                return;
+              }
+              if (typeof valueColumn.type === "number") {
+                valueColumn.vueRef.value = value;
+              } else {
+                valueColumn.vueRef.value = value?.id;
+              }
+            },
+          );
+        },
+      );
     });
-    batiment.allSections.definition.columnsGroup.objectIdGroup.objectId.vueRef.value =
+    batiment.allSections.definition.columnsGroups.objectIdGroup.columns.objectId.vueRef.value =
       batimentRetrieved.id;
   } else {
     alert("Nothing found, please try again");
@@ -95,7 +98,7 @@ const retrieveAllBatimentsWithCatch = async (
 
 export default {
   destructuringBatiment,
-  destructuringColumnsGroup,
+  destructuringColumnsGroup: destructuringColumnsGroups,
   destructuringColumns,
   destructuringTableEnum,
   retrieveABatiment,
