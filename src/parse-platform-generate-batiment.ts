@@ -54,7 +54,7 @@ const createAEnum = async (tableName: string, tableEnum: TypeTableEnum) => {
       const table = new Parse.Object(tableName);
       table.id = objectId;
       table.set("commentaire", tableEnum.enum[objectId]);
-      await table.save();
+      await table.save(null, { useMasterKey: true });
     }),
   );
 };
