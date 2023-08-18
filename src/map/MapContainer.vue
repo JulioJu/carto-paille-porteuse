@@ -79,6 +79,23 @@ const popupContent = ref<HTMLDivElement>();
 let map: Map;
 
 onMounted(async () => {
+  // (2023-18-16) since the beginning of the project in 2012,
+  // On Firefox, if we retrieve batiments before draw map, we don't see icons
+  // the first time we type url https://cartopailleporteuse.b4a.app/)
+  // * This bug does not occur
+  //    * on Chromium.
+  //    * If we refresh page
+  //    * If we change browser window size this bug does
+  const batiments = await batimentService.retrieveAllBatimentsWithCatch(
+    router,
+    [
+      "latitudeLongitude",
+      "usageBatiment",
+      "surfacePlancher",
+      "photoPrincipale",
+    ],
+  );
+
   map = new Map({
     target: mapRoot.value,
     layers: [
@@ -96,15 +113,6 @@ onMounted(async () => {
     }),
   });
 
-  const batiments = await batimentService.retrieveAllBatimentsWithCatch(
-    router,
-    [
-      "latitudeLongitude",
-      "usageBatiment",
-      "surfacePlancher",
-      "photoPrincipale",
-    ],
-  );
   batiments.forEach((aBatiment) => {
     const icon = drawIcon(aBatiment);
     map.addLayer(icon);
