@@ -74,6 +74,11 @@
             données enregistrées par ce compte.
           </li>
           <li>
+            La suppression de données peut ne pas être immédiate et peut
+            nécessiter l'intervention des administrateurs, notamment en ce qui
+            concerne les images.
+          </li>
+          <li>
             Consultez le site
             <a target="_blank" href="https://cnil.fr">cnil.fr</a> pour plus
             d’informations sur vos droits.

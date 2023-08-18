@@ -191,7 +191,9 @@
       </div>
     </div>
     <button :disabled="submitPending">Soumettre</button>
-    <div v-if="submitPending">En cours d'enregistrement</div>
+    <div v-if="submitPending">
+      En cours d'enregistrement. Veuillez attendre quelques instants.
+    </div>
   </form>
 </template>
 <script lang="ts">
@@ -202,6 +204,8 @@ import {
   watchEffect,
   type ComponentPublicInstance,
   type Ref,
+  getCurrentInstance,
+  type ComponentInternalInstance,
 } from "vue";
 import type { TypeTableEnum } from "./model/batiment-dropdown";
 import BatimentSection from "./model/BatimentSections";
@@ -212,10 +216,14 @@ interface IInstance extends ComponentPublicInstance {
   setLatLong(queryParam: { latitude: number; longitude: number }): void;
   isCreationFunc(isCreation: boolean): void;
   redirectToHomePage(): void;
-  filesToRemove: Parse.File[];
 }
 
 export default defineComponent({
+  data(): { filesToRemove: Parse.File[] } {
+    return {
+      filesToRemove: [],
+    };
+  },
   beforeRouteEnter(to, _, next) {
     next((vm) => {
       const instance = vm as IInstance;
@@ -253,7 +261,10 @@ export default defineComponent({
     });
   },
   methods: {
-    clearInputImage(valueColumn: Ref<any>, inputRefString: string): void {
+    clearInputImage(
+      valueColumn: Ref<Parse.File | null>,
+      inputRefString: string,
+    ): void {
       if (valueColumn.value?._url) {
         this.filesToRemove.push(reactive(valueColumn.value));
       }
@@ -327,7 +338,7 @@ const isCreationFunc = (isCreationParam: boolean) => {
   isCreation.value = isCreationParam;
 };
 
-const filesToRemove: Parse.File[] = [];
+const vm = getCurrentInstance() as ComponentInternalInstance;
 
 watchEffect(() => {
   if (!isNaN(latitude.value as number)) {
@@ -352,7 +363,10 @@ const createBatimentToSave = () => {
           .forEach(([keyColumn, valueColumn]) => {
             let value = valueColumn.vueRef.value;
             let columnType = valueColumn.type;
-            if (value === "" || value === null || value === undefined) {
+            if (
+              columnType !== TableType.IMAGE &&
+              (value === "" || value === null || value === undefined)
+            ) {
               return;
             }
             if (typeof columnType === "number") {
@@ -419,11 +433,14 @@ const onSubmit = async () => {
     }
   }
   try {
-    const batimentSaved = await createBatimentToSave().save();
-    filesToRemove.forEach(async (aFileToRemove) => {
+    const batimentToSaved = createBatimentToSave();
+    const batimentSaved = await batimentToSaved.save();
+    (vm.data.filesToRemove as Parse.File[]).forEach(async (aFileToRemove) => {
       // Needs master key https://docs.parseplatform.org/js/guide/#deleting-files
       // await aFileToRemove.destroy();
-      console.warn(`Please delete ${aFileToRemove._url}`);
+      console.warn(
+        `Please delete ${aFileToRemove._url} (we could remove orphan images regulary into the Parse Server Dashboard)`,
+      );
     });
     alert(
       "Bâtiment enregistré avec succès ! \nVous allez être redirigé vers la fiche du bâtit.",
@@ -446,7 +463,6 @@ defineExpose({
   setLatLong,
   isCreationFunc,
   redirectToHomePage,
-  filesToRemove,
 });
 </script>
 <style lang="scss" scoped>
